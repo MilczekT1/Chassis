@@ -23,6 +23,21 @@
         <junit5.version>5.3.2</junit5.version>
     </properties>
 
+    <modules>
+        <module>chassis-test-tools</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>pl.konradboniecki</groupId>
+                <artifactId>chassis-test-tools</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

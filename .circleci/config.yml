@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build:
+    docker:
+     - image: circleci/openjdk:10.0.2-jdk-browsers
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+    - setup_remote_docker:
+        version: 18.05.0-ce
+        docker_layer_caching: true
+    - checkout
+#_______________________________________________________________
+
+    - run:
+        name: Install Updates and Maven with dependencies.
+        command: |
+          sudo apt-get update
+          sudo apt-get install maven
+          mvn dependency:go-offline
+    - run:
+        name: Build and run tests
+        command: |
+          mvn clean install
+
+    - store_test_results:
+        paths:
+        - chassis-test-tools/target/surefire-reports
+    - store_artifacts:
+        path: chassis-test-tools/target/surefire-reports/surefire-report.html
+    - store_artifacts:
+        path: chassis-test-tools/target/site/jacoco/
+    - store_artifacts:
+        path: chassis-test-tools/target/surefire-reports

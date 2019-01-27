@@ -1,7 +1,7 @@
 package pl.konradboniecki.chassis.testtools;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.*;
 import java.util.Scanner;
@@ -12,15 +12,15 @@ public abstract class TestBase {
     protected static PrintStream sysOut;
     protected static ByteArrayOutputStream outContent;
 
-    @BeforeAll
-    protected static void prepareStreamsForLogs(){
+    @BeforeEach
+    protected void prepareStreamsForLogs(){
         sysOut = System.out;
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
     }
 
-    @AfterAll
-    protected static void revertStreamsForLogs() throws IOException {
+    @AfterEach
+    protected void revertStreamsForLogs() throws IOException {
         System.setOut(sysOut);
         outContent.close();
         outContent.reset();

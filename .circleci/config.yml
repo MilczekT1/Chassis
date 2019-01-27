@@ -16,11 +16,10 @@ jobs:
 #_______________________________________________________________
 
     - run:
-        name: Install Updates and Maven with dependencies.
+        name: Install Updates and Maven
         command: |
           sudo apt-get update
           sudo apt-get install maven
-          mvn dependency:go-offline
     - run:
         name: Build and run tests
         command: |

@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
      - image: circleci/openjdk:10.0.2-jdk-browsers
-    working_directory: ~/repo
+    working_directory: ~/CHASSIS
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
@@ -12,6 +12,15 @@ jobs:
     - setup_remote_docker:
         version: 18.05.0-ce
         docker_layer_caching: true
+    - add_ssh_keys:
+        fingerprints:
+          - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
+    - run:
+        name: Clone Services
+        command: |
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-reset-password.git ~/resetPasswordRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-account.git ~/accountRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-mail.git ~/mailRepo
     - checkout
 #_______________________________________________________________
 
@@ -24,7 +33,6 @@ jobs:
         name: Build and run tests
         command: |
           mvn clean install
-
     - store_test_results:
         paths:
         - chassis-test-tools/target/surefire-reports
@@ -34,3 +42,39 @@ jobs:
         path: chassis-test-tools/target/site/jacoco/
     - store_artifacts:
         path: chassis-test-tools/target/surefire-reports
+#___________________________________SERVICE COMPATIBILITY
+    - run:
+        name: install stubs
+        command: |
+          cd ~/resetPasswordRepo
+          mvn clean install -DskipTests=true
+          cd ~/accountRepo
+          mvn clean install -DskipTests=true
+          cd ~/mailRepo
+          mvn clean install -DskipTests=true
+    - run:
+        name: Reset password service compatibility validation
+        command: |
+          cd ~/resetPasswordRepo
+          mvn clean install
+    - run:
+        name: Account service compatibility validation
+        command: |
+          cd ~/accountRepo
+          mvn clean install
+    - run:
+        name: Mail service compatibility validation
+        command: |
+          cd ~/mailRepo
+          mvn clean install
+
+    - store_artifacts:
+        path: ~/resetPasswordRepo/target/surefire-reports
+        destination: home/circleci/resetPasswordRepo/surefire-reports
+    - store_artifacts:
+        path: ~/accountRepo/target/surefire-reports
+        destination: home/circleci/accountRepo/surefire-reports
+    - store_artifacts:
+        path: ~/mailRepo/target/surefire-reports
+        destination: home/circleci/mailRepo/surefire-reports
+

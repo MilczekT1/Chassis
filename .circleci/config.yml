@@ -18,9 +18,9 @@ jobs:
     - run:
         name: Clone Services
         command: |
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-reset-password.git ~/resetPasswordRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-account.git ~/accountRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/webservice-mail.git ~/mailRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
     - checkout
 #_______________________________________________________________
 
@@ -46,21 +46,21 @@ jobs:
     - run:
         name: install stubs
         command: |
-          cd ~/resetPasswordRepo
+          cd ~/passwordMgtRepo
           mvn clean install -DskipTests=true
-          cd ~/accountRepo
+          cd ~/accountMgtRepo
           mvn clean install -DskipTests=true
           cd ~/mailRepo
           mvn clean install -DskipTests=true
     - run:
-        name: Reset password service compatibility validation
+        name: Password management service compatibility validation
         command: |
-          cd ~/resetPasswordRepo
+          cd ~/passwordMgtRepo
           mvn clean install
     - run:
-        name: Account service compatibility validation
+        name: Account management service compatibility validation
         command: |
-          cd ~/accountRepo
+          cd ~/accountMgtRepo
           mvn clean install
     - run:
         name: Mail service compatibility validation
@@ -69,11 +69,11 @@ jobs:
           mvn clean install
 
     - store_artifacts:
-        path: ~/resetPasswordRepo/target/surefire-reports
-        destination: home/circleci/resetPasswordRepo/surefire-reports
+        path: ~/passwordMgtRepo/target/surefire-reports
+        destination: home/circleci/passwordMgtRepo/surefire-reports
     - store_artifacts:
-        path: ~/accountRepo/target/surefire-reports
-        destination: home/circleci/accountRepo/surefire-reports
+        path: ~/accountMgtRepo/target/surefire-reports
+        destination: home/circleci/accountMgtRepo/surefire-reports
     - store_artifacts:
         path: ~/mailRepo/target/surefire-reports
         destination: home/circleci/mailRepo/surefire-reports

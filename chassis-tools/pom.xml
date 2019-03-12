@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis</artifactId>
+        <artifactId>chassis-parent</artifactId>
         <version>0.5</version>
+        <relativePath>../chassis-parent</relativePath>
     </parent>
 
     <artifactId>chassis-tools</artifactId>

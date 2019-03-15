@@ -67,6 +67,18 @@ jobs:
         command: |
           cd ~/mailRepo
           mvn clean install
+    - run:
+        name: Build and push image with chassis
+        command: |
+          if [ "$CIRCLE_BRANCH" == "master" ]; then
+            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Stable
+          fi
+          if [ "$CIRCLE_BRANCH" != "master" ]; then
+            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Experimental
+          fi
+          docker build -t konradboniecki/budget:$TAG .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push konradboniecki/budget:$TAG
 
     - store_artifacts:
         path: ~/passwordMgtRepo/target/surefire-reports

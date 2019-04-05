@@ -21,6 +21,8 @@ jobs:
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/family-management.git ~/familyMgtRepo
     - checkout
 #_______________________________________________________________
 
@@ -32,7 +34,7 @@ jobs:
     - run:
         name: Build and run tests
         command: |
-          mvn clean install
+          mvn clean install -B
     - store_test_results:
         paths:
         - chassis-test-tools/target/surefire-reports
@@ -42,31 +44,64 @@ jobs:
         path: chassis-test-tools/target/site/jacoco/
     - store_artifacts:
         path: chassis-test-tools/target/surefire-reports
-#___________________________________SERVICE COMPATIBILITY
+#___________________________________________________SERVICE COMPATIBILITY
     - run:
         name: install stubs
         command: |
           cd ~/passwordMgtRepo
-          mvn clean install -DskipTests=true
+          mvn clean install -B -DskipTests=true
           cd ~/accountMgtRepo
-          mvn clean install -DskipTests=true
+          mvn clean install -B -DskipTests=true
           cd ~/mailRepo
-          mvn clean install -DskipTests=true
+          mvn clean install -B -DskipTests=true
+          cd ~/familyMgtRepo
+          mvn clean install -B -DskipTests=true
+#_____________________________________________________________________________
     - run:
         name: Password management service compatibility validation
         command: |
           cd ~/passwordMgtRepo
           mvn clean install
+    - store_artifacts:
+        path: ~/passwordMgtRepo/target/surefire-reports
+        destination: home/circleci/passwordMgtRepo/surefire-reports
+#_____________________________________________________________________________
     - run:
         name: Account management service compatibility validation
         command: |
           cd ~/accountMgtRepo
           mvn clean install
+    - store_artifacts:
+        path: ~/accountMgtRepo/target/surefire-reports
+        destination: home/circleci/accountMgtRepo/surefire-reports
+#_____________________________________________________________________________
     - run:
         name: Mail service compatibility validation
         command: |
           cd ~/mailRepo
           mvn clean install
+    - store_artifacts:
+        path: ~/mailRepo/target/surefire-reports
+        destination: home/circleci/mailRepo/surefire-reports
+#_____________________________________________________________________________
+    - run:
+        name: Config server compatibility validation
+        command: |
+          cd ~/configServerRepo
+          mvn clean install
+    - store_artifacts:
+        path: ~/configServerRepo/target/surefire-reports
+        destination: home/circleci/configServerRepo/surefire-reports
+    #_____________________________________________________________________________
+    - run:
+        name: Family management service compatibility validation
+        command: |
+          cd ~/familyMgtRepo
+          mvn clean install
+    - store_artifacts:
+        path: ~/familyMgtRepo/target/surefire-reports
+        destination: home/circleci/familyMgtRepo/surefire-reports
+#_____________________________________________________________________________
     - run:
         name: Build and push image with chassis
         command: |
@@ -79,14 +114,3 @@ jobs:
           docker build -t konradboniecki/budget:$TAG .
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push konradboniecki/budget:$TAG
-
-    - store_artifacts:
-        path: ~/passwordMgtRepo/target/surefire-reports
-        destination: home/circleci/passwordMgtRepo/surefire-reports
-    - store_artifacts:
-        path: ~/accountMgtRepo/target/surefire-reports
-        destination: home/circleci/accountMgtRepo/surefire-reports
-    - store_artifacts:
-        path: ~/mailRepo/target/surefire-reports
-        destination: home/circleci/mailRepo/surefire-reports
-

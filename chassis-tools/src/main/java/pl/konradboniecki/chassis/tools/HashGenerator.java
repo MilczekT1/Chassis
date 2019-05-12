@@ -25,6 +25,7 @@ public class HashGenerator {
         try{
             return hashString(password);
         } catch (Exception e){
+            //TODO: handle this better
             return "";
         }
     }

@@ -24,7 +24,7 @@
         <mockito-core.version>2.27.0</mockito-core.version>
         <assertj-core.version>3.12.2</assertj-core.version>
 
-        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
+        <jacoco.classes.maxMissed>1</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
     </properties>

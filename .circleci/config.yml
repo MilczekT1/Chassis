@@ -60,7 +60,16 @@ jobs:
           mvn clean install -DskipTests=true -B $LESS_LOGS
 #_____________________________________________________________________________
     - run:
-        name: Password management service compatibility validation
+        name: (1/5) Config server compatibility validation
+        command: |
+          cd ~/configServerRepo
+          mvn clean package
+    - store_artifacts:
+        path: ~/configServerRepo/target/surefire-reports
+        destination: home/circleci/configServerRepo/surefire-reports
+#_____________________________________________________________________________
+    - run:
+        name: (2/5) Password management service compatibility validation
         command: |
           cd ~/passwordMgtRepo
           mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
@@ -69,7 +78,7 @@ jobs:
         destination: home/circleci/passwordMgtRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: Account management service compatibility validation
+        name: (3/5) Account management service compatibility validation
         command: |
           cd ~/accountMgtRepo
           mvn clean package
@@ -78,7 +87,7 @@ jobs:
         destination: home/circleci/accountMgtRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: Mail service compatibility validation
+        name: (4/5) Mail service compatibility validation
         command: |
           cd ~/mailRepo
           mvn clean package
@@ -87,16 +96,7 @@ jobs:
         destination: home/circleci/mailRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: Config server compatibility validation
-        command: |
-          cd ~/configServerRepo
-          mvn clean package
-    - store_artifacts:
-        path: ~/configServerRepo/target/surefire-reports
-        destination: home/circleci/configServerRepo/surefire-reports
-    #_____________________________________________________________________________
-    - run:
-        name: Family management service compatibility validation
+        name: (5/5) Family management service compatibility validation
         command: |
           cd ~/familyMgtRepo
           mvn clean package
@@ -104,15 +104,15 @@ jobs:
         path: ~/familyMgtRepo/target/surefire-reports
         destination: home/circleci/familyMgtRepo/surefire-reports
 #_____________________________________________________________________________
-    - run:
-        name: Build and push image with chassis
-        command: |
-          if [ "$CIRCLE_BRANCH" == "master" ]; then
-            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Stable
-          fi
-          if [ "$CIRCLE_BRANCH" != "master" ]; then
-            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Experimental
-          fi
-          docker build -t konradboniecki/budget:$TAG .
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push konradboniecki/budget:$TAG
+#    - run:
+#        name: Build and push image with chassis
+#        command: |
+#          if [ "$CIRCLE_BRANCH" == "master" ]; then
+#            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Stable
+#          fi
+#          if [ "$CIRCLE_BRANCH" != "master" ]; then
+#            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Experimental
+#          fi
+#          docker build -t konradboniecki/budget:$TAG .
+#          docker login -u $DOCKER_USER -p $DOCKER_PASS
+#          docker push konradboniecki/budget:$TAG

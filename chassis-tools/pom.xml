@@ -22,7 +22,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*App.*</exclude>
-                        <exclude>**/*Configuration.*</exclude>
+                        <exclude>**/*WebServerConfiguration.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -46,6 +46,11 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

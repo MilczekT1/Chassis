@@ -23,7 +23,9 @@ public class HttpLoggingAutoConfiguration {
         filter.setIncludePayload(settings.isIncludePayload());
         filter.setMaxPayloadLength(settings.getMaxPayloadLength());
         filter.setIncludeHeaders(settings.isIncludeHeaders());
-        filter.setAfterMessagePrefix("REQUEST DATA : ");
+        filter.setAfterMessagePrefix("AFTER REQUEST: \n");
+        filter.setBeforeMessagePrefix("BEFORE REQUEST: \n");
+        filter.setIncludeClientInfo(true);
         return filter;
     }
 }

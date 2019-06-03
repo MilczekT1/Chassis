@@ -3,6 +3,7 @@ package pl.konradboniecki.chassis.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
@@ -14,6 +15,7 @@ public class HttpLoggingAutoConfiguration {
     @Autowired
     private HttpLoggingProperties settings;
 
+    //TODO: parametrize it
     @Bean
     @ConditionalOnProperty(prefix = "budget.chassis.http-logging",
             value = "enabled", havingValue = "true")
@@ -28,4 +30,15 @@ public class HttpLoggingAutoConfiguration {
         filter.setIncludeClientInfo(true);
         return filter;
     }
+
+    //TODO: test it, parametrize it
+    @Bean
+    @ConditionalOnProperty(prefix = "budget.chassis.http-logging",
+            value = "enabled", havingValue = "true")
+    public FilterRegistrationBean loggingFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean(logFilter());
+        registration.addUrlPatterns("/api/*");
+        return registration;
+    }
 }
+

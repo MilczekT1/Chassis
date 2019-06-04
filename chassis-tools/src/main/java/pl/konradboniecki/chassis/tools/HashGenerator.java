@@ -2,6 +2,7 @@ package pl.konradboniecki.chassis.tools;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import pl.konradboniecki.chassis.exceptions.HashGenerationException;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;

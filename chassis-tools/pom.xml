@@ -23,6 +23,7 @@
                     <excludes>
                         <exclude>**/*App.*</exclude>
                         <exclude>**/*WebServerConfiguration.*</exclude>
+                        <exclude>**/*ChassisExceptionHandler.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -23,6 +23,7 @@ jobs:
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/family-management.git ~/familyMgtRepo
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
     - checkout
 #_______________________________________________________________
 
@@ -60,7 +61,7 @@ jobs:
           mvn clean install -DskipTests=true -B $LESS_LOGS
 #_____________________________________________________________________________
     - run:
-        name: (1/5) Config server compatibility validation
+        name: (1/6) Config server compatibility validation
         command: |
           cd ~/configServerRepo
           mvn clean package
@@ -69,7 +70,7 @@ jobs:
         destination: home/circleci/configServerRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: (2/5) Password management service compatibility validation
+        name: (2/6) Password management service compatibility validation
         command: |
           cd ~/passwordMgtRepo
           mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
@@ -78,7 +79,7 @@ jobs:
         destination: home/circleci/passwordMgtRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: (3/5) Account management service compatibility validation
+        name: (3/6) Account management service compatibility validation
         command: |
           cd ~/accountMgtRepo
           mvn clean package
@@ -87,7 +88,7 @@ jobs:
         destination: home/circleci/accountMgtRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: (4/5) Mail service compatibility validation
+        name: (4/6) Mail service compatibility validation
         command: |
           cd ~/mailRepo
           mvn clean package
@@ -96,13 +97,22 @@ jobs:
         destination: home/circleci/mailRepo/surefire-reports
 #_____________________________________________________________________________
     - run:
-        name: (5/5) Family management service compatibility validation
+        name: (5/6) Family management service compatibility validation
         command: |
           cd ~/familyMgtRepo
           mvn clean package
     - store_artifacts:
         path: ~/familyMgtRepo/target/surefire-reports
         destination: home/circleci/familyMgtRepo/surefire-reports
+#_____________________________________________________________________________
+    - run:
+        name: (6/6) Budget management service compatibility validation
+        command: |
+          cd ~/budgetMgtRepo
+          mvn clean package
+    - store_artifacts:
+        path: ~/budgetMgtRepo/target/surefire-reports
+        destination: home/circleci/budgetMgtRepo/surefire-reports
 #_____________________________________________________________________________
 #    - run:
 #        name: Build and push image with chassis

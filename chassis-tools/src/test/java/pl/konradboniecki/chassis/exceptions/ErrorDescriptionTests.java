@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis;
+package pl.konradboniecki.chassis.exceptions;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

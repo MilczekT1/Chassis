@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis;
+package pl.konradboniecki.chassis.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

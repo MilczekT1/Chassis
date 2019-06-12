@@ -42,12 +42,22 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     //TODO: test it
-    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDescription> notFound(ResourceNotFoundException e) {
         log.error(e.getMessage());
         final ErrorDescription errorDescription =
                 new ErrorDescription(HttpStatus.NOT_FOUND, e.getMessage());
+
+        return createResponseEntity(errorDescription);
+    }
+    //TODO: test it
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ResourceConflictException.class)
+    public ResponseEntity<ErrorDescription> conflict(ResourceConflictException e){
+        log.error(e.getMessage());
+        final ErrorDescription errorDescription =
+                new ErrorDescription(HttpStatus.CONFLICT, e.getMessage());
 
         return createResponseEntity(errorDescription);
     }

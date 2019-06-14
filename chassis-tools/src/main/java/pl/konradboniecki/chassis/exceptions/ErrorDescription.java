@@ -6,15 +6,16 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Data
 @Accessors(chain = true)
 public class ErrorDescription {
 
     @JsonProperty("timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    private LocalDateTime timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy'T'hh:mm:ss")
+    private ZonedDateTime timestamp;
     @JsonProperty("status")
     private Integer status;
     @JsonProperty("statusName")
@@ -26,6 +27,6 @@ public class ErrorDescription {
         setStatusName(httpStatus.name());
         setStatus(httpStatus.value());
         setMessage(message);
-        setTimestamp(LocalDateTime.now());
+        setTimestamp(ZonedDateTime.now(ZoneId.of("Europe/Warsaw")));
     }
 }

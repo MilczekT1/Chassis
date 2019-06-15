@@ -1,6 +1,5 @@
 package pl.konradboniecki.chassis.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,20 +12,19 @@ import java.time.ZonedDateTime;
 @Accessors(chain = true)
 public class ErrorDescription {
 
-    @JsonProperty("timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy'T'hh:mm:ss")
-    private ZonedDateTime timestamp;
     @JsonProperty("status")
     private Integer status;
     @JsonProperty("statusName")
     private String statusName;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("timestamp")
+    private ZonedDateTime timestamp;
 
     public ErrorDescription(HttpStatus httpStatus, String message) {
         setStatusName(httpStatus.name());
         setStatus(httpStatus.value());
         setMessage(message);
-        setTimestamp(ZonedDateTime.now(ZoneId.of("Europe/Warsaw")));
+        setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
     }
 }

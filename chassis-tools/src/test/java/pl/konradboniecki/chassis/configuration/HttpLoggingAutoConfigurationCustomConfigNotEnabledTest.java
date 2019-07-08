@@ -20,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
             "budget.chassis.http-logging.includeQueryString=false",
             "budget.chassis.http-logging.includePayload=false",
             "budget.chassis.http-logging.includeHeaders=false",
-            "budget.chassis.http-logging.maxPayloadLength=10"
+            "budget.chassis.http-logging.maxPayloadLength=10",
+            "budget.chassis.http-logging.urlPattern=/"
         }
 )
 public class HttpLoggingAutoConfigurationCustomConfigNotEnabledTest {
@@ -50,8 +51,8 @@ public class HttpLoggingAutoConfigurationCustomConfigNotEnabledTest {
                 () -> assertThat(loggingConfig.isIncludeHeaders()).isFalse(),
                 () -> assertThat(loggingConfig.isIncludePayload()).isFalse(),
                 () -> assertThat(loggingConfig.isIncludeQueryString()).isFalse(),
-                () -> assertThat(loggingConfig.getMaxPayloadLength()).isEqualTo(10));
-
+                () -> assertThat(loggingConfig.getMaxPayloadLength()).isEqualTo(10),
+                () -> assertThat(loggingConfig.getUrlPattern()).isEqualTo("/"));
     }
 
     @Test

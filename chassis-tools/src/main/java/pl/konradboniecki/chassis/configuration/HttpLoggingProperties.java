@@ -12,4 +12,5 @@ public class HttpLoggingProperties {
     private boolean includePayload = true;
     private boolean includeHeaders = false;
     private int maxPayloadLength = 10000;
+    private String urlPattern = "/api/*";
 }

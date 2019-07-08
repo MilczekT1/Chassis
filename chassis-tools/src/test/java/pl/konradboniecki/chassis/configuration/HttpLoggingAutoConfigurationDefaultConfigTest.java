@@ -44,5 +44,6 @@ public class HttpLoggingAutoConfigurationDefaultConfigTest {
         assertThat(loggingConfig.isIncludePayload()).isTrue();
         assertThat(loggingConfig.isIncludeQueryString()).isTrue();
         assertThat(loggingConfig.getMaxPayloadLength()).isEqualTo(10000);
+        assertThat(loggingConfig.getUrlPattern()).isEqualTo("/api/*");
     }
 }

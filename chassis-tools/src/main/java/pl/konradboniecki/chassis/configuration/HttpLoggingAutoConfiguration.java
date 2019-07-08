@@ -37,7 +37,7 @@ public class HttpLoggingAutoConfiguration {
             value = "enabled", havingValue = "true")
     public FilterRegistrationBean loggingFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean(logFilter());
-        registration.addUrlPatterns("/api/*");
+        registration.addUrlPatterns(settings.getUrlPattern());
         return registration;
     }
 }

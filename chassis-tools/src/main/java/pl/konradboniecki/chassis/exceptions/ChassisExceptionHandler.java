@@ -22,11 +22,9 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     })
     public ResponseEntity<ErrorDescription> badRequest(RuntimeException e){
         log.error(e.getMessage());
-        final ErrorDescription errorDescription =
-                new ErrorDescription(HttpStatus.BAD_REQUEST, e.getMessage());
-
-        return createResponseEntity(errorDescription);
+        return createResponseEntity(new ErrorDescription(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
+
     //TODO: test it
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({
@@ -35,10 +33,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     })
     public ResponseEntity<ErrorDescription> internalServerError(RuntimeException e){
         log.error(e.getMessage());
-        final ErrorDescription errorDescription =
-                new ErrorDescription(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-
-        return createResponseEntity(errorDescription);
+        return createResponseEntity(new ErrorDescription(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 
     //TODO: test it
@@ -46,20 +41,14 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDescription> notFound(ResourceNotFoundException e) {
         log.error(e.getMessage());
-        final ErrorDescription errorDescription =
-                new ErrorDescription(HttpStatus.NOT_FOUND, e.getMessage());
-
-        return createResponseEntity(errorDescription);
+        return createResponseEntity(new ErrorDescription(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     //TODO: test it
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceConflictException.class)
     public ResponseEntity<ErrorDescription> conflict(ResourceConflictException e){
         log.error(e.getMessage());
-        final ErrorDescription errorDescription =
-                new ErrorDescription(HttpStatus.CONFLICT, e.getMessage());
-
-        return createResponseEntity(errorDescription);
+        return createResponseEntity(new ErrorDescription(HttpStatus.CONFLICT, e.getMessage()));
     }
 
     private ResponseEntity<ErrorDescription> createResponseEntity(ErrorDescription errorDescription){

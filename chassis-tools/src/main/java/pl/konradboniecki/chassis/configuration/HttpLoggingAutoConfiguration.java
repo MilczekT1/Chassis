@@ -15,7 +15,6 @@ public class HttpLoggingAutoConfiguration {
     @Autowired
     private HttpLoggingProperties settings;
 
-    //TODO: parametrize it
     @Bean
     @ConditionalOnProperty(prefix = "budget.chassis.http-logging",
             value = "enabled", havingValue = "true")
@@ -25,13 +24,12 @@ public class HttpLoggingAutoConfiguration {
         filter.setIncludePayload(settings.isIncludePayload());
         filter.setMaxPayloadLength(settings.getMaxPayloadLength());
         filter.setIncludeHeaders(settings.isIncludeHeaders());
-        filter.setAfterMessagePrefix("AFTER REQUEST: \n");
-        filter.setBeforeMessagePrefix("BEFORE REQUEST: \n");
-        filter.setIncludeClientInfo(true);
+        filter.setAfterMessagePrefix(settings.getAfterMessagePrefix());
+        filter.setBeforeMessagePrefix(settings.getBeforeMessagePrefix());
+        filter.setIncludeClientInfo(settings.getIncludeClientInfo());
         return filter;
     }
 
-    //TODO: test it, parametrize it
     @Bean
     @ConditionalOnProperty(prefix = "budget.chassis.http-logging",
             value = "enabled", havingValue = "true")

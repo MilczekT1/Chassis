@@ -14,8 +14,7 @@ public class ErrorDescriptionTests {
         String errorMessage = "Something has not been found";
         ErrorDescription errorDesc = new ErrorDescription(HttpStatus.NOT_FOUND, errorMessage);
         assertAll(
-                () ->
-                assertEquals(HttpStatus.NOT_FOUND.value() , errorDesc.getStatus().longValue()),
+                () -> assertEquals(HttpStatus.NOT_FOUND.value() , errorDesc.getStatus().longValue()),
                 () -> assertEquals("NOT_FOUND", errorDesc.getStatusName()),
                 () -> assertEquals(errorMessage, errorDesc.getMessage()),
                 () -> assertTrue(errorDesc.getTimestamp().isBefore(ZonedDateTime.now()))

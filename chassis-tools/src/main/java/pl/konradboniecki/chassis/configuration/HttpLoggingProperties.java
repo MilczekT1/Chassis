@@ -13,4 +13,7 @@ public class HttpLoggingProperties {
     private boolean includeHeaders = false;
     private int maxPayloadLength = 10000;
     private String urlPattern = "/api/*";
+    private String afterMessagePrefix = "AFTER REQUEST: \n";
+    private String beforeMessagePrefix = "BEFORE REQUEST: \n";
+    private Boolean includeClientInfo = true;
 }

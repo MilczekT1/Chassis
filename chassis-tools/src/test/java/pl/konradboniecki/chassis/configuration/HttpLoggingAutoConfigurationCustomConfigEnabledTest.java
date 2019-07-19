@@ -16,11 +16,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         classes = HttpLoggingAutoConfiguration.class,
         webEnvironment = WebEnvironment.NONE,
         properties = {
-                "budget.chassis.http-logging.enabled=true",
-                "budget.chassis.http-logging.includeQueryString=false",
-                "budget.chassis.http-logging.includePayload=false",
-                "budget.chassis.http-logging.includeHeaders=false",
-                "budget.chassis.http-logging.maxPayloadLength=10"
+                "budget.chassis.http-logging.enabled=true"
         }
 )
 public class HttpLoggingAutoConfigurationCustomConfigEnabledTest {
@@ -41,6 +37,7 @@ public class HttpLoggingAutoConfigurationCustomConfigEnabledTest {
     @Test
     public void when_config_enabled_filterRegistrationBean_is_created() {
         assertThat(filterRegistrationBean).isNotNull();
+        assertThat(filterRegistrationBean.getUrlPatterns().contains(loggingConfig.getUrlPattern()));
     }
 
     @Test

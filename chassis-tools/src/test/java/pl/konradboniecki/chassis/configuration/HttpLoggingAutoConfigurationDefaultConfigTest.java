@@ -1,5 +1,6 @@
 package pl.konradboniecki.chassis.configuration;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,17 @@ public class HttpLoggingAutoConfigurationDefaultConfigTest {
 
     @Test
     public void when_no_config_is_provided_default_configuration_properties_values_are_set(){
-        assertThat(loggingConfig).isNotNull();
-        assertThat(loggingConfig.isEnabled()).isFalse();
-        assertThat(loggingConfig.isIncludeHeaders()).isFalse();
-        assertThat(loggingConfig.isIncludePayload()).isTrue();
-        assertThat(loggingConfig.isIncludeQueryString()).isTrue();
-        assertThat(loggingConfig.getMaxPayloadLength()).isEqualTo(10000);
-        assertThat(loggingConfig.getUrlPattern()).isEqualTo("/api/*");
+        Assertions.assertAll(
+                () -> assertThat(loggingConfig).isNotNull(),
+                () -> assertThat(loggingConfig.isEnabled()).isFalse(),
+                () -> assertThat(loggingConfig.isIncludeHeaders()).isFalse(),
+                () -> assertThat(loggingConfig.isIncludePayload()).isTrue(),
+                () -> assertThat(loggingConfig.isIncludeQueryString()).isTrue(),
+                () -> assertThat(loggingConfig.getMaxPayloadLength()).isEqualTo(10000),
+                () -> assertThat(loggingConfig.getUrlPattern()).isEqualTo("/api/*"),
+                () -> assertThat(loggingConfig.getAfterMessagePrefix()).isEqualTo("AFTER REQUEST: \n"),
+                () -> assertThat(loggingConfig.getBeforeMessagePrefix()).isEqualTo("BEFORE REQUEST: \n"),
+                () -> assertThat(loggingConfig.getIncludeClientInfo()).isTrue()
+        );
     }
 }

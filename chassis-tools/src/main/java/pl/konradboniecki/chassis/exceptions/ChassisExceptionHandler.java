@@ -54,7 +54,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<ErrorDescription> createResponseEntity(ErrorDescription errorDescription){
         return ResponseEntity
                 .status(errorDescription.getStatus())
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(errorDescription);
     }
 }

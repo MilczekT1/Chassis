@@ -18,7 +18,7 @@ public class WebServerConfiguration {
         //TODO: server.http2.enabled=true
         return undertow;
 
-        //TODO: https to https redirection
+        //TODO: http to https redirection
 //        undertow.addDeploymentInfoCustomizers(deploymentInfo -> {
 //            deploymentInfo.addSecurityConstraint(
 //                    new SecurityConstraint()

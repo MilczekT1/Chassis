@@ -1,15 +1,21 @@
 package pl.konradboniecki.chassis.tools;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -22,14 +28,17 @@ public class PaginatedListTests {
 
     @BeforeAll
     public void setup() {
-        Pageable pageable = PageRequest.of(0, 100);
+        Pageable pageable = PageRequest.of(1, 1);
         LocalDateTime time1 = LocalDateTime.MAX;
         LocalDateTime time2 = LocalDateTime.MIN;
-        examplePage = new PageImpl<>(List.of(time1, time2), pageable, 2);
+        List<LocalDateTime> times = new LinkedList<>();
+        times.add(time1);
+        times.add(time2);
+        examplePage = new PageImpl<>(times, pageable, 2);
     }
 
     @Test
-    public void when_null_page_when_creating_object_then_throw_npe() {
+    public void init_when_page_is_null_then_throw_npe() {
         // When:
         Throwable npe = catchThrowable(() -> new PaginatedList<>(null));
         // Then:
@@ -51,5 +60,33 @@ public class PaginatedListTests {
         //Then:
         PaginationMetadata paginationMetadata = list.getPaginationMetadata();
         assertThat(paginationMetadata).isNotNull();
+    }
+
+    @ParameterizedTest
+    @MethodSource("examplePages")
+    public void when_page(List<LocalDateTime> listOfContent, int page, int limit, int totalPages) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<LocalDateTime> pageWithTimes = new PageImpl<>(listOfContent, pageable, 3);
+        PaginatedList<LocalDateTime> list = new PaginatedList<>(pageWithTimes);
+        PaginationMetadata pagMeta = list.getPaginationMetadata();
+        Assertions.assertAll(
+                () -> assertThat(pagMeta.getPageSize()).isEqualTo(limit),
+                () -> assertThat(pagMeta.getPage()).isEqualTo(page),
+                () -> assertThat(pagMeta.getTotalElements()).isEqualTo((limit * page) + pagMeta.getElements()),
+                () -> assertThat(pagMeta.getElements()).isEqualTo(listOfContent.size()),
+                () -> assertThat(pagMeta.getTotalPages()).isEqualTo(totalPages)
+        );
+    }
+
+    private static Stream<Arguments> examplePages() {
+        List<LocalDateTime> times = new LinkedList<>();
+        times.add(LocalDateTime.now());
+        times.add(LocalDateTime.now());
+        times.add(LocalDateTime.now());
+        return Stream.of(
+                //           content, page,  limit,  totalPages
+                Arguments.of(times, 0, 1, 3),
+                Arguments.of(times, 1, 100, 2)
+        );
     }
 }

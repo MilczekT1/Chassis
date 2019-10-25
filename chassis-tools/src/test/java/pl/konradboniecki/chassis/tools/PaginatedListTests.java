@@ -1,5 +1,6 @@
 package pl.konradboniecki.chassis.tools;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -61,18 +62,31 @@ public class PaginatedListTests {
         assertThat(paginationMetadata).isNotNull();
     }
 
-    //TODO: prepare dataset for pagination metadata values
     @ParameterizedTest
-    @MethodSource("createInputMatrix")
-    public void givenInvalidArguments_whenCheckInput_thenIsInputOkMethodReturnFalse() {
-//        Boolean result = (Boolean) isInputOkMethod.invoke(existingUserInvitationService, family, account, owner, invitationCode);
-//        assertFalse(result);
+    @MethodSource("examplePages")
+    public void when_page(List<LocalDateTime> listOfContent, int page, int limit, int totalPages) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<LocalDateTime> pageWithTimes = new PageImpl<>(listOfContent, pageable, 3);
+        PaginatedList<LocalDateTime> list = new PaginatedList<>(pageWithTimes);
+        PaginationMetadata pagMeta = list.getPaginationMetadata();
+        Assertions.assertAll(
+                () -> assertThat(pagMeta.getPageSize()).isEqualTo(limit),
+                () -> assertThat(pagMeta.getPage()).isEqualTo(page),
+                () -> assertThat(pagMeta.getTotalElements()).isEqualTo((limit * page) + pagMeta.getElements()),
+                () -> assertThat(pagMeta.getElements()).isEqualTo(listOfContent.size()),
+                () -> assertThat(pagMeta.getTotalPages()).isEqualTo(totalPages)
+        );
     }
 
-    private static Stream<Arguments> createInputMatrix() {
+    private static Stream<Arguments> examplePages() {
+        List<LocalDateTime> times = new LinkedList<>();
+        times.add(LocalDateTime.now());
+        times.add(LocalDateTime.now());
+        times.add(LocalDateTime.now());
         return Stream.of(
-                Arguments.of(null, 0L),
-                Arguments.of(null, null)
+                //           content, page,  limit,  totalPages
+                Arguments.of(times, 0, 1, 3),
+                Arguments.of(times, 1, 100, 2)
         );
     }
 }

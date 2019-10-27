@@ -13,6 +13,9 @@ public class PaginationMetadata {
     private long elements;
     private long totalElements;
 
+    public PaginationMetadata() {
+    }
+
     public PaginationMetadata(@NonNull Page page) {
         this.page = page.getNumber();
         this.pageSize = page.getSize();

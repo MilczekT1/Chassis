@@ -14,7 +14,7 @@ public class PaginatedList<T> {
     @JsonProperty("_meta")
     private PaginationMetadata paginationMetadata;
 
-    private PaginatedList() {
+    public PaginatedList() {
     }
 
     public PaginatedList(@NonNull Page<T> page) {

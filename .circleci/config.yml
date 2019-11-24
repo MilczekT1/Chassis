@@ -11,7 +11,6 @@ jobs:
     steps:
     - setup_remote_docker:
         version: 18.05.0-ce
-      #        docker_layer_caching: true
     - add_ssh_keys:
         fingerprints:
           - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
@@ -123,16 +122,3 @@ jobs:
     - store_artifacts:
         path: ~/mvcRepo/target/surefire-reports
         destination: home/circleci/mvcRepo/surefire-reports
-#_____________________________________________________________________________
-#    - run:
-#        name: Build and push image with chassis
-#        command: |
-#          if [ "$CIRCLE_BRANCH" == "master" ]; then
-#            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Stable
-#          fi
-#          if [ "$CIRCLE_BRANCH" != "master" ]; then
-#            TAG=$CIRCLE_PROJECT_REPONAME-0.5-Experimental
-#          fi
-#          docker build -t konradboniecki/budget:$TAG .
-#          docker login -u $DOCKER_USER -p $DOCKER_PASS
-#          docker push konradboniecki/budget:$TAG

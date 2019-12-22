@@ -17,6 +17,7 @@ jobs:
     - run:
         name: Clone Services
         command: |
+          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/contract-repository.git ~/contractRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
@@ -25,13 +26,12 @@ jobs:
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
     - checkout
-#_______________________________________________________________
 
     - run:
-        name: Install Updates and Maven
+        name: Install contracts
         command: |
-          sudo apt-get update
-          sudo apt-get install maven
+          cd ~/contractRepo
+          sh install-contracts.sh
     - run:
         name: Build and run tests
         command: |
@@ -52,8 +52,6 @@ jobs:
           LESS_LOGS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
           cd ~/passwordMgtRepo
-          mvn clean install -DskipTests=true -B $LESS_LOGS
-          cd ~/accountMgtRepo
           mvn clean install -DskipTests=true -B $LESS_LOGS
           cd ~/mailRepo
           mvn clean install -DskipTests=true -B $LESS_LOGS

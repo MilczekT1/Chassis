@@ -18,7 +18,8 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({
             BadRequestException.class,
             ResourceCreationException.class,
-            NumberFormatException.class
+            NumberFormatException.class,
+            IllegalArgumentException.class
     })
     public ResponseEntity<ErrorDescription> badRequest(RuntimeException e){
         log.error(e.getMessage());

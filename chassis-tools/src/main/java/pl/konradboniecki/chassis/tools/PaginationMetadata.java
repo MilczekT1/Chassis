@@ -1,10 +1,12 @@
 package pl.konradboniecki.chassis.tools;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 
 @Data
+@NoArgsConstructor
 public class PaginationMetadata {
 
     private long page;
@@ -12,9 +14,6 @@ public class PaginationMetadata {
     private long totalPages;
     private long elements;
     private long totalElements;
-
-    public PaginationMetadata() {
-    }
 
     public PaginationMetadata(@NonNull Page page) {
         this.page = page.getNumber();

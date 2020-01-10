@@ -26,7 +26,6 @@ jobs:
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
     - checkout
-
     - run:
         name: Install contracts
         command: |
@@ -47,22 +46,10 @@ jobs:
         path: chassis-test-tools/target/surefire-reports
 #___________________________________________________SERVICE COMPATIBILITY
     - run:
-        name: install stubs
-        command: |
-          LESS_LOGS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
-          cd ~/passwordMgtRepo
-          mvn clean install -DskipTests=true -B $LESS_LOGS
-          cd ~/mailRepo
-          mvn clean install -DskipTests=true -B $LESS_LOGS
-          cd ~/familyMgtRepo
-          mvn clean install -DskipTests=true -B $LESS_LOGS
-#_____________________________________________________________________________
-    - run:
         name: (1/7) Config server compatibility validation
         command: |
           cd ~/configServerRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/configServerRepo/target/surefire-reports
         destination: home/circleci/configServerRepo/surefire-reports
@@ -80,7 +67,7 @@ jobs:
         name: (3/7) Account management service compatibility validation
         command: |
           cd ~/accountMgtRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/accountMgtRepo/target/surefire-reports
         destination: home/circleci/accountMgtRepo/surefire-reports
@@ -89,7 +76,7 @@ jobs:
         name: (4/7) Mail service compatibility validation
         command: |
           cd ~/mailRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mailRepo/target/surefire-reports
         destination: home/circleci/mailRepo/surefire-reports
@@ -98,7 +85,7 @@ jobs:
         name: (5/7) Family management service compatibility validation
         command: |
           cd ~/familyMgtRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/familyMgtRepo/target/surefire-reports
         destination: home/circleci/familyMgtRepo/surefire-reports
@@ -107,7 +94,7 @@ jobs:
         name: (6/7) Budget management service compatibility validation
         command: |
           cd ~/budgetMgtRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/budgetMgtRepo/target/surefire-reports
         destination: home/circleci/budgetMgtRepo/surefire-reports
@@ -116,7 +103,7 @@ jobs:
         name: (7/7) MVC service compatibility validation
         command: |
           cd ~/mvcRepo
-          mvn test
+          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mvcRepo/target/surefire-reports
         destination: home/circleci/mvcRepo/surefire-reports

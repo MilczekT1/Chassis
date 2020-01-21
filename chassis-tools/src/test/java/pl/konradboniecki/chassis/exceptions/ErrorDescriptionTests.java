@@ -3,7 +3,7 @@ package pl.konradboniecki.chassis.exceptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +17,7 @@ public class ErrorDescriptionTests {
                 () -> assertEquals(HttpStatus.NOT_FOUND.value() , errorDesc.getStatus().longValue()),
                 () -> assertEquals("NOT_FOUND", errorDesc.getStatusName()),
                 () -> assertEquals(errorMessage, errorDesc.getMessage()),
-                () -> assertTrue(errorDesc.getTimestamp().isBefore(ZonedDateTime.now()))
+                () -> assertTrue(errorDesc.getTimestamp().isBefore(Instant.now()))
         );
     }
 }

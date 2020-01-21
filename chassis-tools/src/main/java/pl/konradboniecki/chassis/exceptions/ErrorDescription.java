@@ -2,13 +2,14 @@ package pl.konradboniecki.chassis.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Data
+@NoArgsConstructor
 @Accessors(chain = true)
 public class ErrorDescription {
 
@@ -19,12 +20,12 @@ public class ErrorDescription {
     @JsonProperty("message")
     private String message;
     @JsonProperty("timestamp")
-    private ZonedDateTime timestamp;
+    private Instant timestamp;
 
     public ErrorDescription(HttpStatus httpStatus, String message) {
         setStatusName(httpStatus.name());
         setStatus(httpStatus.value());
         setMessage(message);
-        setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        setTimestamp(Instant.now());
     }
 }

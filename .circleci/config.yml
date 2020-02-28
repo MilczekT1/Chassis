@@ -31,8 +31,7 @@ jobs:
         command: |
           mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_test_results:
-        paths:
-          - chassis-test-tools/target/surefire-reports
+        path: chassis-test-tools/target/surefire-reports
     - store_artifacts:
         path: chassis-test-tools/target/surefire-reports/surefire-report.html
     - store_artifacts:

@@ -1,4 +1,3 @@
-FROM maven:3.6.0-jdk-11-slim
-ADD . /chassis
-RUN mvn clean install -f /chassis/pom.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-CMD sleep 5s
+FROM openjdk:11.0.3-jdk-stretch
+HEALTHCHECK --start-period=15s --interval=5s --timeout=5s --retries=15 CMD curl -f http://localhost:8080/actuator/health
+ADD budget-ssc.p12 /

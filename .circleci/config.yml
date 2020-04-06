@@ -4,13 +4,13 @@ workflows:
   build-chassis-and-base-image:
     jobs:
       - build
-      - build-base-image
-#          requires:
-#            - build-base-image-approval
-#      - build-base-image-approval:
-#          type: approval
-#          requires:
-#            - build
+      - build-base-image-approval:
+          type: approval
+          requires:
+            - build
+      - build-base-image:
+          requires:
+            - build-base-image-approval
 jobs:
   build:
     docker:
@@ -55,7 +55,7 @@ jobs:
         command: |
           cd ~/contractRepo
           bash install-all-contracts.sh
-      #___________________________________________________SERVICE COMPATIBILITY
+#___________________________________________________SERVICE COMPATIBILITY
     - run:
         name: (1/7) Config server compatibility validation
         command: |
@@ -137,7 +137,7 @@ jobs:
       - run:
           name: Build and push docker image
           command: |
-            TAG=base-image-$CIRCLE_BUILD_NUM
+            TAG=java-base-image-$CIRCLE_BUILD_NUM
             docker build -t konradboniecki/budget:$TAG .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push konradboniecki/budget:$TAG

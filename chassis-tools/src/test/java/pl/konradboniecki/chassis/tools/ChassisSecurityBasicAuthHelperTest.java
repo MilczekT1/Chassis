@@ -14,4 +14,14 @@ class ChassisSecurityBasicAuthHelperTest {
         // Then:
         Assertions.assertThat(basicAuthHeaderValue).isEqualTo("Basic dXNlcm5hbWU6cGFzc3dvcmQ=");
     }
+
+    @Test
+    void givenInvalidBACredentialsWhengetBAHeaderValue_thenReturnNull() {
+        // Given:
+        ChassisSecurityBasicAuthHelper chassisSecurityBasicAuthHelper = new ChassisSecurityBasicAuthHelper(null, null);
+        // When:
+        String basicAuthHeaderValue = chassisSecurityBasicAuthHelper.getBasicAuthHeaderValue();
+        // Then:
+        Assertions.assertThat(basicAuthHeaderValue).isEqualTo(null);
+    }
 }

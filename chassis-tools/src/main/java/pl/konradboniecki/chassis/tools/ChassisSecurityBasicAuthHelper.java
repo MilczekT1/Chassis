@@ -17,6 +17,9 @@ public class ChassisSecurityBasicAuthHelper {
     @Setter(PRIVATE)
     @Getter
     private String basicAuthHeaderValue;
+    @Setter(PRIVATE)
+    @Getter
+    private static String encodedCredentials;
 
     public ChassisSecurityBasicAuthHelper(
             @Value("${spring.security.user.name:null}") String username,
@@ -32,11 +35,13 @@ public class ChassisSecurityBasicAuthHelper {
 
     private void populateBasicAuthHeaderValue(String username, String password){
         setBasicAuthHeaderValue("Basic "
-                + encodeBasicAuthCredentials(username, password));
+                + encodeAndSaveBasicAuthCredentials(username, password));
     }
 
-    private String encodeBasicAuthCredentials(String username, String password){
+    private String encodeAndSaveBasicAuthCredentials(String username, String password){
         String credentialsBeforeEncoding = username + ":" + password;
-        return Base64.getEncoder().encodeToString(credentialsBeforeEncoding.getBytes());
+        String credentialsAfterEncoding = Base64.getEncoder().encodeToString(credentialsBeforeEncoding.getBytes());
+        setEncodedCredentials(credentialsAfterEncoding);
+        return credentialsAfterEncoding;
     }
 }

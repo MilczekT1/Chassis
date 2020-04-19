@@ -41,7 +41,9 @@ jobs:
     - run:
         name: Build and run tests
         command: |
-          mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          pwd
+          ls -la
+          mvn clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_test_results:
         path: chassis-test-tools/target/surefire-reports
     - store_artifacts:
@@ -118,6 +120,10 @@ jobs:
     - store_artifacts:
         path: ~/mvcRepo/target/surefire-reports
         destination: home/circleci/mvcRepo/surefire-reports
+    - run:
+        name: Deploy artifact to nexus
+        command: |
+          mvn clean deploy -s .circleci/settings.xml
   build-base-image:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch

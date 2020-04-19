@@ -37,7 +37,7 @@
         <repository>
             <id>nexus</id>
             <name>Konrad Boniecki Releases</name>
-            <url>http://77.55.214.60:5001/repository/maven-releases</url>
+            <url>http://77.55.214.60:5001/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus</id>
@@ -284,6 +284,20 @@
                     <version>${chassis-spring-cloud.version}</version>
                     <extensions>true</extensions>
                 </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             </plugins>
         </pluginManagement>
     </build>

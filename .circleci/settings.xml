@@ -2,6 +2,14 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<!--    <mirrors>-->
+<!--        <mirror>-->
+<!--            &lt;!&ndash;This sends everything else to /public &ndash;&gt;-->
+<!--            <id>nexus</id>-->
+<!--            <mirrorOf>*</mirrorOf>-->
+<!--            <url>http://77.55.214.60:5001/repository/maven-public/</url>-->
+<!--        </mirror>-->
+<!--    </mirrors>-->
     <servers>
         <server>
             <id>nexus</id>
@@ -9,4 +17,41 @@
             <password>Nexus!</password>
         </server>
     </servers>
+    <profiles>
+        <profile>
+            <id>nexusOnPremise</id>
+            <repositories>
+                <repository>
+                    <id>nexus</id>
+                    <name>Konrad Boniecki Releases</name>
+                    <url>http://77.55.214.60:5001/repository/maven-public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>interval:60</updatePolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                </repository>
+                </repositories>
+<!--                <pluginRepositories>-->
+<!--                    <pluginRepository>-->
+<!--                        <id>central</id>-->
+<!--                        <name>Central Repository</name>-->
+<!--                        <url>https://repo.maven.apache.org/maven2</url>-->
+<!--                        <layout>default</layout>-->
+<!--                        <snapshots>-->
+<!--                            <enabled>false</enabled>-->
+<!--                        </snapshots>-->
+<!--                        <releases>-->
+<!--                            <updatePolicy>never</updatePolicy>-->
+<!--                        </releases>-->
+<!--                    </pluginRepository>-->
+<!--                </pluginRepositories>-->
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>nexusOnPremise</activeProfile>
+    </activeProfiles>
 </settings>

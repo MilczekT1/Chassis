@@ -21,28 +21,28 @@ jobs:
       TERM: dumb
 
     steps:
-    - setup_remote_docker:
-        version: 18.05.0-ce
+#    - setup_remote_docker:
+#        version: 18.06.0-ce
     - add_ssh_keys:
         fingerprints:
           - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
     - run:
         name: Clone Services
         command: |
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/contract-repository.git ~/contractRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/family-management.git ~/familyMgtRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone -q --depth 1 git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
+          GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
+          SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone -q --depth 1 git@bitbucket.org:konradboniecki/contract-repository.git ~/contractRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/family-management.git ~/familyMgtRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
+          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
     - checkout
     - run:
         name: Build and run tests
         command: |
-          pwd
-          ls -la
           mvn clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_test_results:
         path: chassis-test-tools/target/surefire-reports
@@ -62,7 +62,7 @@ jobs:
         name: (1/7) Config server compatibility validation
         command: |
           cd ~/configServerRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/configServerRepo/target/surefire-reports
         destination: home/circleci/configServerRepo/surefire-reports
@@ -71,7 +71,7 @@ jobs:
         name: (2/7) Password management service compatibility validation
         command: |
           cd ~/passwordMgtRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/passwordMgtRepo/target/surefire-reports
         destination: home/circleci/passwordMgtRepo/surefire-reports
@@ -80,7 +80,7 @@ jobs:
         name: (3/7) Account management service compatibility validation
         command: |
           cd ~/accountMgtRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/accountMgtRepo/target/surefire-reports
         destination: home/circleci/accountMgtRepo/surefire-reports
@@ -89,7 +89,7 @@ jobs:
         name: (4/7) Mail service compatibility validation
         command: |
           cd ~/mailRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mailRepo/target/surefire-reports
         destination: home/circleci/mailRepo/surefire-reports
@@ -98,7 +98,7 @@ jobs:
         name: (5/7) Family management service compatibility validation
         command: |
           cd ~/familyMgtRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/familyMgtRepo/target/surefire-reports
         destination: home/circleci/familyMgtRepo/surefire-reports
@@ -107,7 +107,7 @@ jobs:
         name: (6/7) Budget management service compatibility validation
         command: |
           cd ~/budgetMgtRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/budgetMgtRepo/target/surefire-reports
         destination: home/circleci/budgetMgtRepo/surefire-reports
@@ -116,14 +116,14 @@ jobs:
         name: (7/7) MVC service compatibility validation
         command: |
           cd ~/mvcRepo
-          mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mvcRepo/target/surefire-reports
         destination: home/circleci/mvcRepo/surefire-reports
     - run:
-        name: Deploy artifact to nexus
+        name: Deploy artifacts to nexus
         command: |
-          mvn clean deploy -s .circleci/settings.xml
+          mvn clean deploy -s .circleci/settings.xml -DskipTests=true
   build-base-image:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch

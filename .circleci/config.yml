@@ -21,8 +21,6 @@ jobs:
       TERM: dumb
 
     steps:
-#    - setup_remote_docker:
-#        version: 18.06.0-ce
     - add_ssh_keys:
         fingerprints:
           - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
@@ -61,7 +59,10 @@ jobs:
     - run:
         name: (1/7) Config server compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/configServerRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/configServerRepo/target/surefire-reports
@@ -70,7 +71,10 @@ jobs:
     - run:
         name: (2/7) Password management service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/passwordMgtRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/passwordMgtRepo/target/surefire-reports
@@ -79,7 +83,10 @@ jobs:
     - run:
         name: (3/7) Account management service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/accountMgtRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/accountMgtRepo/target/surefire-reports
@@ -88,7 +95,10 @@ jobs:
     - run:
         name: (4/7) Mail service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/mailRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mailRepo/target/surefire-reports
@@ -97,7 +107,10 @@ jobs:
     - run:
         name: (5/7) Family management service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/familyMgtRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/familyMgtRepo/target/surefire-reports
@@ -106,7 +119,10 @@ jobs:
     - run:
         name: (6/7) Budget management service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/budgetMgtRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/budgetMgtRepo/target/surefire-reports
@@ -115,7 +131,10 @@ jobs:
     - run:
         name: (7/7) MVC service compatibility validation
         command: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           cd ~/mvcRepo
+          echo "========Injecting Chassis version $VERSION========"
+          mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
           mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     - store_artifacts:
         path: ~/mvcRepo/target/surefire-reports
@@ -124,9 +143,6 @@ jobs:
         name: Deploy artifacts to nexus
         command: |
           if [ "$CIRCLE_BRANCH" == "master" ]; then
-            mvn clean deploy -s .circleci/settings.xml -DskipTests=true
-          fi
-          if [ "$CIRCLE_BRANCH" == "develop" ]; then
             mvn clean deploy -s .circleci/settings.xml -DskipTests=true
           fi
   build-base-image:

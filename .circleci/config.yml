@@ -29,7 +29,6 @@ jobs:
         command: |
           GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
           SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-          GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone -q --depth 1 git@bitbucket.org:konradboniecki/contract-repository.git ~/contractRepo
           GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
           GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
           GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
@@ -50,11 +49,6 @@ jobs:
         path: chassis-test-tools/target/site/jacoco/
     - store_artifacts:
         path: chassis-test-tools/target/surefire-reports
-    - run:
-        name: Install contracts
-        command: |
-          cd ~/contractRepo
-          bash install-all-contracts.sh
 #___________________________________________________SERVICE COMPATIBILITY
     - run:
         name: (1/7) Config server compatibility validation

@@ -8,6 +8,12 @@ workflows:
           type: approval
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+                - /feature.*/
       - build-base-image:
           requires:
             - build-base-image-approval
@@ -137,7 +143,10 @@ jobs:
         name: Deploy artifacts to nexus
         command: |
           if [ "$CIRCLE_BRANCH" == "master" ]; then
-            mvn clean deploy -s .circleci/settings.xml -DskipTests=true
+            mvn deploy -s .circleci/settings.xml -DskipTests=true
+          fi
+          if [ "$CIRCLE_BRANCH" == "develop" ]; then
+            mvn deploy -s .circleci/settings.xml -DskipTests=true
           fi
   build-base-image:
     docker:

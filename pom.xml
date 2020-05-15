@@ -14,6 +14,13 @@
         <module>chassis-test-tools</module>
         <module>chassis-tools</module>
     </modules>
+    <developers>
+        <developer>
+            <id>Konrad</id>
+            <name>Konrad Boniecki</name>
+            <email>konrad_boniecki@hotmail.com</email>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <repository>

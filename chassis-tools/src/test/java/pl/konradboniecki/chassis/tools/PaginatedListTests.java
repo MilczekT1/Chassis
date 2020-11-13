@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -64,15 +65,18 @@ public class PaginatedListTests {
 
     @ParameterizedTest
     @MethodSource("examplePages")
-    public void when_page(List<LocalDateTime> listOfContent, int page, int limit, int totalPages) {
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<LocalDateTime> pageWithTimes = new PageImpl<>(listOfContent, pageable, 3);
+    public void when_page(List<LocalDateTime> listOfContent, int offset, int limit, int totalPages) {
+        // Given:
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<LocalDateTime> pageWithTimes = new PageImpl<>(listOfContent, pageable, listOfContent.size());
         PaginatedList<LocalDateTime> list = new PaginatedList<>(pageWithTimes);
+        // When:
         PaginationMetadata pagMeta = list.getPaginationMetadata();
+        // Then:
         Assertions.assertAll(
                 () -> assertThat(pagMeta.getPageSize()).isEqualTo(limit),
-                () -> assertThat(pagMeta.getPage()).isEqualTo(page),
-                () -> assertThat(pagMeta.getTotalElements()).isEqualTo((limit * page) + pagMeta.getElements()),
+                () -> assertThat(pagMeta.getPage()).isEqualTo(offset),
+                () -> assertThat(pagMeta.getTotalElements()).isEqualTo((limit * offset) + pagMeta.getElements()),
                 () -> assertThat(pagMeta.getElements()).isEqualTo(listOfContent.size()),
                 () -> assertThat(pagMeta.getTotalPages()).isEqualTo(totalPages)
         );
@@ -84,9 +88,11 @@ public class PaginatedListTests {
         times.add(LocalDateTime.now());
         times.add(LocalDateTime.now());
         return Stream.of(
-                //           content, page,  limit,  totalPages
+                //         content, offset,  limit,  totalPages
                 Arguments.of(times, 0, 1, 3),
-                Arguments.of(times, 1, 100, 2)
+                Arguments.of(times, 0, 100, 1),
+                Arguments.of(times, 1, 100, 2),
+                Arguments.of(Collections.emptyList(), 0, 1, 0)
         );
     }
 }

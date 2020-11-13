@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
+        <version>2.3.6.RELEASE</version>
     </parent>
 
     <groupId>pl.konradboniecki</groupId>
@@ -17,7 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <chassis-dependencies.version>0.1.7-SNAPSHOT</chassis-dependencies.version>
-        <chassis-spring-cloud.version>2.2.4.RELEASE</chassis-spring-cloud.version>
+        <chassis-spring-cloud.version>2.2.5.RELEASE</chassis-spring-cloud.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,7 +51,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR8</version>
+                <version>Hoxton.SR9</version>
                 <!--2020.0.0-M3-->
                 <type>pom</type>
                 <scope>import</scope>

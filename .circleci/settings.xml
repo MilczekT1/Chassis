@@ -19,7 +19,7 @@
                     <url>http://77.55.214.60:5001/repository/maven-public/</url>
                     <snapshots>
                         <enabled>true</enabled>
-                        <updatePolicy>interval:60</updatePolicy>
+                        <updatePolicy>never</updatePolicy>
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>

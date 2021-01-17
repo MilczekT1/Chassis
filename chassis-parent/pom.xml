@@ -37,12 +37,12 @@
         <repository>
             <id>nexus</id>
             <name>Konrad Boniecki Releases</name>
-            <url>http://77.55.214.60:5001/repository/maven-releases/</url>
+            <url>http://161.97.176.83:5001/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus</id>
             <name>Konrad Boniecki Snapshots</name>
-            <url>http://77.55.214.60:5001/repository/maven-snapshots</url>
+            <url>http://161.97.176.83:5001/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 

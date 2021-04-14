@@ -55,6 +55,7 @@ workflows:
             branches:
               only:
                 - master
+                - develop
       - config-server_check:
           requires:
             - check_services_approval

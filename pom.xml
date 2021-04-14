@@ -34,5 +34,4 @@
             <url>http://161.97.176.83:5001/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
 </project>

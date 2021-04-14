@@ -393,5 +393,10 @@
             <id>maven-central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
+        <repository>
+            <id>nexus</id>
+            <name>Konrad Boniecki Releases</name>
+            <url>http://161.97.176.83:5001/repository/maven-public/</url>
+        </repository>
     </repositories>
 </project>

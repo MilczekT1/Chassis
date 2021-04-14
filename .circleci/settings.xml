@@ -19,7 +19,7 @@
                     <url>http://161.97.176.83:5001/repository/maven-public/</url>
                     <snapshots>
                         <enabled>true</enabled>
-                        <updatePolicy>true</updatePolicy>
+                        <updatePolicy>never</updatePolicy>
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>

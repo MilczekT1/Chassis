@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>chassis-settings</module>
         <module>chassis-parent</module>
         <module>chassis-test-tools</module>
         <module>chassis-tools</module>
@@ -34,4 +35,15 @@
             <url>http://161.97.176.83:5001/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>nexus</id>
+            <name>Konrad Boniecki Releases</name>
+            <url>http://161.97.176.83:5001/repository/maven-public/</url>
+        </repository>
+    </repositories>
 </project>

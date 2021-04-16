@@ -5,65 +5,105 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-parent</artifactId>
+        <artifactId>chassis-settings</artifactId>
         <version>test-only-SNAPSHOT</version>
-        <relativePath>../chassis-parent</relativePath>
+        <relativePath>../chassis-settings</relativePath>
     </parent>
 
     <artifactId>chassis-test-tools</artifactId>
-    <version>${project.parent.version}</version>
+    <version>test-only-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <!--        <java.version>11</java.version>-->
+        <!--        <maven.compiler.source>${java.version}</maven.compiler.source>-->
+        <!--        <maven.compiler.target>${java.version}</maven.compiler.target>-->
+        <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+        <!--  DEPENDENCIES  -->
+        <junit5.version>5.6.3</junit5.version>
+        <mockito-core.version>3.9.0</mockito-core.version>
+        <assertj-core.version>3.19.0</assertj-core.version>
+        <chassis.dependencies.cucumber.version>6.8.0</chassis.dependencies.cucumber.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${chassis.dependencies.springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${chassis.dependencies.springcloudtrain.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <!-- LIBRARIES FOR TESTS-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit5.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit5.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit5.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit5.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
+            <version>${chassis.dependencies.cucumber.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
+            <version>${chassis.dependencies.cucumber.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
+            <version>${chassis.dependencies.cucumber.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${chassis.dependencies.cucumber.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

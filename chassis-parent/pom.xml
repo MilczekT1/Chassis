@@ -4,64 +4,46 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.9.RELEASE</version>
+        <groupId>pl.konradboniecki</groupId>
+        <artifactId>chassis-settings</artifactId>
+        <version>test-only-SNAPSHOT</version>
+        <relativePath>../chassis-settings</relativePath>
     </parent>
 
-    <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-parent</artifactId>
     <version>test-only-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
         <chassis-dependencies.version>test-only-SNAPSHOT</chassis-dependencies.version>
-        <chassis-spring-cloud.version>2.2.5.RELEASE</chassis-spring-cloud.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!--Dependencies-->
         <junit5.version>5.6.3</junit5.version>
         <mockito-core.version>3.9.0</mockito-core.version>
         <assertj-core.version>3.19.0</assertj-core.version>
         <chassis.dependencies.openapi.version>5.0.1</chassis.dependencies.openapi.version>
         <chassis.dependencies.cucumber.version>6.8.0</chassis.dependencies.cucumber.version>
-        <!--Plugins-->
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
-        <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
-        <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://161.97.176.83:5001/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Snapshots</name>
-            <url>http://161.97.176.83:5001/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${chassis.dependencies.springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR10</version>
-                <!--2020.0.0-M3-->
+                <version>${chassis.dependencies.springcloudtrain.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-sleuth</artifactId>
-                <version>${chassis-spring-cloud.version}</version>
+                <version>${chassis.dependencies.springcloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -261,98 +243,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.6</version>
-                    <executions>
-                        <execution>
-                            <id>prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>report</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>check</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <configuration>
-                                <haltOnFailure>true</haltOnFailure>
-                                <rules>
-                                    <rule>
-                                        <element>BUNDLE</element>
-                                        <limits>
-                                            <limit>
-                                                <counter>LINE</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${jacoco.lineCoverage.minimum}</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>BRANCH</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${jacoco.branches.minimum}</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>CLASS</counter>
-                                                <value>MISSEDCOUNT</value>
-                                                <maximum>${jacoco.classes.maxMissed}</maximum>
-                                            </limit>
-                                        </limits>
-                                    </rule>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <excludes>
-                            <exclude>**/*App.*</exclude>
-                            <exclude>**/*Application.*</exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <configuration>
-                        <includes>
-                            <include>**/*Test*.java</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/*App.java</exclude>
-                        </excludes>
-                        <useSystemClassLoader>false</useSystemClassLoader>
-<!--                        <forkMode>once</forkMode>-->
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-report-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>report-only</goal>
-                            </goals>
-                            <phase>test</phase>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <groupId>org.springframework.cloud</groupId>
                     <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                    <version>${chassis-spring-cloud.version}</version>
+                    <version>${chassis.dependencies.springcloud.version}</version>
                     <extensions>true</extensions>
                 </plugin>
                 <plugin>
@@ -360,20 +253,6 @@
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>${chassis.dependencies.openapi.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-help-plugin</artifactId>
-                    <version>3.2.0</version>
-                    <executions>
-                        <execution>
-                            <id>show-profiles</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>active-profiles</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -387,16 +266,4 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <repositories>
-        <repository>
-            <id>maven-central</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://161.97.176.83:5001/repository/maven-public/</url>
-        </repository>
-    </repositories>
 </project>

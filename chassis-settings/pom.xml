@@ -23,6 +23,8 @@
         <chassis.dependencies.springcloudtrain.version>Hoxton.SR10</chassis.dependencies.springcloudtrain.version>
         <chassis.dependencies.springcloud.version>2.2.7.RELEASE</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <!--        Backward Compatibility-->
+        <chassis-spring-cloud.version>2.2.7.RELEASE</chassis-spring-cloud.version>
     </properties>
 
     <developers>

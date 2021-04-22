@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>chassis-test-tools</artifactId>
-    <version>test-only-SNAPSHOT</version>
+    <version>${project.parent.version}</version>
     <packaging>jar</packaging>
 
     <properties>

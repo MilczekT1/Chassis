@@ -121,6 +121,8 @@ jobs:
       - run:
           name: Build and run tests
           command: |
+            cd chassis-settings && mvn install && cd ..
+            cd chassis-parent && mvn install && cd ..
             mvn clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - run:
           name: Download all dependencies

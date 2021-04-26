@@ -6,13 +6,13 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis</artifactId>
-    <version>test-only-SNAPSHOT</version>
+    <version>0.1.11</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>chassis-settings</module>
-        <module>chassis-parent</module>
         <module>chassis-test-tools</module>
+        <module>chassis-parent</module>
         <module>chassis-tools</module>
     </modules>
     <developers>

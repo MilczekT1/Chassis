@@ -6,7 +6,7 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-settings</artifactId>
-        <version>test-only-SNAPSHOT</version>
+        <version>0.1.11</version>
         <relativePath>../chassis-settings</relativePath>
     </parent>
 
@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <chassis-dependencies.version>test-only-SNAPSHOT</chassis-dependencies.version>
+        <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
         <junit5.version>5.6.3</junit5.version>
         <mockito-core.version>3.9.0</mockito-core.version>

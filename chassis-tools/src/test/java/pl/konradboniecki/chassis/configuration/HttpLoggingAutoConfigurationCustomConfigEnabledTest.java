@@ -16,7 +16,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         classes = HttpLoggingAutoConfiguration.class,
         webEnvironment = WebEnvironment.NONE,
         properties = {
-                "budget.chassis.http-logging.enabled=true"
+                "budget.chassis.http-logging.enabled=true",
+                "spring.config.import=optional:configserver:"
         }
 )
 public class HttpLoggingAutoConfigurationCustomConfigEnabledTest {

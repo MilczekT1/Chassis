@@ -15,7 +15,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
         classes = HttpLoggingAutoConfiguration.class,
-        webEnvironment = WebEnvironment.NONE
+        webEnvironment = WebEnvironment.NONE,
+        properties = {
+                "spring.config.import=optional:configserver:"
+        }
 )
 public class HttpLoggingAutoConfigurationDefaultConfigTest {
 

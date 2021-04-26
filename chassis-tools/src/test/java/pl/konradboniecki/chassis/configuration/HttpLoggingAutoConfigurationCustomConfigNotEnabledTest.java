@@ -17,14 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertAll;
         classes = HttpLoggingAutoConfiguration.class,
         webEnvironment = WebEnvironment.NONE,
         properties = {
-            "budget.chassis.http-logging.includeQueryString=false",
-            "budget.chassis.http-logging.includePayload=false",
-            "budget.chassis.http-logging.includeHeaders=false",
-            "budget.chassis.http-logging.maxPayloadLength=10",
-            "budget.chassis.http-logging.urlPattern=/",
-            "budget.chassis.http-logging.afterMessagePrefix=CUSTOM AFTER REQUEST: \n",
-            "budget.chassis.http-logging.beforeMessagePrefix=CUSTOM BEFORE REQUEST: \n",
-            "budget.chassis.http-logging.includeClientInfo=false"
+                "spring.config.import=optional:configserver:",
+                "budget.chassis.http-logging.includeQueryString=false",
+                "budget.chassis.http-logging.includePayload=false",
+                "budget.chassis.http-logging.includeHeaders=false",
+                "budget.chassis.http-logging.maxPayloadLength=10",
+                "budget.chassis.http-logging.urlPattern=/",
+                "budget.chassis.http-logging.afterMessagePrefix=CUSTOM AFTER REQUEST: \n",
+                "budget.chassis.http-logging.beforeMessagePrefix=CUSTOM BEFORE REQUEST: \n",
+                "budget.chassis.http-logging.includeClientInfo=false"
         }
 )
 public class HttpLoggingAutoConfigurationCustomConfigNotEnabledTest {

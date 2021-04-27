@@ -104,6 +104,70 @@ jobs:
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
       - checkout
+      - restore_cache:
+          keys:
+            - m2-{{ checksum "pom.xml" }}
+      - run:
+          name: Set env
+          command: |
+            UUID=$(cat /proc/sys/kernel/random/uuid)
+            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            NEW_VERSION=$VERSION-$UUID-SNAPSHOT
+            MVN_SET_VER_ARGS="\"-DnewVersion=$NEW_VERSION\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+
+            echo "export VERSION=$VERSION" >> $BASH_ENV
+            echo "export NEW_VERSION=$NEW_VERSION" >> $BASH_ENV
+            echo "export MVN_SET_VER_ARGS=$MVN_SET_VER_ARGS" >> $BASH_ENV
+      - run:
+          name: Update versions in root
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              mvn versions:set $MVN_SET_VER_ARGS
+              cat pom.xml
+            fi
+      - run:
+          name: Update versions in chassis-settings
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              mvn -f chassis-settings/pom.xml versions:set $MVN_SET_VER_ARGS
+              mvn -f chassis-settings/pom.xml install
+              cat chassis-settings/pom.xml
+            fi
+      - run:
+          name: Update versions in chassis-test-tools
+          command: |
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            echo "var: $MVN_UPDATE_PARENT_ARGS"
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
+              mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              cat chassis-test-tools/pom.xml
+            fi
+      - run:
+          name: Update versions in chassis-parent
+          command: |
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            echo "var: $MVN_UPDATE_PARENT_ARGS"
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              mvn -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
+              mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              mvn -f chassis-parent/pom.xml install
+              cat chassis-parent/pom.xml
+            fi
+      - run:
+          name: Update versions in chassis-tools
+          command: |
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+             echo "var: $MVN_UPDATE_PARENT_ARGS"
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
+              mvn -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
+              cat chassis-tools/pom.xml
+            fi
+      - run:
+          name: Show effective pom
+          command: |
+            mvn -f chassis-parent/pom.xml help:effective-pom
       - persist_to_workspace:
           root: ~/
           paths:
@@ -115,26 +179,9 @@ jobs:
             - budgetMgtRepo
             - mvcRepo
             - CHASSIS
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
       - run:
           name: Build and run tests
           command: |
-            echo "$CIRCLE_BRANCH"
-            if [[ "$CIRCLE_BRANCH" == *"feature/"* || "$CIRCLE_BRANCH" == *"release/"* ]]; then
-              echo "Attempting to modify versions"
-              VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-              UUID=$(cat /proc/sys/kernel/random/uuid)
-              NEW_VERSION=$VERSION-$UUID-SNAPSHOT
-              mvn versions:set -DnewVersion=$NEW_VERSION
-              mvn -f chassis-settings/pom.xml versions:set -DnewVersion=$NEW_VERSION
-              mvn -f chassis-parent/pom.xml versions:set -DnewVersion=$NEW_VERSION
-              mvn -f chassis-test-tools/pom.xml versions:set -DnewVersion=$NEW_VERSION
-              mvn -f chassis-tools/pom.xml versions:set -DnewVersion=$NEW_VERSION
-            fi
-            cd chassis-settings && mvn install && cd ..
-            cd chassis-parent && mvn install && cd ..
             mvn clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - run:
           name: Download all dependencies

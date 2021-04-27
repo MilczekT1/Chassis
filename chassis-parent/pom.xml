@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>chassis-parent</artifactId>
-    <version>${project.parent.version}</version>
+    <version>test-only-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>

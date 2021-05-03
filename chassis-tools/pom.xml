@@ -6,12 +6,12 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-parent</artifactId>
-        <version>test-only-SNAPSHOT</version>
+        <version>0.2.0</version>
         <relativePath>../chassis-parent</relativePath>
     </parent>
 
     <artifactId>chassis-tools</artifactId>
-    <version>test-only-SNAPSHOT</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <build>

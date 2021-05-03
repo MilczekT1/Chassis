@@ -125,14 +125,14 @@ jobs:
       - run:
           name: Update versions in root
           command: |
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn versions:set $MVN_SET_VER_ARGS
               cat pom.xml
             fi
       - run:
           name: Update versions in chassis-settings
           command: |
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-settings/pom.xml versions:set $MVN_SET_VER_ARGS
               mvn -f chassis-settings/pom.xml install
               cat chassis-settings/pom.xml
@@ -142,7 +142,7 @@ jobs:
           command: |
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
               mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               cat chassis-test-tools/pom.xml
@@ -152,7 +152,7 @@ jobs:
           command: |
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
               mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               mvn -f chassis-parent/pom.xml install
@@ -163,7 +163,7 @@ jobs:
           command: |
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
              echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
               mvn -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
               cat chassis-tools/pom.xml

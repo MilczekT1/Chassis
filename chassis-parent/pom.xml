@@ -6,12 +6,12 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-settings</artifactId>
-        <version>0.2.2</version>
+        <version>develop</version>
         <relativePath>../chassis-settings</relativePath>
     </parent>
 
     <artifactId>chassis-parent</artifactId>
-    <version>0.2.2</version>
+    <version>develop</version>
     <packaging>pom</packaging>
 
     <properties>

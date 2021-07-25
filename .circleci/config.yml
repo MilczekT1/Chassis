@@ -116,12 +116,18 @@ jobs:
           command: |
             UUID=$(cat /proc/sys/kernel/random/uuid)
             VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-            NEW_VERSION=$VERSION-$UUID-SNAPSHOT
-            MVN_SET_VER_ARGS="\"-DnewVersion=$NEW_VERSION\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            NEW_VERSION=$VERSION-$UUID
+            MVN_SET_VER_ARGS="-DnewVersion=$NEW_VERSION -B -s /home/circleci/CHASSIS/.circleci/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
             echo "export VERSION=$VERSION" >> $BASH_ENV
             echo "export NEW_VERSION=$NEW_VERSION" >> $BASH_ENV
             echo "export MVN_SET_VER_ARGS=$MVN_SET_VER_ARGS" >> $BASH_ENV
+      - run:
+          name: Install (to avoid issues with maven repo)
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
+              mvn install -DskipTests=true
+            fi
       - run:
           name: Update versions in root
           command: |
@@ -140,7 +146,7 @@ jobs:
       - run:
           name: Update versions in chassis-test-tools
           command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
@@ -150,7 +156,7 @@ jobs:
       - run:
           name: Update versions in chassis-parent
           command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
@@ -161,7 +167,7 @@ jobs:
       - run:
           name: Update versions in chassis-tools
           command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -DallowSnapshots=true -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
              echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
@@ -192,7 +198,7 @@ jobs:
           command: |
             VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
             MVN_GO_OFFLINE_ARGS="-s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$VERSION]\" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$VERSION]\"  -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
             mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
             mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml

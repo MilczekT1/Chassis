@@ -6,7 +6,7 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-settings</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -19,9 +19,9 @@
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
 
-        <chassis.dependencies.springboot.version>2.4.5</chassis.dependencies.springboot.version>
-        <chassis.dependencies.springcloudtrain.version>2020.0.2</chassis.dependencies.springcloudtrain.version>
-        <chassis.dependencies.springcloud.version>3.0.2</chassis.dependencies.springcloud.version>
+        <chassis.dependencies.springboot.version>2.4.9</chassis.dependencies.springboot.version>
+        <chassis.dependencies.springcloudtrain.version>2020.0.3</chassis.dependencies.springcloudtrain.version>
+        <chassis.dependencies.springcloud.version>3.0.3</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <!--        Backward Compatibility-->
         <chassis-spring-cloud.version>3.0.2</chassis-spring-cloud.version>

@@ -6,7 +6,7 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis</artifactId>
-    <version>0.2.3</version>
+    <version>develop-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

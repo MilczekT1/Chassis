@@ -170,8 +170,9 @@ jobs:
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
              echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
+#              sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
               mvn -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
+                     mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               cat chassis-tools/pom.xml
             fi
       - run:

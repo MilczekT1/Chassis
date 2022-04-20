@@ -118,10 +118,12 @@ jobs:
             VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
             NEW_VERSION=$VERSION-$UUID
             MVN_SET_VER_ARGS="-DnewVersion=$NEW_VERSION -B -s /home/circleci/CHASSIS/.circleci/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            MVN_UPDATE_MODULE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
             echo "export VERSION=$VERSION" >> $BASH_ENV
             echo "export NEW_VERSION=$NEW_VERSION" >> $BASH_ENV
             echo "export MVN_SET_VER_ARGS=$MVN_SET_VER_ARGS" >> $BASH_ENV
+            echo "export MVN_UPDATE_MODULE_PARENT_ARGS=$MVN_UPDATE_MODULE_PARENT_ARGS" >> $BASH_ENV
       - run:
           name: Install (to avoid issues with maven repo)
           command: |
@@ -146,11 +148,10 @@ jobs:
       - run:
           name: Update versions in chassis-test-tools
           command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            echo "var: $MVN_UPDATE_PARENT_ARGS"
+            echo "var: $MVN_UPDATE_MODULE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_MODULE_PARENT_ARGS
               cat chassis-test-tools/pom.xml
             fi
       - run:

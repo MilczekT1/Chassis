@@ -147,7 +147,7 @@ jobs:
           name: Update versions in chassis-test-tools
           command: |
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            echo "var: $MVN_UPDATE_MODULE_PARENT_ARGS"
+            echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
               mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
               mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS

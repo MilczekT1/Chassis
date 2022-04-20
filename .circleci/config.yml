@@ -172,7 +172,7 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
 #              sed -i "s/$VERSION/$NEW_VERSION/" chassis-tools/pom.xml
               mvn -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-                     mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               cat chassis-tools/pom.xml
             fi
       - run:

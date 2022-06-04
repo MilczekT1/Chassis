@@ -23,6 +23,12 @@ commands:
       path:
         type: string
         default: "UndefinedParameterInPipeline"
+      module:
+        type: string
+        default: "UndefinedParameterInPipeline"
+      rootModuleOnly:
+        type: string
+        default: "false"
     steps:
       - run:
           name: Inject Chassis version
@@ -31,6 +37,10 @@ commands:
             cd ~/<< parameters.path >>
             echo "========Injecting Chassis version $VERSION========"
             mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
+            if [ << parameters.rootModuleOnly >> -e "false" ]; then
+            cd << parameters.module >>
+            mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
+            fi
       - run:
           name: Check compatibility with service << parameters.serviceName >>
           command: |
@@ -42,11 +52,6 @@ workflows:
     jobs:
       - build
       - check_services_approval:
-          type: approval
-          requires:
-            - build
-          <<: *predefined_branch_filter
-      - build-base-image-approval:
           type: approval
           requires:
             - build
@@ -81,12 +86,18 @@ workflows:
       - mvc_check:
           requires:
             - check_services_approval
-      - build-base-image:
-          requires:
-            - build-base-image-approval
       - deploy-to-nexus:
           requires:
             - deploy-to-nexus-approval
+  base-image:
+    jobs:
+      - build-base-image:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /base-image-[0-9]+/
+
 jobs:
   build:
     <<: *docker_java_11
@@ -100,13 +111,13 @@ jobs:
           command: |
             GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
             SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/config-server.git ~/configServerRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/password-management.git ~/passwordMgtRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/account-management.git ~/accountMgtRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/mail.git ~/mailRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/family-management.git ~/familyMgtRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/budget-management.git ~/budgetMgtRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS git@bitbucket.org:konradboniecki/mvc.git ~/mvcRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/config-server-service.git ~/configServerRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/password-management.git ~/passwordMgtRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/account-management.git ~/accountMgtRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mail-sender.git ~/mailRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/family-management.git ~/familyMgtRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/budget-management.git ~/budgetMgtRepo
+            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mvc.git ~/mvcRepo
       - checkout
       - restore_cache:
           keys:
@@ -249,6 +260,7 @@ jobs:
       - build_service:
           serviceName: "Config Server"
           path: "configServerRepo"
+          rootModuleOnly: "true"
       - store_artifacts:
           path: ~/configServerRepo/target/surefire-reports
           destination: home/circleci/configServerRepo/surefire-reports
@@ -264,6 +276,7 @@ jobs:
       - build_service:
           serviceName: "Password Management"
           path: "passwordMgtRepo"
+          rootModuleOnly: "true"
       - store_artifacts:
           path: ~/passwordMgtRepo/target/surefire-reports
           destination: home/circleci/passwordMgtRepo/surefire-reports
@@ -279,6 +292,7 @@ jobs:
       - build_service:
           serviceName: "Account Management"
           path: "accountMgtRepo"
+          module: "account-management-app"
       - store_artifacts:
           path: ~/accountMgtRepo/target/surefire-reports
           destination: home/circleci/accountMgtRepo/surefire-reports
@@ -294,6 +308,7 @@ jobs:
       - build_service:
           serviceName: "Mail Service"
           path: "mailRepo"
+          module: mail-app
       - store_artifacts:
           path: ~/mailRepo/target/surefire-reports
           destination: home/circleci/mailRepo/surefire-reports
@@ -309,6 +324,7 @@ jobs:
       - build_service:
           serviceName: "Family management"
           path: "familyMgtRepo"
+          module: family-management-app
       - store_artifacts:
           path: ~/familyMgtRepo/target/surefire-reports
           destination: home/circleci/familyMgtRepo/surefire-reports
@@ -324,6 +340,7 @@ jobs:
       - build_service:
           serviceName: "Budget management"
           path: "budgetMgtRepo"
+          module: budget-management-app
       - store_artifacts:
           path: ~/budgetMgtRepo/target/surefire-reports
           destination: home/circleci/budgetMgtRepo/surefire-reports
@@ -339,6 +356,7 @@ jobs:
       - build_service:
           serviceName: "Mvc"
           path: "mvcRepo"
+          rootModuleOnly: "true"
       - store_artifacts:
           path: ~/mvcRepo/target/surefire-reports
           destination: home/circleci/mvcRepo/surefire-reports
@@ -364,8 +382,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_remote_docker:
-          version: 18.06.0-ce
-          docker_layer_caching: false
+          version: 20.10.12
+          docker_layer_caching: true
       - add_ssh_keys:
           fingerprints:
             - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
@@ -373,7 +391,7 @@ jobs:
       - run:
           name: Build and push docker image
           command: |
-            TAG=java-base-image-$CIRCLE_BUILD_NUM
+            TAG=java-base-image-latest
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker build -t konradboniecki/budget:$TAG .
             docker push konradboniecki/budget:$TAG

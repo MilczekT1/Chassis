@@ -1,6 +1,6 @@
 Changelog:
 
-31.07.2020: Springboot 2.3.2.RELEASE 25.07.2021: Springboot 2.4.9 15.12.2021: Extended actuator info endpoint. Example:
+15.12.2021: Extended actuator info endpoint. Example:
 {
 "git": {
 "branch": "develop",
@@ -17,3 +17,5 @@ Changelog:
 "chassisVersion": "develop",
 "group": "pl.konradboniecki.budget"
 } }
+25.07.2021: Springboot 2.4.9
+31.07.2020: Springboot 2.3.2.RELEASE

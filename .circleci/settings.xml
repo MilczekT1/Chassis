@@ -5,7 +5,7 @@
     <servers>
         <server>
             <id>nexus</id>
-            <username>admin</username>
+            <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
     </servers>
@@ -16,7 +16,7 @@
                 <repository>
                     <id>nexus</id>
                     <name>Konrad Boniecki Releases</name>
-                    <url>http://161.97.176.83:5001/repository/maven-public/</url>
+                    <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
                     <snapshots>
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>

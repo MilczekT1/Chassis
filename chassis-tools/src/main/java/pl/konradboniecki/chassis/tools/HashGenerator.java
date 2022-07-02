@@ -7,7 +7,8 @@ import pl.konradboniecki.chassis.exceptions.HashGenerationException;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 
 @Data
 @Component

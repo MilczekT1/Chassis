@@ -17,11 +17,11 @@
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.6.3</junit5.version>
-        <mockito-core.version>3.9.0</mockito-core.version>
-        <assertj-core.version>3.19.0</assertj-core.version>
+        <junit5.version>5.7.2</junit5.version>
+        <mockito-core.version>4.4.0</mockito-core.version>
+        <assertj-core.version>3.23.1</assertj-core.version>
         <chassis.dependencies.openapi.version>5.0.1</chassis.dependencies.openapi.version>
-        <chassis.dependencies.cucumber.version>6.8.0</chassis.dependencies.cucumber.version>
+        <chassis.dependencies.cucumber.version>6.11.0</chassis.dependencies.cucumber.version>
     </properties>
 
     <dependencyManagement>
@@ -88,7 +88,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.13.1</version>
+                <version>4.13.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -135,13 +135,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -224,11 +224,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
-        <!--        TODO: to be removed after successful migration-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-zipkin</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
@@ -312,7 +307,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.2.0</version>
             </plugin>
         </plugins>
     </reporting>

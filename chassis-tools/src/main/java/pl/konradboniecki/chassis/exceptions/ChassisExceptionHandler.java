@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //TODO: test it
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
             BadRequestException.class,
@@ -26,7 +25,6 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
         return createResponseEntity(new ErrorDescription(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
-    //TODO: test it
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({
             InternalServerErrorException.class,
@@ -37,14 +35,13 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
         return createResponseEntity(new ErrorDescription(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 
-    //TODO: test it
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDescription> notFound(ResourceNotFoundException e) {
         log.error(e.getMessage());
         return createResponseEntity(new ErrorDescription(HttpStatus.NOT_FOUND, e.getMessage()));
     }
-    //TODO: test it
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceConflictException.class)
     public ResponseEntity<ErrorDescription> conflict(ResourceConflictException e){

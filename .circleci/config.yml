@@ -48,16 +48,31 @@ commands:
             mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 workflows:
   version: 2
-  build-chassis:
+  build-and-test:
     jobs:
       - build
-      - check_services_approval:
-          type: approval
+      - config-server_check:
           requires:
             - build
-          <<: *predefined_branch_filter
-      - deploy-to-nexus-approval:
-          type: approval
+      - password-management_check:
+          requires:
+            - build
+      - account-management_check:
+          requires:
+            - build
+      - mail_check:
+          requires:
+            - build
+      - family-management_check:
+          requires:
+            - build
+      - budget-management_check:
+          requires:
+            - build
+      - mvc_check:
+          requires:
+            - build
+      - build-base-image:
           requires:
             - build
           filters:
@@ -65,39 +80,14 @@ workflows:
               only:
                 - master
                 - develop
-      - config-server_check:
-          requires:
-            - check_services_approval
-      - password-management_check:
-          requires:
-            - check_services_approval
-      - account-management_check:
-          requires:
-            - check_services_approval
-      - mail_check:
-          requires:
-            - check_services_approval
-      - family-management_check:
-          requires:
-            - check_services_approval
-      - budget-management_check:
-          requires:
-            - check_services_approval
-      - mvc_check:
-          requires:
-            - check_services_approval
       - deploy-to-nexus:
           requires:
-            - deploy-to-nexus-approval
-  base-image:
-    jobs:
-      - build-base-image:
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /base-image-[0-9]+/
-
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
 jobs:
   build:
     <<: *docker_java_11

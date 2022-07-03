@@ -62,7 +62,7 @@ function createAndPushBranch {
     git commit -a -m "$commitMsg"
     if [ "$shouldTagCommit" = true ] ; then
       echo "Tagging commit"
-      #git tag -a "$version" -m "Release $version"
+      git tag -a "$version" -m "Release $version"
     fi
 
     echo "Push to repo"
@@ -93,7 +93,7 @@ function preparePR {
     local -r shouldTagCommit="$6"
 
     createAndPushBranch "$sourceBranch" "$version" "$commitMsg" "$shouldTagCommit"
-    #createPR "$sourceBranch" "$targetBranch" "$title"
+    createPR "$sourceBranch" "$targetBranch" "$title"
  }
 
 readParams "$@"

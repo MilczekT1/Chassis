@@ -22,7 +22,7 @@
         <chassis.dependencies.springboot.version>2.4.9</chassis.dependencies.springboot.version>
         <chassis.dependencies.springcloudtrain.version>2020.0.3</chassis.dependencies.springcloudtrain.version>
         <chassis.dependencies.springcloud.version>3.0.3</chassis.dependencies.springcloud.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
         <!--        Backward Compatibility-->
         <chassis-spring-cloud.version>3.0.2</chassis-spring-cloud.version>
     </properties>

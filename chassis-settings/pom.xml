@@ -23,7 +23,6 @@
         <chassis.dependencies.springcloudtrain.version>2021.0.3</chassis.dependencies.springcloudtrain.version>
         <chassis.dependencies.springcloud.version>3.1.3</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-        <chassis.dependencies.openapi.version>5.4.0</chassis.dependencies.openapi.version>
     </properties>
 
     <developers>
@@ -117,11 +116,6 @@
                             <exclude>**/*Application.*</exclude>
                         </excludes>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.openapitools</groupId>
-                    <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${chassis.dependencies.openapi.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

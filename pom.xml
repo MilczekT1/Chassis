@@ -14,6 +14,7 @@
         <module>chassis-test-tools</module>
         <module>chassis-parent</module>
         <module>chassis-tools</module>
+        <module>chassis-openapi-parent</module>
     </modules>
     <developers>
         <developer>

@@ -41,6 +41,11 @@ function createAndPushBranch {
     mvn clean install -DskipTests=true
     cd ..
 
+    cd chassis-openapi-parent
+    mvn versions:update-parent "-DparentVersion=[$version]" -DallowSnapshots=true -DgenerateBackupPoms=false
+    mvn clean install -DskipTests=true
+    cd ..
+
     cd chassis-parent
     mvn versions:set "-DnewVersion=$version" -DgenerateBackupPoms=false
     mvn versions:update-parent "-DparentVersion=[$version]" -DallowSnapshots=true -DgenerateBackupPoms=false

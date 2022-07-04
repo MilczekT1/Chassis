@@ -42,6 +42,14 @@ commands:
             mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
             fi
       - run:
+          name: Show effective pom
+          command: |
+            cd ~/<< parameters.path >>
+            if [ << parameters.rootModuleOnly >> -e "false" ]; then
+            cd << parameters.module >>
+            mvn help:effective-pom
+            fi
+      - run:
           name: Check compatibility with service << parameters.serviceName >>
           command: |
             cd ~/<< parameters.path >>

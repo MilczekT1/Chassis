@@ -17,11 +17,10 @@
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.7.2</junit5.version>
+        <junit5.version>5.8.2</junit5.version>
         <mockito-core.version>4.4.0</mockito-core.version>
         <assertj-core.version>3.23.1</assertj-core.version>
-        <chassis.dependencies.openapi.version>5.0.1</chassis.dependencies.openapi.version>
-        <chassis.dependencies.cucumber.version>6.11.0</chassis.dependencies.cucumber.version>
+        <chassis.dependencies.cucumber.version>7.4.1</chassis.dependencies.cucumber.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +57,11 @@
                 <artifactId>chassis-test-tools</artifactId>
                 <version>${chassis-dependencies.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flapdoodle.embed</groupId>
+                <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                <version>3.4.6</version>
             </dependency>
 
             <!-- TEST LIBRARIES-->
@@ -127,13 +131,6 @@
                 <version>${mockito-core.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!--Due to issue with contracts. To be removed once spring bump it itself-->
-            <dependency>
-                <groupId>com.jayway.jsonpath</groupId>
-                <artifactId>json-path</artifactId>
-                <version>2.7.0</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -165,25 +162,6 @@
             <artifactId>spring-cloud-config-client</artifactId>
         </dependency>
         <!--OPENAPI-->
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator</artifactId>
-            <version>${chassis.dependencies.openapi.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-ext</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
@@ -255,11 +233,6 @@
                     <artifactId>spring-cloud-contract-maven-plugin</artifactId>
                     <version>${chassis.dependencies.springcloud.version}</version>
                     <extensions>true</extensions>
-                </plugin>
-                <plugin>
-                    <groupId>org.openapitools</groupId>
-                    <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${chassis.dependencies.openapi.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>

@@ -6,7 +6,7 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-settings</artifactId>
-    <version>develop</version>
+    <version>0.2.10</version>
     <packaging>pom</packaging>
 
     <properties>

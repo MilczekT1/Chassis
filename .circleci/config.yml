@@ -174,6 +174,16 @@ jobs:
               cat chassis-parent/pom.xml
             fi
       - run:
+          name: Update versions in chassis-openapi-parent
+          command: |
+            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+            echo "var: $MVN_UPDATE_PARENT_ARGS"
+            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
+              mvn -f chassis-openapi-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              mvn -f chassis-openapi-parent/pom.xml install
+              cat chassis-openapi-parent/pom.xml
+            fi
+      - run:
           name: Update versions in chassis-tools
           command: |
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"

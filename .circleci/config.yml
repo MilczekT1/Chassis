@@ -6,9 +6,9 @@ predefined_branch_filter: &predefined_branch_filter
         - develop
         - /feature.*/
         - /bugfix.*/
-docker_java_11: &docker_java_11
+docker_java_17: &docker_java_17
   docker:
-    - image: cimg/openjdk:11.0.8-node
+    - image: cimg/openjdk:17.0.2-node
   environment:
     JVM_OPTS: -Xmx3200m
     TERM: dumb
@@ -98,7 +98,7 @@ workflows:
                 - develop
 jobs:
   build:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - add_ssh_keys:
@@ -257,7 +257,7 @@ jobs:
   #_____________________________________________________________________________
   #_____________________________________________________________________________
   config-server_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -273,7 +273,7 @@ jobs:
           path: ~/configServerRepo/target/surefire-reports
           destination: home/circleci/configServerRepo/surefire-reports
   password-management_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -289,7 +289,7 @@ jobs:
           path: ~/passwordMgtRepo/target/surefire-reports
           destination: home/circleci/passwordMgtRepo/surefire-reports
   account-management_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -305,7 +305,7 @@ jobs:
           path: ~/accountMgtRepo/target/surefire-reports
           destination: home/circleci/accountMgtRepo/surefire-reports
   mail_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -321,7 +321,7 @@ jobs:
           path: ~/mailRepo/target/surefire-reports
           destination: home/circleci/mailRepo/surefire-reports
   family-management_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -337,7 +337,7 @@ jobs:
           path: ~/familyMgtRepo/target/surefire-reports
           destination: home/circleci/familyMgtRepo/surefire-reports
   budget-management_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -353,7 +353,7 @@ jobs:
           path: ~/budgetMgtRepo/target/surefire-reports
           destination: home/circleci/budgetMgtRepo/surefire-reports
   mvc_check:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/CHASSIS
     steps:
       - attach_workspace:
@@ -373,7 +373,7 @@ jobs:
   #_____________________________________________________________________________
   #_____________________________________________________________________________
   deploy-to-nexus:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/repo
     steps:
       - checkout
@@ -386,7 +386,7 @@ jobs:
             mvn deploy -s .circleci/settings.xml -DskipTests=true
 
   build-base-image:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/repo
     steps:
       - setup_remote_docker:

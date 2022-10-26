@@ -9,6 +9,13 @@
     <version>develop</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <sonar.organization>milczekt1</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+    </properties>
+
     <modules>
         <module>chassis-settings</module>
         <module>chassis-test-tools</module>

@@ -59,6 +59,8 @@ workflows:
   build-and-test:
     jobs:
       - build
+      - sonar-scanning:
+          context: SonarCloud
       - config-server_check:
           requires:
             - build
@@ -372,6 +374,17 @@ jobs:
   #_____________________________________________________________________________
   #_____________________________________________________________________________
   #_____________________________________________________________________________
+  sonar-scanning:
+    <<: *docker_java_17
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - m2-{{ checksum "pom.xml" }}
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -s .circleci/settings.xml
   deploy-to-nexus:
     <<: *docker_java_17
     working_directory: ~/repo

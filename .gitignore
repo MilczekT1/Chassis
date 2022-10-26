@@ -30,3 +30,4 @@ nbdist/
 .DS_Store
 **/target/*
 **/pom.xml.versionsBackup
+release-script.sh

@@ -1,0 +1,160 @@
+== Info:   Trying 140.82.121.5:443...
+== Info: Connected to api.github.com (140.82.121.5) port 443 (#0)
+== Info: ALPN, offering h2
+== Info: ALPN, offering http/1.1
+== Info: successfully set certificate verify locations:
+== Info:  CAfile: /etc/ssl/cert.pem
+== Info:  CApath: none
+== Info: (304) (OUT), TLS handshake, Client hello (1):
+=> Send SSL data, 319 bytes (0x13f)
+0000: ...;......iZF...k....d......[.....Y. 8 ..qtH...M;......k....H,9.
+0040: ..A...^.b.......0.,.(.$.......k.9.................=.5...../.+.'.
+0080: #.......g.3...E...<./...A.......................+............3.&
+00c0: .$... ....Y.... u+.3...>n.__.mw.r...'6.........api.github.com...
+0100: ....................................................h2.http/1.1
+== Info: (304) (IN), TLS handshake, Server hello (2):
+<= Recv SSL data, 122 bytes (0x7a)
+0000: ...v.....q.....>.....9..T.jJ;.ya o.*.5 ..qtH...M;......k....H,9.
+0040: ..A...^......+.....3.$... .......2.r..psZ..jM..P........0e
+== Info: (304) (IN), TLS handshake, Unknown (8):
+<= Recv SSL data, 19 bytes (0x13)
+0000: .................h2
+== Info: (304) (IN), TLS handshake, Certificate (11):
+<= Recv SSL data, 2456 bytes (0x998)
+0000: ..........k0..g0...........t....|..A..)5~.0...*.H.=...0V1.0...U.
+0040: ...US1.0...U....DigiCert Inc100...U...'DigiCert TLS Hybrid ECC S
+0080: HA384 2020 CA10...220316000000Z..230316235959Z0h1.0...U....US1.0
+00c0: ...U....California1.0...U....San Francisco1.0...U....GitHub, Inc
+0100: .1.0...U....*.github.com0Y0...*.H.=....*.H.=....B..HoX.....+~..p
+0140: ..:3..\3....L'.#u.....S._$.N.........n~o.1mb%{....A....0...0...U
+0180: .#..0......)...9mz..3......z0...U.......eo|G....k...s.b..1.0#..U
+01c0: ....0...*.github.com..github.com0...U...........0...U.%..0...+..
+0200: .......+.......0....U.....0..0F.D.B.@http://crl3.digicert.com/Di
+0240: giCertTLSHybridECCSHA3842020CA1-1.crl0F.D.B.@http://crl4.digicer
+0280: t.com/DigiCertTLSHybridECCSHA3842020CA1-1.crl0>..U. .70503..g...
+02c0: ..0)0'..+.........http://www.digicert.com/CPS0....+........y0w0$
+0300: ..+.....0...http://ocsp.digicert.com0O..+.....0..Chttp://cacerts
+0340: .digicert.com/DigiCertTLSHybridECCSHA3842020CA1-1.crt0...U....0.
+0380: 0..}..+.....y......m...i.g.u.....|.....=..>.j.g)]...$...4.......
+03c0: .:l......F0D. .....:.......$..0q@.|d......Kn... A-...R+x...{...
+0400: .}oH...C...PTXJ...w.5.....lW...LmB...' &Q.?.*....;.L....:l.....
+0440: .H0F.!...l...w...q..E!.T...BI.@.S...5...!...(LS.&......4....q...
+0480: ..U.GD.O..u..sw...P.c.......Jy-.g.......y6......:l......F0D. :
+04c0: .....m%i.bf.H#..7...Q8.;....dOv. F.O1<5f.y_..B,.O;....j...0R..3
+0500: .0...*.H.=....g.0d.0x.....x........-9...F..@.5....~6.^. ....Ww).
+0540: 2S...03P]...e.................'...G:.j_I..........X..=.....0...0
+0580: .............\..w.z..G.5%.0...*.H........0a1.0...U....US1.0...U.
+05c0: ...DigiCert Inc1.0...U....www.digicert.com1 0...U....DigiCert Gl
+0600: obal Root CA0...210414000000Z..310413235959Z0V1.0...U....US1.0..
+0640: .U....DigiCert Inc100...U...'DigiCert TLS Hybrid ECC SHA384 2020
+0680:  CA10v0...*.H.=....+...".b......[...).........lU.....I/.'Q..p..z
+06c0: ...................t56<.r...."i....{@..h.&\9..M.M......C../s....
+0700: 0..~0...U.......0.......0...U.........)...9mz..3......z0...U.#..
+0740: 0.....P5V.L.f........=.U0...U...........0...U.%..0...+.........+
+0780: .......0v..+........j0h0$..+.....0...http://ocsp.digicert.com0@.
+07c0: .+.....0..4http://cacerts.digicert.com/DigiCertGlobalRootCA.crt0
+0800: B..U...;0907.5.3.1http://crl3.digicert.com/DigiCertGlobalRootCA.
+0840: crl0=..U. .6040...`.H...l..0...g....0...g.....0...g.....0...g...
+0880: ..0...*.H.............GY.....q..]...G..~v+.....&.B.1.J.........
+08c0: ......-.....S..?............5&.....2..#K.E....|......r......|j.m
+0900: ...6...,..?...u...).......&.e.7.&........x..Ny.v..Q....j..,V..6'
+0940: .s..}.2..D.....{.(.+..v.w..z.{R&U.r....O..!....9.V....5.p..F...d
+0980: ..>..F..#..}.O..E:.t0...
+== Info: (304) (IN), TLS handshake, CERT verify (15):
+<= Recv SSL data, 79 bytes (0x4f)
+0000: ...K...G0E. 7..C._.c.0.....#...o..z...k...1..!...W..m..Z...(....
+0040: p.h.,.P...YGJ,.
+== Info: (304) (IN), TLS handshake, Finished (20):
+<= Recv SSL data, 36 bytes (0x24)
+0000: ... ..*....>iG..oH %|....6."EA..XiW9
+== Info: (304) (OUT), TLS handshake, Finished (20):
+=> Send SSL data, 36 bytes (0x24)
+0000: ... ..>.g.....P...L.......... ..4W.'
+== Info: SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256
+== Info: ALPN, server accepted to use h2
+== Info: Server certificate:
+== Info:  subject: C=US; ST=California; L=San Francisco; O=GitHub, Inc.; CN=*.github.com
+== Info:  start date: Mar 16 00:00:00 2022 GMT
+== Info:  expire date: Mar 16 23:59:59 2023 GMT
+== Info:  subjectAltName: host "api.github.com" matched cert's "*.github.com"
+== Info:  issuer: C=US; O=DigiCert Inc; CN=DigiCert TLS Hybrid ECC SHA384 2020 CA1
+== Info:  SSL certificate verify ok.
+== Info: Using HTTP2, server supports multiplexing
+== Info: Connection state changed (HTTP/2 confirmed)
+== Info: Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+== Info: Using Stream ID: 1 (easy handle 0x7fbeae011000)
+=> Send header, 236 bytes (0xec)
+0000: POST /repos/MilczekT1/Chassis/pulls HTTP/2
+002c: Host: api.github.com
+0042: user-agent: curl/7.79.1
+005b: content-type: application/json
+007b: accept: application/json
+0095: authorization: Bearer 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
+00d5: content-length: 107
+00ea: 
+=> Send data, 107 bytes (0x6b)
+0000: {.      "title": Release chassis 0.3.1,.      "head": "MilczekT1
+0040: :release/0.3.1",.      "base": master.    }
+== Info: We are completely uploaded and fine
+<= Recv header, 13 bytes (0xd)
+0000: HTTP/2 400 
+<= Recv header, 20 bytes (0x14)
+0000: server: GitHub.com
+<= Recv header, 37 bytes (0x25)
+0000: date: Wed, 26 Oct 2022 16:05:54 GMT
+<= Recv header, 47 bytes (0x2f)
+0000: content-type: application/json; charset=utf-8
+<= Recv header, 21 bytes (0x15)
+0000: content-length: 134
+<= Recv header, 205 bytes (0xcd)
+0000: x-oauth-scopes: admin:enterprise, admin:gpg_key, admin:org, admi
+0040: n:org_hook, admin:public_key, admin:repo_hook, admin:ssh_signing
+0080: _key, gist, project, repo, user, workflow, write:discussion, wri
+00c0: te:packages
+<= Recv header, 27 bytes (0x1b)
+0000: x-accepted-oauth-scopes: 
+<= Recv header, 32 bytes (0x20)
+0000: x-github-media-type: github.v3
+<= Recv header, 25 bytes (0x19)
+0000: x-ratelimit-limit: 5000
+<= Recv header, 29 bytes (0x1d)
+0000: x-ratelimit-remaining: 4962
+<= Recv header, 31 bytes (0x1f)
+0000: x-ratelimit-reset: 1666803106
+<= Recv header, 22 bytes (0x16)
+0000: x-ratelimit-used: 38
+<= Recv header, 28 bytes (0x1c)
+0000: x-ratelimit-resource: core
+<= Recv header, 316 bytes (0x13c)
+0000: access-control-expose-headers: ETag, Link, Location, Retry-After
+0040: , X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-Rate
+0080: Limit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Sco
+00c0: pes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Ty
+0100: pe, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset
+<= Recv header, 32 bytes (0x20)
+0000: access-control-allow-origin: *
+<= Recv header, 73 bytes (0x49)
+0000: strict-transport-security: max-age=31536000; includeSubdomains; 
+0040: preload
+<= Recv header, 23 bytes (0x17)
+0000: x-frame-options: deny
+<= Recv header, 33 bytes (0x21)
+0000: x-content-type-options: nosniff
+<= Recv header, 21 bytes (0x15)
+0000: x-xss-protection: 0
+<= Recv header, 76 bytes (0x4c)
+0000: referrer-policy: origin-when-cross-origin, strict-origin-when-cr
+0040: oss-origin
+<= Recv header, 45 bytes (0x2d)
+0000: content-security-policy: default-src 'none'
+<= Recv header, 49 bytes (0x31)
+0000: vary: Accept-Encoding, Accept, X-Requested-With
+<= Recv header, 57 bytes (0x39)
+0000: x-github-request-id: 91EA:2106:3537437:35F160B:63595AE2
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 134 bytes (0x86)
+0000: {.  "message": "Problems parsing JSON",.  "documentation_url": "
+0040: https://docs.github.com/rest/reference/pulls#create-a-pull-reque
+0080: st".}.
+== Info: Connection #0 to host api.github.com left intact

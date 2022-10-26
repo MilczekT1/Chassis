@@ -23,6 +23,11 @@
         <chassis.dependencies.springcloudtrain.version>2021.0.4</chassis.dependencies.springcloudtrain.version>
         <chassis.dependencies.springcloud.version>3.1.4</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+
+        <sonar.organization>milczekt1</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
 
     <developers>

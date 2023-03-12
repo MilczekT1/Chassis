@@ -17,9 +17,9 @@
     <properties>
         <!--  DEPENDENCIES  -->
         <junit5.version>5.8.2</junit5.version>
-        <mockito-core.version>4.4.0</mockito-core.version>
-        <assertj-core.version>3.23.1</assertj-core.version>
-        <chassis.dependencies.cucumber.version>7.4.1</chassis.dependencies.cucumber.version>
+        <mockito-core.version>4.5.1</mockito-core.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+        <chassis.dependencies.cucumber.version>7.5.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>

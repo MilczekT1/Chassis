@@ -18,9 +18,9 @@
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
         <junit5.version>5.8.2</junit5.version>
-        <mockito-core.version>4.4.0</mockito-core.version>
-        <assertj-core.version>3.23.1</assertj-core.version>
-        <chassis.dependencies.cucumber.version>7.4.1</chassis.dependencies.cucumber.version>
+        <mockito-core.version>4.5.1</mockito-core.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+        <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
@@ -64,6 +64,12 @@
                 <groupId>de.flapdoodle.embed</groupId>
                 <artifactId>de.flapdoodle.embed.mongo</artifactId>
                 <version>3.5.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>2.1.214</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- TEST LIBRARIES-->
@@ -141,7 +147,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>1.18.26</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

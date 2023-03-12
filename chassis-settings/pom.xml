@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.konradboniecki</groupId>
-    <artifactId>chassis-settings</artifactId>
+    <artifactId>chassis-settings</artifactId> <!--TODO: rename is to chassis-bom-->
     <version>0.3.1</version>
     <packaging>pom</packaging>
 
@@ -19,10 +19,10 @@
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
 
-        <chassis.dependencies.springboot.version>2.7.5</chassis.dependencies.springboot.version>
-        <chassis.dependencies.springcloudtrain.version>2021.0.4</chassis.dependencies.springcloudtrain.version>
-        <chassis.dependencies.springcloud.version>3.1.4</chassis.dependencies.springcloud.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <chassis.dependencies.springboot.version>2.7.8</chassis.dependencies.springboot.version>
+        <chassis.dependencies.springcloudtrain.version>2021.0.6</chassis.dependencies.springcloudtrain.version>
+        <chassis.dependencies.springcloud.version>3.1.6</chassis.dependencies.springcloud.version>
+        <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
 
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

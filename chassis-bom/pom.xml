@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.konradboniecki</groupId>
-    <artifactId>chassis-settings</artifactId> <!--TODO: rename is to chassis-bom-->
+    <artifactId>chassis-bom</artifactId>
     <version>develop</version>
     <packaging>pom</packaging>
 
@@ -19,8 +19,8 @@
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
 
-        <chassis.dependencies.springboot.version>2.7.8</chassis.dependencies.springboot.version>
-        <chassis.dependencies.springcloudtrain.version>2021.0.6</chassis.dependencies.springcloudtrain.version>
+        <chassis.dependencies.springboot.version>3.0.4</chassis.dependencies.springboot.version>
+        <chassis.dependencies.springcloudtrain.version>2022.0.1</chassis.dependencies.springcloudtrain.version>
         <chassis.dependencies.springcloud.version>3.1.6</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
 
@@ -156,7 +156,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-help-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.0</version>
                     <executions>
                         <execution>
                             <id>show-profiles</id>

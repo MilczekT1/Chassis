@@ -17,7 +17,7 @@
     </properties>
 
     <modules>
-        <module>chassis-settings</module>
+        <module>chassis-bom</module>
         <module>chassis-test-tools</module>
         <module>chassis-parent</module>
         <module>chassis-tools</module>

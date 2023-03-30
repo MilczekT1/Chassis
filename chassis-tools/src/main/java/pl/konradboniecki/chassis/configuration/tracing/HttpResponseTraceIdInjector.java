@@ -2,9 +2,8 @@ package pl.konradboniecki.chassis.configuration.tracing;
 
 import brave.propagation.TraceContext;
 import brave.propagation.TraceContext.Injector;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Builder;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Builder
 public class HttpResponseTraceIdInjector implements Injector<HttpServletResponse> {

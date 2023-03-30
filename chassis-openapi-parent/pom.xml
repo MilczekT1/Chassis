@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-settings</artifactId>
+        <artifactId>chassis-bom</artifactId>
         <version>develop</version>
-        <relativePath>../chassis-settings</relativePath>
+        <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-openapi-parent</artifactId>

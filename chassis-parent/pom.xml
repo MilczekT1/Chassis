@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-settings</artifactId>
+        <artifactId>chassis-bom</artifactId>
         <version>develop</version>
-        <relativePath>../chassis-settings</relativePath>
+        <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-parent</artifactId>
@@ -17,7 +17,7 @@
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.8.2</junit5.version>
+        <junit5.version>5.9.2</junit5.version>
         <mockito-core.version>4.5.1</mockito-core.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
@@ -62,8 +62,8 @@
             </dependency>
             <dependency>
                 <groupId>de.flapdoodle.embed</groupId>
-                <artifactId>de.flapdoodle.embed.mongo</artifactId>
-                <version>3.5.1</version>
+                <artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
+                <version>4.6.2</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -284,7 +284,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
             </plugin>
         </plugins>
     </reporting>

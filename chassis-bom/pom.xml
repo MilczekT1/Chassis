@@ -21,7 +21,7 @@
 
         <chassis.dependencies.springboot.version>3.0.4</chassis.dependencies.springboot.version>
         <chassis.dependencies.springcloudtrain.version>2022.0.1</chassis.dependencies.springcloudtrain.version>
-        <chassis.dependencies.springcloud.version>3.1.7</chassis.dependencies.springcloud.version>
+        <chassis.dependencies.springcloud.version>3.1.6</chassis.dependencies.springcloud.version>
         <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
 
         <sonar.organization>milczekt1</sonar.organization>

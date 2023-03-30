@@ -25,7 +25,7 @@ public class HttpLoggingAutoConfigurationDefaultConfigTest {
     @Autowired(required = false)
     private CommonsRequestLoggingFilter loggingFilter;
     @Autowired(required = false)
-    private FilterRegistrationBean filterRegistrationBean;
+    private FilterRegistrationBean<CommonsRequestLoggingFilter> filterRegistrationBean;
 
     @Autowired
     private HttpLoggingProperties loggingConfig;

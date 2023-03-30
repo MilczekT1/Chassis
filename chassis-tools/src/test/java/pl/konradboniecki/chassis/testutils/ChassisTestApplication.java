@@ -1,9 +1,9 @@
 package pl.konradboniecki.chassis.testutils;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import pl.konradboniecki.chassis.ChassisApplication;
 
-@SpringBootApplication(scanBasePackages = {"pl.konradboniecki"})
+@ChassisApplication
 public class ChassisTestApplication {
 
     public static void main(String[] args) {

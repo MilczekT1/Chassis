@@ -29,14 +29,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${chassis.dependencies.springboot.version}</version>
+                <version>${chassis.springboot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${chassis.dependencies.springcloudtrain.version}</version>
+                <version>${chassis.springcloudtrain.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

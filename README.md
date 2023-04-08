@@ -4,6 +4,7 @@
 - Springboot 2.7.8 -> 3.0.4
 - Added @ChassisApplication annotation. Should replace @SpringBootApplication
 - Renamed chassis-settings module to chassis-bom (breaking change)
+- Renamed Maven properties: chassis.dependencies.springboot.version -> chassis.springboot.version, chassis.dependencies.springcloudtrain.version -> chassis.springcloudtrain.version, chassis.dependencies.springcloud.version -> chassis.springcloud.version, chassis.dependencies.openapi.version -> chassis.openapi.version (breaking change)
 - Dropped distributed tracing support.
 - Upgrade of various dependencies
 - Replaced embedded mongo dependency (as in spring migration guide)

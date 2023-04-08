@@ -147,12 +147,12 @@ jobs:
               cat pom.xml
             fi
       - run:
-          name: Update versions in chassis-settings
+          name: Update versions in chassis-bom
           command: |
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-settings/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-settings/pom.xml install
-              cat chassis-settings/pom.xml
+              mvn -f chassis-bom/pom.xml versions:set $MVN_SET_VER_ARGS
+              mvn -f chassis-bom/pom.xml install
+              cat chassis-bom/pom.xml
             fi
       - run:
           name: Update versions in chassis-test-tools

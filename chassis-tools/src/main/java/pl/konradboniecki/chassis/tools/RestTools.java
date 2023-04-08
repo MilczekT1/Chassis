@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import static java.util.Collections.singletonList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+@Deprecated
 public class RestTools {
     public static HttpHeaders defaultPostHTTPHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

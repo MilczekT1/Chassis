@@ -28,6 +28,11 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+
+        <!--TODO: For backward compatibility in CI, to be removed-->
+        <chassis.dependencies.springcloud.version>3.1.6</chassis.dependencies.springcloud.version>
+        <chassis.dependencies.springboot.version>3.0.4</chassis.dependencies.springboot.version>
+        <chassis.dependencies.springcloudtrain.version>2022.0.1</chassis.dependencies.springcloudtrain.version>
     </properties>
 
     <developers>

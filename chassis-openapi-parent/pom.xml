@@ -5,27 +5,26 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-settings</artifactId>
+        <artifactId>chassis-bom</artifactId>
         <version>develop</version>
-        <relativePath>../chassis-settings</relativePath>
+        <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-openapi-parent</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <chassis.dependencies.openapi.version>5.4.0</chassis.dependencies.openapi.version>
+        <chassis.openapi.version>5.4.0</chassis.openapi.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
-
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${chassis.dependencies.springboot.version}</version>
+                <version>${chassis.springboot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -36,7 +35,7 @@
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>openapi-generator</artifactId>
-            <version>${chassis.dependencies.openapi.version}</version>
+            <version>${chassis.openapi.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -69,6 +68,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <exclusions>
@@ -90,7 +99,7 @@
                 <plugin>
                     <groupId>org.openapitools</groupId>
                     <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${chassis.dependencies.openapi.version}</version>
+                    <version>${chassis.openapi.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

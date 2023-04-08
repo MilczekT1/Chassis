@@ -1,7 +1,30 @@
 ### Changelog:
 
+##### 08.04.2023:
+- Springboot 2.7.8 -> 3.0.4
+- Added @ChassisApplication annotation. Should replace @SpringBootApplication
+- Renamed chassis-settings module to chassis-bom (breaking change)
+- Renamed Maven properties: chassis.dependencies.springboot.version -> chassis.springboot.version, chassis.dependencies.springcloudtrain.version -> chassis.springcloudtrain.version, chassis.dependencies.springcloud.version -> chassis.springcloud.version, chassis.dependencies.openapi.version -> chassis.openapi.version (breaking change)
+- Dropped distributed tracing support.
+- Upgrade of various dependencies
+- Replaced embedded mongo dependency (as in spring migration guide)
+```xml
+<dependency>
+  <groupId>de.flapdoodle.embed</groupId>
+  <artifactId>de.flapdoodle.embed.mongo</artifactId>
+  <version>3.5.1</version>
+</dependency>
+ ```
+->
+```xml
+<dependency>
+  <groupId>de.flapdoodle.embed</groupId>
+  <artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
+  <version>4.6.2</version>
+</dependency>
+ ```
 ##### 6.07.2022:
-- Springboot 2.4.9-> 2.7.1 (one by one).
+- Springboot 2.4.9 -> 2.7.1 (one by one).
 - Many dependencies upgrade.
 - New parent for API modules.
 

@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-settings</artifactId>
+        <artifactId>chassis-bom</artifactId>
         <version>develop</version>
-        <relativePath>../chassis-settings</relativePath>
+        <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-test-tools</artifactId>
@@ -16,10 +16,10 @@
 
     <properties>
         <!--  DEPENDENCIES  -->
-        <junit5.version>5.8.2</junit5.version>
+        <junit5.version>5.9.2</junit5.version>
         <mockito-core.version>4.5.1</mockito-core.version>
         <assertj-core.version>3.24.2</assertj-core.version>
-        <chassis.dependencies.cucumber.version>7.5.0</chassis.dependencies.cucumber.version>
+        <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
@@ -29,14 +29,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${chassis.dependencies.springboot.version}</version>
+                <version>${chassis.springboot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${chassis.dependencies.springcloudtrain.version}</version>
+                <version>${chassis.springcloudtrain.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

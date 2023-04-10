@@ -1,5 +1,9 @@
 ### Changelog:
 
+##### 10.04.2023:
+- Dependency management for test containers.
+- Added missing auto configurations
+- Removed dummy RestTools.java
 ##### 08.04.2023:
 - Springboot 2.7.8 -> 3.0.4
 - Added @ChassisApplication annotation. Should replace @SpringBootApplication

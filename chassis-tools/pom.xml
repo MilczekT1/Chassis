@@ -31,7 +31,6 @@
                         <exclude>**/*WebServerConfiguration.*</exclude>
                         <exclude>**/*ChassisExceptionHandler.*</exclude>
                         <exclude>**/*Exception.*</exclude>
-                        <exclude>**/*RestTools.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

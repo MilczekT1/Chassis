@@ -1,2 +1,4 @@
 pl.konradboniecki.chassis.configuration.HttpLoggingAutoConfiguration
 pl.konradboniecki.chassis.configuration.WebServerAutoConfiguration
+pl.konradboniecki.chassis.configuration.DefaultExceptionHandlerAutoConfiguration
+pl.konradboniecki.chassis.configuration.ChassisSecurityAutoConfiguration

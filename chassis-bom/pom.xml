@@ -6,7 +6,7 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-bom</artifactId>
-    <version>develop</version>
+    <version>0.3.5</version>
     <packaging>pom</packaging>
 
     <properties>

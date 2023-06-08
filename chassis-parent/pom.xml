@@ -17,7 +17,7 @@
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.9.2</junit5.version>
+        <junit5.version>5.9.3</junit5.version>
         <mockito-core.version>4.5.1</mockito-core.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>

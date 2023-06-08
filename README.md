@@ -3,6 +3,7 @@
 ##### 08.06.2023:
 - Springboot 3.0.4 -> 3.1.0
 - junit-5 5.9.2 -> 5.9.3
+- spring-cloud-dependencies 2022.0.1 -> 2022.0.3
 ##### 10.04.2023:
 - Dependency management for test containers.
 - Added missing auto configurations

@@ -6,18 +6,18 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-bom</artifactId>
-        <version>0.3.5</version>
+        <version>0.3.6</version>
         <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-parent</artifactId>
-    <version>0.3.5</version>
+    <version>0.3.6</version>
     <packaging>pom</packaging>
 
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.9.2</junit5.version>
+        <junit5.version>5.9.3</junit5.version>
         <mockito-core.version>4.5.1</mockito-core.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>32.0.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

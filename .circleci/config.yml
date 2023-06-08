@@ -33,13 +33,13 @@ commands:
       - run:
           name: Inject Chassis version
           command: |
-            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
             cd ~/<< parameters.path >>
             echo "========Injecting Chassis version $VERSION========"
-            mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
+            ./mvnw versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
             if [ << parameters.rootModuleOnly >> -e "false" ]; then
             cd << parameters.module >>
-            mvn versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
+            ./mvnw versions:update-parent "-DparentVersion=[$VERSION]" -DallowSnapshots=true -s /home/circleci/CHASSIS/.circleci/settings.xml
             fi
       - run:
           name: Show effective pom
@@ -47,13 +47,13 @@ commands:
             cd ~/<< parameters.path >>
             if [ << parameters.rootModuleOnly >> -e "false" ]; then
             cd << parameters.module >>
-            mvn help:effective-pom
+            ./mvnw help:effective-pom
             fi
       - run:
           name: Check compatibility with service << parameters.serviceName >>
           command: |
             cd ~/<< parameters.path >>
-            mvn test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+            ./mvnw test -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 workflows:
   version: 2
   build-and-test:
@@ -126,7 +126,7 @@ jobs:
           name: Set env
           command: |
             UUID=$(cat /proc/sys/kernel/random/uuid)
-            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
             NEW_VERSION=$VERSION-$UUID
             MVN_SET_VER_ARGS="-DnewVersion=$NEW_VERSION -B -s /home/circleci/CHASSIS/.circleci/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
@@ -137,21 +137,21 @@ jobs:
           name: Install (to avoid issues with maven repo)
           command: |
             if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
-              mvn install -DskipTests=true
+              ./mvnw install -DskipTests=true
             fi
       - run:
           name: Update versions in root
           command: |
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn versions:set $MVN_SET_VER_ARGS
+              ./mvnw versions:set $MVN_SET_VER_ARGS
               cat pom.xml
             fi
       - run:
           name: Update versions in chassis-bom
           command: |
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-bom/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-bom/pom.xml install
+              ./mvnw -f chassis-bom/pom.xml versions:set $MVN_SET_VER_ARGS
+              ./mvnw -f chassis-bom/pom.xml install
               cat chassis-bom/pom.xml
             fi
       - run:
@@ -160,8 +160,8 @@ jobs:
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              ./mvnw -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
+              ./mvnw -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               cat chassis-test-tools/pom.xml
             fi
       - run:
@@ -170,9 +170,9 @@ jobs:
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              mvn -f chassis-parent/pom.xml install
+              ./mvnw -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
+              ./mvnw -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              ./mvnw -f chassis-parent/pom.xml install
               cat chassis-parent/pom.xml
             fi
       - run:
@@ -181,8 +181,8 @@ jobs:
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-openapi-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              mvn -f chassis-openapi-parent/pom.xml install
+              ./mvnw -f chassis-openapi-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              ./mvnw -f chassis-openapi-parent/pom.xml install
               cat chassis-openapi-parent/pom.xml
             fi
       - run:
@@ -191,14 +191,14 @@ jobs:
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
              echo "var: $MVN_UPDATE_PARENT_ARGS"
             if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              mvn -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-              mvn -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
+              ./mvnw -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
+              ./mvnw -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
               cat chassis-tools/pom.xml
             fi
       - run:
           name: Show effective pom
           command: |
-            mvn -f chassis-parent/pom.xml help:effective-pom
+            ./mvnw -f chassis-parent/pom.xml help:effective-pom
       - persist_to_workspace:
           root: ~/
           paths:
@@ -213,31 +213,31 @@ jobs:
       - run:
           name: Build and run tests
           command: |
-            mvn clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+            ./mvnw clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - run:
           name: Download all dependencies
           command: |
-            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
             MVN_GO_OFFLINE_ARGS="-s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
             MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$VERSION]\"  -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/passwordMgtRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/passwordMgtRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/passwordMgtRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/passwordMgtRepo/pom.xml
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/accountMgtRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/accountMgtRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/accountMgtRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/accountMgtRepo/pom.xml
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mailRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mailRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mailRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mailRepo/pom.xml
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/familyMgtRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/familyMgtRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/familyMgtRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/familyMgtRepo/pom.xml
 
-            mvn versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mvcRepo/pom.xml
-            mvn dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mvcRepo/pom.xml
+            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mvcRepo/pom.xml
+            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mvcRepo/pom.xml
       - save_cache:
           paths:
             - ~/.m2
@@ -384,7 +384,7 @@ jobs:
             - m2-{{ checksum "pom.xml" }}
       - run:
           name: Analyze on SonarCloud
-          command: mvn verify sonar:sonar -s .circleci/settings.xml
+          command: ./mvnw verify sonar:sonar -s .circleci/settings.xml
   deploy-to-nexus:
     <<: *docker_java_17
     working_directory: ~/repo
@@ -396,7 +396,7 @@ jobs:
       - run:
           name: Deploy artifacts to nexus
           command: |
-            mvn deploy -s .circleci/settings.xml -DskipTests=true
+            ./mvnw deploy -s .circleci/settings.xml -DskipTests=true
 
   build-base-image:
     <<: *docker_java_17

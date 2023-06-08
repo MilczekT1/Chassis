@@ -19,8 +19,8 @@
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
 
-        <chassis.springboot.version>3.0.4</chassis.springboot.version>
-        <chassis.springcloudtrain.version>2022.0.1</chassis.springcloudtrain.version>
+        <chassis.springboot.version>3.1.0</chassis.springboot.version>
+        <chassis.springcloudtrain.version>2022.0.3</chassis.springcloudtrain.version>
         <chassis.springcloud.version>3.1.6</chassis.springcloud.version>
         <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
 

@@ -199,7 +199,6 @@ jobs:
           root: ~/
           paths:
             - configServerRepo
-            - passwordMgtRepo
             - accountMgtRepo
             - mailRepo
             - familyMgtRepo
@@ -219,9 +218,6 @@ jobs:
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/passwordMgtRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/passwordMgtRepo/pom.xml
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/accountMgtRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/accountMgtRepo/pom.xml

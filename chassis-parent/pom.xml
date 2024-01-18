@@ -17,10 +17,10 @@
     <properties>
         <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
-        <junit5.version>5.9.3</junit5.version>
-        <mockito-core.version>4.5.1</mockito-core.version>
-        <assertj-core.version>3.24.2</assertj-core.version>
-        <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
+        <junit5.version>5.10.1</junit5.version>
+        <mockito-core.version>5.9.0</mockito-core.version>
+        <assertj-core.version>3.25.1</assertj-core.version>
+        <chassis.dependencies.cucumber.version>7.15.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-sleuth</artifactId>
-                <version>${chassis.springcloud.version}</version>
+                <version>3.1.10</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -131,25 +131,25 @@
             <dependency>
                 <groupId>de.flapdoodle.embed</groupId>
                 <artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
-                <version>4.6.2</version>
+                <version>4.11.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>mongodb</artifactId>
-                <version>1.18.0</version>
+                <version>1.19.3</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers</artifactId>
-                <version>1.15.3</version>
+                <version>1.19.3</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>2.1.214</version>
+                <version>2.2.224</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -160,13 +160,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.0-jre</version>
+            <version>33.0.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -232,7 +232,7 @@
                 <plugin>
                     <groupId>org.springframework.cloud</groupId>
                     <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                    <version>${chassis.springcloud.version}</version>
+                    <version>4.1.0</version>
                     <extensions>true</extensions>
                 </plugin>
                 <plugin>
@@ -262,7 +262,7 @@
                 <plugin>
                     <groupId>io.github.git-commit-id</groupId>
                     <artifactId>git-commit-id-maven-plugin</artifactId>
-                    <version>5.0.0</version>
+                    <version>7.0.0</version>
                     <executions>
                         <execution>
                             <id>get-the-git-infos</id>
@@ -288,7 +288,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.2</version>
             </plugin>
         </plugins>
     </reporting>

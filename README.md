@@ -1,5 +1,12 @@
 ### Changelog:
 
+##### 18.01.2024:
+
+- Springboot 3.1.0 -> 3.2.1
+- junit-5 5.9.3 -> 5.10.1
+- updated mockito and assertj
+- spring-cloud-dependencies 2022.0.3 -> 2023.0.0
+- cucumber 7.6.0 -> 7.15.0
 ##### 08.06.2023:
 - Springboot 3.0.4 -> 3.1.0
 - junit-5 5.9.2 -> 5.9.3

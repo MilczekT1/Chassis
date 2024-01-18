@@ -64,9 +64,6 @@ workflows:
       - config-server_check:
           requires:
             - build
-      - password-management_check:
-          requires:
-            - build
       - account-management_check:
           requires:
             - build
@@ -112,7 +109,6 @@ jobs:
             GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
             SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/config-server-service.git ~/configServerRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/password-management.git ~/passwordMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/account-management.git ~/accountMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mail-sender.git ~/mailRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/family-management.git ~/familyMgtRepo
@@ -274,22 +270,6 @@ jobs:
       - store_artifacts:
           path: ~/configServerRepo/target/surefire-reports
           destination: home/circleci/configServerRepo/surefire-reports
-  password-management_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Password Management"
-          path: "passwordMgtRepo"
-          rootModuleOnly: "true"
-      - store_artifacts:
-          path: ~/passwordMgtRepo/target/surefire-reports
-          destination: home/circleci/passwordMgtRepo/surefire-reports
   account-management_check:
     <<: *docker_java_17
     working_directory: ~/CHASSIS

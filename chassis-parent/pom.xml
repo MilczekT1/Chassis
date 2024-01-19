@@ -15,7 +15,6 @@
     <packaging>pom</packaging>
 
     <properties>
-        <chassis-dependencies.version>${project.parent.version}</chassis-dependencies.version>
         <!--Dependencies-->
         <junit5.version>5.10.1</junit5.version>
         <mockito-core.version>5.9.0</mockito-core.version>

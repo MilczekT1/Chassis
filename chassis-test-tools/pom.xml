@@ -16,10 +16,10 @@
 
     <properties>
         <!--  DEPENDENCIES  -->
-        <junit5.version>5.9.3</junit5.version>
-        <mockito-core.version>4.5.1</mockito-core.version>
-        <assertj-core.version>3.24.2</assertj-core.version>
-        <chassis.dependencies.cucumber.version>7.6.0</chassis.dependencies.cucumber.version>
+        <junit5.version>5.10.1</junit5.version>
+        <mockito-core.version>5.9.0</mockito-core.version>
+        <assertj-core.version>3.25.1</assertj-core.version>
+        <chassis.dependencies.cucumber.version>7.15.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>

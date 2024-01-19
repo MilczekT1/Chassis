@@ -4,12 +4,12 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-bom</artifactId>
-        <version>0.4.1</version>
+        <version>0.4.2-SNAPSHOT</version>
         <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-parent</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -48,13 +48,13 @@
             <dependency>
                 <groupId>pl.konradboniecki</groupId>
                 <artifactId>chassis-tools</artifactId>
-                <version>0.4.1</version>
+                <version>0.4.2-SNAPSHOT</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>pl.konradboniecki</groupId>
                 <artifactId>chassis-test-tools</artifactId>
-                <version>0.4.1</version>
+                <version>0.4.2-SNAPSHOT</version>
                 <scope>test</scope>
             </dependency>
 

@@ -70,9 +70,6 @@ workflows:
       - mail_check:
           requires:
             - build
-      - family-management_check:
-          requires:
-            - build
       - budget-management_check:
           requires:
             - build
@@ -111,7 +108,6 @@ jobs:
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/config-server-service.git ~/configServerRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/account-management.git ~/accountMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mail-sender.git ~/mailRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/family-management.git ~/familyMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/budget-management.git ~/budgetMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mvc.git ~/mvcRepo
       - checkout
@@ -201,7 +197,6 @@ jobs:
             - configServerRepo
             - accountMgtRepo
             - mailRepo
-            - familyMgtRepo
             - budgetMgtRepo
             - mvcRepo
             - CHASSIS
@@ -224,9 +219,6 @@ jobs:
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mailRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mailRepo/pom.xml
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/familyMgtRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/familyMgtRepo/pom.xml
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mvcRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mvcRepo/pom.xml
@@ -298,22 +290,6 @@ jobs:
       - store_artifacts:
           path: ~/mailRepo/target/surefire-reports
           destination: home/circleci/mailRepo/surefire-reports
-  family-management_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Family management"
-          path: "familyMgtRepo"
-          module: family-management-app
-      - store_artifacts:
-          path: ~/familyMgtRepo/target/surefire-reports
-          destination: home/circleci/familyMgtRepo/surefire-reports
   budget-management_check:
     <<: *docker_java_17
     working_directory: ~/CHASSIS

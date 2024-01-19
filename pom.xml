@@ -6,7 +6,7 @@
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis</artifactId>
-    <version>develop</version>
+    <version>0.3.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -54,4 +54,17 @@
             <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
         </repository>
     </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+        </plugins>
+    </build>
+    <scm>
+        <developerConnection>scm:git:https://github.com/MilczekT1/Chassis.git</developerConnection>
+    </scm>
 </project>

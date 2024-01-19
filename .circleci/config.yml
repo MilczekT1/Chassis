@@ -64,9 +64,6 @@ workflows:
       - config-server_check:
           requires:
             - build
-      - account-management_check:
-          requires:
-            - build
       - mail_check:
           requires:
             - build
@@ -106,7 +103,6 @@ jobs:
             GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
             SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/config-server-service.git ~/configServerRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/account-management.git ~/accountMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mail-sender.git ~/mailRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/budget-management.git ~/budgetMgtRepo
             GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mvc.git ~/mvcRepo
@@ -195,7 +191,6 @@ jobs:
           root: ~/
           paths:
             - configServerRepo
-            - accountMgtRepo
             - mailRepo
             - budgetMgtRepo
             - mvcRepo
@@ -213,9 +208,6 @@ jobs:
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/accountMgtRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/accountMgtRepo/pom.xml
 
             ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mailRepo/pom.xml
             ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mailRepo/pom.xml
@@ -258,22 +250,6 @@ jobs:
       - store_artifacts:
           path: ~/configServerRepo/target/surefire-reports
           destination: home/circleci/configServerRepo/surefire-reports
-  account-management_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Account Management"
-          path: "accountMgtRepo"
-          module: "account-management-app"
-      - store_artifacts:
-          path: ~/accountMgtRepo/target/surefire-reports
-          destination: home/circleci/accountMgtRepo/surefire-reports
   mail_check:
     <<: *docker_java_17
     working_directory: ~/CHASSIS

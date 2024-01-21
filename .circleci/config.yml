@@ -88,6 +88,8 @@ workflows:
     jobs:
       - deploy-to-nexus:
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v?([0-9]{1,4}\.){2}[0-9]{1,4}$/
 jobs:

@@ -5,6 +5,10 @@ set -euo pipefail -o errtrace
 
 declare TAG_VERSION
 
+function readParams() {
+    TAG_VERSION="$1"
+}
+
 function checkVersion {
     local version="$1"
     if [[ -z "$version" ]]; then
@@ -21,8 +25,10 @@ readParams "$@"
 checkVersion "$TAG_VERSION"
 
 
-SHA=$(git log -2 --format="%H")
-echo "Tagging commit $SHA"
-git tag -a "v$TAG_VERSION" $SHA -m "Release $TAG_VERSION"
-echo "Push tag to repo"
-git push -u --follow-tags origin master
+SHA="$(git log -2 --format="%h" | tail -1)"
+echo "Creating tag v$TAG_VERSION on commit $SHA"
+git tag "v$TAG_VERSION" "$SHA"
+
+echo "Pushing tags to repo"
+git push origin "v$TAG_VERSION"
+echo Done

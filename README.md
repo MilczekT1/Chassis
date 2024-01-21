@@ -1,3 +1,18 @@
+### Release process
+
+1. Create branch release/x.y.z
+2. Update versions to x.y.z
+3. Save SHA of the commit .
+4. Merge to master
+5. Tag commit with saved SHA
+6. Push to origin to trigger release workflow.
+
+All steps are covered in prepare-release.sh and tag-release.sh
+
+- sh prepare-release.sh 0.4.2 0.4.3
+- merge rebase/0.4.2 to master
+- sh tag-release.sh 0.4.2
+
 ### Changelog:
 
 ##### 18.01.2024:

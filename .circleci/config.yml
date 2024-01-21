@@ -84,9 +84,11 @@ workflows:
           requires:
             - build
           <<: *master_branch_filter
+  release:
+    jobs:
       - deploy-to-nexus:
           requires:
-            - build
+            - build-and-test
           when:
             condition:
               and:

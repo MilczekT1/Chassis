@@ -87,12 +87,13 @@ workflows:
       - deploy-to-nexus:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - master
-            tags:
-              only: /^v?([0-9]{1,4}\.){2}[0-9]{1,4}$/
+          when:
+            condition:
+              and:
+                - equal: [ master, << pipeline.git.branch >> ]
+                - matches:
+                    pattern: /^v?([0-9]{1,4}\.){2}[0-9]{1,4}$/
+                    value: << pipeline.git.tag >>
 jobs:
   build:
     <<: *docker_java_17

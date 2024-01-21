@@ -87,8 +87,6 @@ workflows:
   release:
     jobs:
       - deploy-to-nexus:
-          requires:
-            - build-and-test
           filters:
             tags:
               only: /^v?([0-9]{1,4}\.){2}[0-9]{1,4}$/

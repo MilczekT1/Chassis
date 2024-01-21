@@ -3,7 +3,10 @@ predefined_branch_filter: &predefined_branch_filter
     branches:
       only:
         - master
-        - develop
+feature_bugfix_filter: &feature_bugfix_filter
+  filters:
+    branches:
+      only:
         - /feature.*/
         - /bugfix.*/
 docker_java_17: &docker_java_17
@@ -64,15 +67,19 @@ workflows:
       - config-server_check:
           requires:
             - build
+          <<: *feature_bugfix_filter
       - mail_check:
           requires:
             - build
+          <<: *feature_bugfix_filter
       - budget-management_check:
           requires:
             - build
+          <<: *feature_bugfix_filter
       - mvc_check:
           requires:
             - build
+          <<: *feature_bugfix_filter
       - build-base-image:
           requires:
             - build

@@ -1,4 +1,4 @@
-predefined_branch_filter: &predefined_branch_filter
+master_branch_filter: &master_branch_filter
   filters:
     branches:
       only:
@@ -83,11 +83,7 @@ workflows:
       - build-base-image:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - master
-                - develop
+          <<: *master_branch_filter
       - deploy-to-nexus:
           requires:
             - build

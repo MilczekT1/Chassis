@@ -11,10 +11,10 @@ import pl.konradboniecki.chassis.testtools.TestContextUtils;
 import pl.konradboniecki.chassis.testtools.annotations.ControllerTest;
 
 /**
- * RestAssuredTestListener configures Rest-assured as follows:
- * 1. Use same ObjectMapper as in production code
- * 2. Set up web app context to avoid boilerplate code in the test class itself
- * 3. Apply retrieved context path to Rest-assured to eliminate the need to provide it in the test methods
+ * ControllerTestExecutionListener configures Rest-assured as follows:
+ * 1. Default UTF-8 Encoder for json content type.
+ * 2. Apply retrieved context path to Rest-assured to eliminate the need to provide it in the test methods
+ * 3. Invoke RestAssuredMockMvc.reset() after test class.
  */
 @Slf4j
 public class ControllerTestExecutionListener extends AbstractTestExecutionListener {
@@ -26,9 +26,6 @@ public class ControllerTestExecutionListener extends AbstractTestExecutionListen
             log.warn("No @ControllerTest annotations present");
             return;
         }
-        //TODO:  use production context mapper later
-        //var objectMapper = TestContextUtils.getBean(testContext, ObjectMapper.class);
-        //.objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory((cls, charset) -> objectMapper))
         RestAssuredMockMvc.config = RestAssuredMockMvc.config()
                 .encoderConfig(EncoderConfig.encoderConfig().defaultCharsetForContentType("UTF-8", ContentType.JSON));
         RestAssuredMockMvc.basePath = controllerTest.get().basePath();

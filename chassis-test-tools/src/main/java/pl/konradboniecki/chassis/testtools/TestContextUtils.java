@@ -1,5 +1,6 @@
 package pl.konradboniecki.chassis.testtools;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
@@ -11,7 +12,7 @@ import java.util.Optional;
 import static java.util.Optional.ofNullable;
 
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestContextUtils {
 
     public static <T> T getBean(TestContext testContext, Class<T> beanClass) {

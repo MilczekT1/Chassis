@@ -15,6 +15,12 @@ All steps are covered in prepare-release.sh and tag-release.sh
 
 ### Changelog:
 
+##### 28.01.2024:
+
+- Dependency management for lombok in bom.
+- Jacoco verification during verify stage instead of test
+- added @ControllerTest annotation to use in tests
+
 ##### 18.01.2024:
 
 - Springboot 3.1.0 -> 3.2.1

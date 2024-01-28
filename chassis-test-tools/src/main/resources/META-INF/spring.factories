@@ -1,0 +1,2 @@
+org.springframework.test.context.TestExecutionListener=\
+  net.twill.starter.test.RestAssuredTestListener

@@ -80,21 +80,69 @@
                     <version>0.8.11</version>
                     <executions>
                         <execution>
-                            <id>prepare-agent</id>
+                            <id>pre-unit-test</id>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/coverage-reports/unit-tests.exec</destFile>
+                            </configuration>
                         </execution>
                         <execution>
-                            <id>report</id>
+                            <id>post-unit-test</id>
                             <phase>test</phase>
                             <goals>
                                 <goal>report</goal>
                             </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/coverage-reports/unit-tests.exec</dataFile>
+                                <outputDirectory>${project.build.directory}/coverage-reports/unit-tests
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/coverage-reports/integration-tests.exec</destFile>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/coverage-reports/integration-tests.exec</dataFile>
+                                <outputDirectory>${project.build.directory}/coverage-reports/integration-tests
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>merge-unit-and-integration</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>merge</goal>
+                            </goals>
+                            <configuration>
+                                <fileSets>
+                                    <fileSet>
+                                        <directory>${project.build.directory}/coverage-reports/</directory>
+                                        <includes>
+                                            <include>*.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                </fileSets>
+                                <destFile>${project.build.directory}/coverage-reports/merged-tests.exec</destFile>
+                            </configuration>
                         </execution>
                         <execution>
                             <id>check</id>
-                            <phase>test</phase>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>

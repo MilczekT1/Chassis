@@ -22,6 +22,10 @@
         <chassis.dependencies.cucumber.version>7.15.0</chassis.dependencies.cucumber.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+        <sonar.coverage.exclusions>
+            **/listeners/*.*
+            **/*TestContextUtils.*
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencyManagement>

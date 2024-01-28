@@ -15,8 +15,8 @@
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.coverage.exclusions>
-            **/chassis-test-tools/**/listeners/*.*
-            **/chassis-test-tools/**/*TestContextUtils.*
+            **/chassis-test-tools/**/listeners/*,
+            **/chassis-test-tools/**/TestContextUtils.java
         </sonar.coverage.exclusions>
     </properties>
 

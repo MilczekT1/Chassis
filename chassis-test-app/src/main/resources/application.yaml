@@ -1,0 +1,8 @@
+server:
+  port: 8080
+  http2:
+    enabled: true
+spring:
+  application.name: test-app
+  cloud.config.enabled: false # TODO: to remove after drop support in chassis
+  main.allow-bean-definition-overriding: true

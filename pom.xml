@@ -10,6 +10,11 @@
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
@@ -22,6 +27,8 @@
         <module>chassis-bom</module>
         <module>chassis-parent</module>
         <module>chassis-openapi-parent</module>
+        <module>chassis-dependencies</module>
+        <module>chassis-test-app</module>
     </modules>
     <developers>
         <developer>
@@ -43,7 +50,6 @@
         <!--            <url>file://${user.home}/.m2/repository</url>-->
         <!--        </repository>-->
     </repositories>
-
     <build>
         <plugins>
             <plugin>

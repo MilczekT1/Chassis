@@ -17,10 +17,10 @@
     </properties>
 
     <modules>
-        <module>chassis-bom</module>
         <module>chassis-test-tools</module>
-        <module>chassis-parent</module>
         <module>chassis-tools</module>
+        <module>chassis-bom</module>
+        <module>chassis-parent</module>
         <module>chassis-openapi-parent</module>
     </modules>
     <developers>
@@ -30,29 +30,18 @@
             <email>konrad_boniecki@hotmail.com</email>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Snapshots</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <scm>
+        <developerConnection>scm:git:https://github.com/MilczekT1/Chassis.git</developerConnection>
+    </scm>
     <repositories>
         <repository>
             <id>maven-central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>local</id>-->
+        <!--            <url>file://${user.home}/.m2/repository</url>-->
+        <!--        </repository>-->
     </repositories>
 
     <build>
@@ -64,7 +53,4 @@
             </plugin>
         </plugins>
     </build>
-    <scm>
-        <developerConnection>scm:git:https://github.com/MilczekT1/Chassis.git</developerConnection>
-    </scm>
 </project>

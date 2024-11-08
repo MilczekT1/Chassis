@@ -2,20 +2,7 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <servers>
-        <server>
-            <id>nexus</id>
-            <username>${env.NEXUS_USERNAME}</username>
-            <password>${env.NEXUS_PASSWORD}</password>
-        </server>
-    </servers>
     <mirrors>
-        <mirror>
-            <id>my-nexus-mirror</id>
-            <name>mirrorName2</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-public</url>
-            <mirrorOf> external:http:*</mirrorOf>
-        </mirror>
         <mirror>
             <id>maven-central-mirror</id>
             <name>mirrorName1</name>
@@ -23,28 +10,4 @@
             <mirrorOf>*, external:http:*</mirrorOf>
         </mirror>
     </mirrors>
-
-    <profiles>
-        <profile>
-            <id>nexusOnPremise</id>
-            <repositories>
-                <repository>
-                    <id>nexus</id>
-                    <name>Konrad Boniecki Releases</name>
-                    <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>never</updatePolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>never</updatePolicy>
-                    </releases>
-                </repository>
-                </repositories>
-        </profile>
-    </profiles>
-    <activeProfiles>
-        <activeProfile>nexusOnPremise</activeProfile>
-    </activeProfiles>
 </settings>

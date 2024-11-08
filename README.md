@@ -10,7 +10,7 @@
 All steps are covered in prepare-release.sh and tag-release.sh
 
 - sh prepare-release.sh 0.4.2 0.4.3
-- merge rebase/0.4.2 to master
+- merge release/0.4.2 to master
 - sh tag-release.sh 0.4.2
 
 ### Changelog:

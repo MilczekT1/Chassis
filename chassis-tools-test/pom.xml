@@ -9,13 +9,17 @@
         <version>0.4.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chassis-tools</artifactId>
+    <artifactId>chassis-tools-test</artifactId>
+    <version>0.4.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-
+        <sonar.coverage.exclusions>
+            **/listeners/*,
+            **/TestContextUtils.java
+        </sonar.coverage.exclusions>
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.0</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>
@@ -26,12 +30,60 @@
             <dependency>
                 <groupId>pl.konradboniecki</groupId>
                 <artifactId>chassis-bom</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-contract-verifier</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-stub-runner</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -40,10 +92,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/*App.*</exclude>
-                        <exclude>**/*WebServerConfiguration.*</exclude>
-                        <exclude>**/*ChassisExceptionHandler.*</exclude>
-                        <exclude>**/*Exception.*</exclude>
+                        <exclude>**/listeners/*.*</exclude>
+                        <exclude>**/*TestContextUtils.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -213,35 +263,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>pl.konradboniecki</groupId>
-            <artifactId>chassis-tools-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
-    </dependencies>
 </project>

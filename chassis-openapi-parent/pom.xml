@@ -5,31 +5,48 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.konradboniecki</groupId>
-        <artifactId>chassis-bom</artifactId>
+        <artifactId>chassis</artifactId>
         <version>0.4.4-SNAPSHOT</version>
-        <relativePath>../chassis-bom</relativePath>
     </parent>
 
     <artifactId>chassis-openapi-parent</artifactId>
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <chassis.openapi.version>6.5.0</chassis.openapi.version>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.build.directory}/coverage-reports/**/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${chassis.springboot.version}</version>
+                <groupId>pl.konradboniecki</groupId>
+                <artifactId>chassis-bom</artifactId>
+                <version>${project.parent.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!--    <dependencyManagement>-->
+    <!--            <dependency>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-dependencies</artifactId>-->
+    <!--                <version>${chassis.springboot.version}</version>-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>import</scope>-->
+    <!--            </dependency>-->
+    <!--    </dependencyManagement>-->
 
     <dependencies>
         <dependency>

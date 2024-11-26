@@ -64,22 +64,6 @@ workflows:
       - build
       - sonar-scanning:
           context: SonarCloud
-      - config-server_check:
-          requires:
-            - build
-          <<: *feature_bugfix_filter
-      - mail_check:
-          requires:
-            - build
-          <<: *feature_bugfix_filter
-      - budget-management_check:
-          requires:
-            - build
-          <<: *feature_bugfix_filter
-      - mvc_check:
-          requires:
-            - build
-          <<: *feature_bugfix_filter
       - build-base-image:
           requires:
             - build
@@ -100,92 +84,10 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "5f:9d:14:91:16:7c:39:92:67:55:6d:78:65:7e:f4:64"
-      - run:
-          name: Clone Services
-          command: |
-            GIT_PARAMS="-q --depth 1 --single-branch --branch develop"
-            SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/config-server-service.git ~/configServerRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mail-sender.git ~/mailRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/budget-management.git ~/budgetMgtRepo
-            GIT_SSH_COMMAND="ssh $SSH_PARAMS" git clone $GIT_PARAMS https://github.com/MilczekT1/mvc.git ~/mvcRepo
       - checkout
       - restore_cache:
           keys:
             - m2-{{ checksum "pom.xml" }}
-      - run:
-          name: Set env
-          command: |
-            UUID=$(cat /proc/sys/kernel/random/uuid)
-            VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
-            NEW_VERSION=$VERSION-$UUID
-            MVN_SET_VER_ARGS="-DnewVersion=$NEW_VERSION -B -s /home/circleci/CHASSIS/.circleci/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-
-            echo "export VERSION=$VERSION" >> $BASH_ENV
-            echo "export NEW_VERSION=$NEW_VERSION" >> $BASH_ENV
-            echo "export MVN_SET_VER_ARGS=$MVN_SET_VER_ARGS" >> $BASH_ENV
-      - run:
-          name: Install (to avoid issues with maven repo)
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "feature/"* || "$CIRCLE_BRANCH" == "release/"* ]]; then
-              ./mvnw install -DskipTests=true
-            fi
-      - run:
-          name: Update versions in root
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw versions:set $MVN_SET_VER_ARGS
-              cat pom.xml
-            fi
-      - run:
-          name: Update versions in chassis-bom
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw -f chassis-bom/pom.xml versions:set $MVN_SET_VER_ARGS
-              ./mvnw -f chassis-bom/pom.xml install
-              cat chassis-bom/pom.xml
-            fi
-      - run:
-          name: Update versions in chassis-test-tools
-          command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw -f chassis-test-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-              ./mvnw -f chassis-test-tools/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              cat chassis-test-tools/pom.xml
-            fi
-      - run:
-          name: Update versions in chassis-parent
-          command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw -f chassis-parent/pom.xml versions:set $MVN_SET_VER_ARGS
-              ./mvnw -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              ./mvnw -f chassis-parent/pom.xml install
-              cat chassis-parent/pom.xml
-            fi
-      - run:
-          name: Update versions in chassis-openapi-parent
-          command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw -f chassis-openapi-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              ./mvnw -f chassis-openapi-parent/pom.xml install
-              cat chassis-openapi-parent/pom.xml
-            fi
-      - run:
-          name: Update versions in chassis-tools
-          command: |
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$NEW_VERSION]\" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-             echo "var: $MVN_UPDATE_PARENT_ARGS"
-            if [[ "$CIRCLE_BRANCH" == "feature/"* ]]; then
-              ./mvnw -f chassis-tools/pom.xml versions:set $MVN_SET_VER_ARGS
-              ./mvnw -f chassis-parent/pom.xml versions:update-parent $MVN_UPDATE_PARENT_ARGS
-              cat chassis-tools/pom.xml
-            fi
       - run:
           name: Show effective pom
           command: |
@@ -193,115 +95,27 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - configServerRepo
-            - mailRepo
-            - budgetMgtRepo
-            - mvcRepo
             - CHASSIS
       - run:
           name: Build and run tests
           command: |
             ./mvnw clean install -s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-      - run:
-          name: Download all dependencies
-          command: |
-            VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
-            MVN_GO_OFFLINE_ARGS="-s .circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-            MVN_UPDATE_PARENT_ARGS="\"-DparentVersion=[$VERSION]\"  -s /home/circleci/CHASSIS/.circleci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/configServerRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/configServerRepo/pom.xml
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mailRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mailRepo/pom.xml
-
-            ./mvnw versions:update-parent $MVN_UPDATE_PARENT_ARGS -f ~/mvcRepo/pom.xml
-            ./mvnw dependency:go-offline $MVN_GO_OFFLINE_ARGS -f ~/mvcRepo/pom.xml
       - save_cache:
           paths:
             - ~/.m2
           key: m2-{{ checksum "pom.xml" }}
       - store_test_results:
-          path: chassis-test-tools/target/surefire-reports
+          path: chassis-tools-test/target/surefire-reports
       - store_artifacts:
-          path: chassis-test-tools/target/surefire-reports/surefire-report.html
+          path: chassis-tools-test/target/surefire-reports/surefire-report.html
       - store_artifacts:
-          path: chassis-test-tools/target/site/jacoco/
+          path: chassis-tools-test/target/site/jacoco/
       - store_test_results:
           path: chassis-tools/target/surefire-reports
       - store_artifacts:
           path: chassis-tools/target/surefire-reports/surefire-report.html
       - store_artifacts:
           path: chassis-tools/target/site/jacoco/
-  #_____________________________________________________________________________
-  #_____________________________________________________________________________
-  #_____________________________________________________________________________
-  #_____________________________________________________________________________
-  config-server_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Config Server"
-          path: "configServerRepo"
-          rootModuleOnly: "true"
-      - store_artifacts:
-          path: ~/configServerRepo/target/surefire-reports
-          destination: home/circleci/configServerRepo/surefire-reports
-  mail_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Mail Service"
-          path: "mailRepo"
-          module: mail-app
-      - store_artifacts:
-          path: ~/mailRepo/target/surefire-reports
-          destination: home/circleci/mailRepo/surefire-reports
-  budget-management_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Budget management"
-          path: "budgetMgtRepo"
-          module: budget-management-app
-      - store_artifacts:
-          path: ~/budgetMgtRepo/target/surefire-reports
-          destination: home/circleci/budgetMgtRepo/surefire-reports
-  mvc_check:
-    <<: *docker_java_17
-    working_directory: ~/CHASSIS
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - m2-{{ checksum "pom.xml" }}
-      - build_service:
-          serviceName: "Mvc"
-          path: "mvcRepo"
-          rootModuleOnly: "true"
-      - store_artifacts:
-          path: ~/mvcRepo/target/surefire-reports
-          destination: home/circleci/mvcRepo/surefire-reports
-  #_____________________________________________________________________________
   #_____________________________________________________________________________
   #_____________________________________________________________________________
   #_____________________________________________________________________________

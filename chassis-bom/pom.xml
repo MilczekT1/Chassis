@@ -3,232 +3,139 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>pl.konradboniecki</groupId>
+        <artifactId>chassis</artifactId>
+        <version>0.4.4-SNAPSHOT</version>
+    </parent>
 
-    <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-bom</artifactId>
-    <version>0.4.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
-        <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
-        <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
-
         <chassis.springboot.version>3.2.1</chassis.springboot.version>
         <chassis.springcloudtrain.version>2023.0.0</chassis.springcloudtrain.version>
-        <chassis.springcloud.version>4.1.0</chassis.springcloud.version>
-        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <junit5.version>5.10.1</junit5.version>
 
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey><!--It has to be overridden in services-->
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.build.directory}/coverage-reports/**/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${chassis.springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${chassis.springcloudtrain.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-sleuth</artifactId>
+                <version>3.1.10</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>pl.konradboniecki</groupId>
+                <artifactId>chassis-tools</artifactId>
+                <version>${project.parent.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>pl.konradboniecki</groupId>
+                <artifactId>chassis-tools-test</artifactId>
+                <version>${project.parent.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.30</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.0.0-jre</version>
+            </dependency>
+
+            <!-- TEST LIBRARIES-->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.25.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>5.9.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flapdoodle.embed</groupId>
+                <artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
+                <version>4.11.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>mongodb</artifactId>
+                <version>1.19.3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>1.19.3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>2.2.224</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <developers>
-        <developer>
-            <id>Konrad</id>
-            <name>Konrad Boniecki</name>
-            <email>konrad_boniecki@hotmail.com</email>
-        </developer>
-    </developers>
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Snapshots</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <id>maven-central</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
-        </repository>
-    </repositories>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.11</version>
-                    <executions>
-                        <execution>
-                            <id>pre-unit-test</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.build.directory}/coverage-reports/unit-tests.exec</destFile>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>post-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/coverage-reports/unit-tests.exec</dataFile>
-                                <outputDirectory>${project.build.directory}/coverage-reports/unit-tests
-                                </outputDirectory>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>pre-integration-test</id>
-                            <phase>pre-integration-test</phase>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.build.directory}/coverage-reports/integration-tests.exec</destFile>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>post-integration-test</id>
-                            <phase>post-integration-test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/coverage-reports/integration-tests.exec</dataFile>
-                                <outputDirectory>${project.build.directory}/coverage-reports/integration-tests
-                                </outputDirectory>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>merge-unit-and-integration</id>
-                            <phase>post-integration-test</phase>
-                            <goals>
-                                <goal>merge</goal>
-                            </goals>
-                            <configuration>
-                                <fileSets>
-                                    <fileSet>
-                                        <directory>${project.build.directory}/coverage-reports/</directory>
-                                        <includes>
-                                            <include>*.exec</include>
-                                        </includes>
-                                    </fileSet>
-                                </fileSets>
-                                <destFile>${project.build.directory}/coverage-reports/merged-tests.exec</destFile>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>check</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <configuration>
-                                <haltOnFailure>true</haltOnFailure>
-                                <rules>
-                                    <rule>
-                                        <element>BUNDLE</element>
-                                        <limits>
-                                            <limit>
-                                                <counter>LINE</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${jacoco.lineCoverage.minimum}</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>BRANCH</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${jacoco.branches.minimum}</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>CLASS</counter>
-                                                <value>MISSEDCOUNT</value>
-                                                <maximum>${jacoco.classes.maxMissed}</maximum>
-                                            </limit>
-                                        </limits>
-                                    </rule>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <excludes>
-                            <exclude>**/*App.*</exclude>
-                            <exclude>**/*Application.*</exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <configuration>
-                        <includes>
-                            <include>**/*Test*.java</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/*App.java</exclude>
-                        </excludes>
-                        <useSystemClassLoader>false</useSystemClassLoader>
-                        <!--                        <forkMode>once</forkMode>-->
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-report-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>report-only</goal>
-                            </goals>
-                            <phase>test</phase>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-help-plugin</artifactId>
-                    <version>3.4.0</version>
-                    <executions>
-                        <execution>
-                            <id>show-profiles</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>active-profiles</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

@@ -10,6 +10,11 @@
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
@@ -17,11 +22,13 @@
     </properties>
 
     <modules>
-        <module>chassis-bom</module>
-        <module>chassis-test-tools</module>
-        <module>chassis-parent</module>
+        <module>chassis-tools-test</module>
         <module>chassis-tools</module>
+        <module>chassis-bom</module>
+        <module>chassis-parent</module>
         <module>chassis-openapi-parent</module>
+        <module>chassis-dependencies</module>
+        <module>chassis-test-app</module>
     </modules>
     <developers>
         <developer>
@@ -30,32 +37,46 @@
             <email>konrad_boniecki@hotmail.com</email>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Snapshots</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <scm>
+        <developerConnection>scm:git:https://github.com/MilczekT1/Chassis.git</developerConnection>
+    </scm>
     <repositories>
         <repository>
             <id>maven-central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
-        <repository>
-            <id>nexus</id>
-            <name>Konrad Boniecki Releases</name>
-            <url>http://${env.NEXUS_ADDRESS}/repository/maven-public/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>local</id>-->
+        <!--            <url>file://${user.home}/.m2/repository</url>-->
+        <!--        </repository>-->
     </repositories>
 
     <build>
+        <pluginManagement>
+            <!--Versions to be used in this project, project should inherit from chassis-parent-->
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.11</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>3.2.5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -64,7 +85,4 @@
             </plugin>
         </plugins>
     </build>
-    <scm>
-        <developerConnection>scm:git:https://github.com/MilczekT1/Chassis.git</developerConnection>
-    </scm>
 </project>

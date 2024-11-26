@@ -195,6 +195,10 @@
                     </executions>
                     <configuration>
                         <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
+                        <reportsDirectories>
+                            <directory>${basedir}/target/unit-test-reports</directory>
+                            <directory>${basedir}/target/failsafe-reports</directory>
+                        </reportsDirectories>
                     </configuration>
                 </plugin>
                 <plugin>

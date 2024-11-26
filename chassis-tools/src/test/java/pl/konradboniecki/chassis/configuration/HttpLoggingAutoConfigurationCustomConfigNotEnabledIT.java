@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
                 "budget.chassis.http-logging.includeClientInfo=false"
         }
 )
-public class HttpLoggingAutoConfigurationCustomConfigNotEnabledTest {
+public class HttpLoggingAutoConfigurationCustomConfigNotEnabledIT {
 
     @Autowired(required = false)
     private CommonsRequestLoggingFilter loggingFilter;

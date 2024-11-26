@@ -17,7 +17,7 @@ import pl.konradboniecki.chassis.tools.HashGenerator;
                 "spring.config.import=optional:configserver:"
         }
 )
-class ChassisSecurityAutoConfigurationTest {
+class ChassisSecurityAutoConfigurationIT {
 
     @Autowired(required = false)
     private HashGenerator hashGenerator;

@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "spring.config.import=optional:configserver:"
         }
 )
-class WebServerAutoConfigurationTest {
+class WebServerAutoConfigurationIT {
 
   @Autowired(required = false)
   ServletWebServerFactory servletWebServerFactory;

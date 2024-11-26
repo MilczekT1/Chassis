@@ -16,7 +16,7 @@ import pl.konradboniecki.chassis.exceptions.ChassisExceptionHandler;
                 "spring.config.import=optional:configserver:"
         }
 )
-class DefaultExceptionHandlerAutoConfigurationTest {
+class DefaultExceptionHandlerAutoConfigurationIT {
 
   @Autowired(required = false)
   private ChassisExceptionHandler chassisExceptionHandler;

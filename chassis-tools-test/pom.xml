@@ -247,14 +247,14 @@
                         <goals>
                             <goal>report-only</goal>
                         </goals>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
                 <configuration>
                     <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
                     <reportsDirectories>
                         <directory>${basedir}/target/unit-test-reports</directory>
-                        <directory>${basedir}/target/failsafe-reports</directory>
+                        <directory>${basedir}/target/integration-test-reports</directory>
                     </reportsDirectories>
                 </configuration>
             </plugin>

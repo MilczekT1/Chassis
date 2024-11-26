@@ -20,7 +20,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                 "spring.config.import=optional:configserver:"
         }
 )
-public class HttpLoggingAutoConfigurationDefaultConfigTest {
+public class HttpLoggingAutoConfigurationDefaultConfigIT {
 
     @Autowired(required = false)
     private CommonsRequestLoggingFilter loggingFilter;

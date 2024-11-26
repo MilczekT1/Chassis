@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.testtools;
+package pl.konradboniecki.chassis.test;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.testtools;
+package pl.konradboniecki.chassis.test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

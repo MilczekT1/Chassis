@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>pl.konradboniecki</groupId>
-            <artifactId>chassis-test-tools</artifactId>
+            <artifactId>chassis-tools-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

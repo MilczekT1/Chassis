@@ -54,7 +54,7 @@
             </dependency>
             <dependency>
                 <groupId>pl.konradboniecki</groupId>
-                <artifactId>chassis-test-tools</artifactId>
+                <artifactId>chassis-tools-test</artifactId>
                 <version>${project.parent.version}</version>
                 <scope>test</scope>
             </dependency>

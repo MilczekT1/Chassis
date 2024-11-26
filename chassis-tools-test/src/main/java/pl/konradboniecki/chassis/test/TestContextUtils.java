@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.testtools;
+package pl.konradboniecki.chassis.test;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

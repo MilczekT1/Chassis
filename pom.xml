@@ -22,7 +22,7 @@
     </properties>
 
     <modules>
-        <module>chassis-test-tools</module>
+        <module>chassis-tools-test</module>
         <module>chassis-tools</module>
         <module>chassis-bom</module>
         <module>chassis-parent</module>

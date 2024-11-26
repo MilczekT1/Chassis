@@ -105,11 +105,11 @@ jobs:
             - ~/.m2
           key: m2-{{ checksum "pom.xml" }}
       - store_test_results:
-          path: chassis-test-tools/target/surefire-reports
+          path: chassis-tools-test/target/surefire-reports
       - store_artifacts:
-          path: chassis-test-tools/target/surefire-reports/surefire-report.html
+          path: chassis-tools-test/target/surefire-reports/surefire-report.html
       - store_artifacts:
-          path: chassis-test-tools/target/site/jacoco/
+          path: chassis-tools-test/target/site/jacoco/
       - store_test_results:
           path: chassis-tools/target/surefire-reports
       - store_artifacts:

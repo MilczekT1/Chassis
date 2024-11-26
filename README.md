@@ -15,6 +15,25 @@ All steps are covered in prepare-release.sh and tag-release.sh
 
 ### Changelog:
 
+##### 09.11.2024
+
+###### Major refactoring of modules
+
+* chassis-dependencies -> all compile dependencies for microservice
+* chassis-bom -> bill of materials
+* renamed module chassis-test-tools -> chassis-tools-test
+* chassis-test-app -> module with application for tests.
+* chassis-tools -> single module with cross cutting concern functionalities
+
+###### Changed test execution and reporting
+
+Unit tests and integration tests are executed separately.
+Integration tests need to end with *IT suffix.
+
+###### CI:
+
+Removed external microservices verification from workflow
+
 ##### 28.01.2024:
 
 - Dependency management for lombok in bom.

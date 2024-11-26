@@ -22,7 +22,7 @@
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey><!--It has to be overridden in services-->
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     </properties>
-    <!--    TODO: move to chassis-bom-->
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -62,6 +62,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.30</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.0.0-jre</version>
             </dependency>
 
             <!-- TEST LIBRARIES-->

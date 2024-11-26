@@ -14,7 +14,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <!--  DEPENDENCIES  -->
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.coverage.exclusions>

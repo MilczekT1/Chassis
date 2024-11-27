@@ -6,7 +6,7 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis</artifactId>
-        <version>0.4.4</version>
+        <version>0.4.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>chassis-parent</artifactId>

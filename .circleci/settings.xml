@@ -13,7 +13,7 @@
     <servers>
         <server>
             <id>github</id>
-            <username>MilczekT1</username>
+            <username>konradboniecki</username>
             <password>${env.PUBLISH_TOKEN}</password>
         </server>
     </servers>

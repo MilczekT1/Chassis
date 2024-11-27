@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.test.annotations;
+package io.github.konradboniecki.chassis.test.annotations;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

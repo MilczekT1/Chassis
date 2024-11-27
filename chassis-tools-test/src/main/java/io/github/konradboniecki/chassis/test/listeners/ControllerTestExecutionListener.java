@@ -1,5 +1,7 @@
-package pl.konradboniecki.chassis.test.listeners;
+package io.github.konradboniecki.chassis.test.listeners;
 
+import io.github.konradboniecki.chassis.test.TestContextUtils;
+import io.github.konradboniecki.chassis.test.annotations.ControllerTest;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -7,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.konradboniecki.chassis.test.TestContextUtils;
-import pl.konradboniecki.chassis.test.annotations.ControllerTest;
 
 /**
  * ControllerTestExecutionListener configures Rest-assured as follows:

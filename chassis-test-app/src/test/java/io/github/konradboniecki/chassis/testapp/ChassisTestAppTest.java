@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.testapp;
+package io.github.konradboniecki.chassis.testapp;
 
 
 import org.junit.jupiter.api.Test;

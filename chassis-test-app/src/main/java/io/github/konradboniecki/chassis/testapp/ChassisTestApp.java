@@ -1,4 +1,4 @@
-package pl.konradboniecki.chassis.testapp;
+package io.github.konradboniecki.chassis.testapp;
 
 import org.springframework.boot.SpringApplication;
 import pl.konradboniecki.chassis.ChassisApplication;

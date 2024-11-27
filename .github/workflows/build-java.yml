@@ -29,12 +29,12 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: SonarCloud Scan
-        #        env:
-        #          SONAR_PROJECT_KEY: MilczekT1_Chassis
+        env:
+          SONAR_PROJECT_KEY: MilczekT1_Chassis
         #          SONAR_ORG: ${{ secrets.SONAR_TOKEN }}
         #          SONAR_HOST_URL: 'https://sonarcloud.io'
         run: |
           mvn sonar:sonar \
-#            -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+            -Dsonar.projectKey=$SONAR_PROJECT_KEY
 #            -Dsonar.host.url=$SONAR_HOST_URL \
 #            -Dsonar.organization=$SONAR_ORG

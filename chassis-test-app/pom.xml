@@ -6,13 +6,13 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-parent</artifactId>
-        <version>0.4.4-SNAPSHOT</version>
+        <version>0.4.4</version>
         <relativePath>../chassis-parent</relativePath>
     </parent>
 
     <groupId>pl.konradboniecki</groupId>
     <artifactId>chassis-test-app</artifactId>
-    <version>${project.parent.version}</version>
+    <version>0.4.4</version>
 
     <properties>
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>

@@ -30,6 +30,23 @@
         </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/MilczekT1/Chassis</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/MilczekT1/*</url>
+        </repository>
+    </repositories>
+
     <build>
         <pluginManagement>
             <plugins>

@@ -1,12 +1,12 @@
-package io.github.konradboniecki.chassis.testapp;
+package io.github.konradboniecki.chassis.testutils;
 
 import io.github.konradboniecki.chassis.ChassisApplication;
 import org.springframework.boot.SpringApplication;
 
 @ChassisApplication
-public class ChassisTestApp {
+public class ChassisTestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ChassisTestApp.class, args);
+        SpringApplication.run(ChassisTestApplication.class, args);
     }
 }

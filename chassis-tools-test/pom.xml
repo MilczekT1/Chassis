@@ -6,11 +6,11 @@
     <parent>
         <groupId>io.github.milczekt1</groupId>
         <artifactId>chassis</artifactId>
-        <version>0.4.6-SNAPSHOT</version>
+        <version>0.4.6</version>
     </parent>
 
     <artifactId>chassis-tools-test</artifactId>
-    <version>0.4.6-SNAPSHOT</version>
+    <version>0.4.6</version>
     <packaging>jar</packaging>
 
     <properties>

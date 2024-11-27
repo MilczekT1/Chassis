@@ -15,11 +15,6 @@
     <version>${project.parent.version}</version>
 
     <properties>
-        <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
-        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.build.directory}/coverage-reports/merged-test-coverage-report/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.0</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>

@@ -27,6 +27,10 @@ jobs:
           distribution: 'temurin'
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipTests=true ${{ env.MVN_CONFIG }}
+      - name: print
+        run: |
+          echo $GITHUB_WORKSPACE/settings.xml
+          echo ${{ github.workspace }}
 
       - name: Publish to GitHub Packages Apache Maven
         env:

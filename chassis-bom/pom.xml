@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.github.konradboniecki</groupId>
+        <groupId>io.github.milczekt1</groupId>
         <artifactId>chassis</artifactId>
         <version>0.4.6-SNAPSHOT</version>
     </parent>
@@ -47,13 +47,13 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>io.github.konradboniecki</groupId>
+                <groupId>io.github.milczekt1</groupId>
                 <artifactId>chassis-tools</artifactId>
                 <version>${project.parent.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>io.github.konradboniecki</groupId>
+                <groupId>io.github.milczekt1</groupId>
                 <artifactId>chassis-tools-test</artifactId>
                 <version>${project.parent.version}</version>
                 <scope>test</scope>

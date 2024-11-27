@@ -16,7 +16,7 @@
                 </repository>
                 <repository>
                     <id>github</id>
-                    <url>https://maven.pkg.github.com/MilczekT1/*</url>
+                    <url>https://maven.pkg.github.com/milczekt1/*</url>
                     <snapshots>
                         <enabled>true</enabled>
                     </snapshots>

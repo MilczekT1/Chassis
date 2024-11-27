@@ -1,4 +1,4 @@
-package io.github.konradboniecki.chassis.test;
+package io.github.milczekt1.chassis.test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

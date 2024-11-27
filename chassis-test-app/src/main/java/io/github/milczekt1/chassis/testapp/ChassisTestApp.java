@@ -1,4 +1,4 @@
-package io.github.konradboniecki.chassis.testapp;
+package io.github.milczekt1.chassis.testapp;
 
 import io.github.konradboniecki.chassis.ChassisApplication;
 import org.springframework.boot.SpringApplication;

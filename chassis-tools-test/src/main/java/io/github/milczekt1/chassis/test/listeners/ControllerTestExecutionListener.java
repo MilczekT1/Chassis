@@ -1,7 +1,7 @@
-package io.github.konradboniecki.chassis.test.listeners;
+package io.github.milczekt1.chassis.test.listeners;
 
-import io.github.konradboniecki.chassis.test.TestContextUtils;
-import io.github.konradboniecki.chassis.test.annotations.ControllerTest;
+import io.github.milczekt1.chassis.test.TestContextUtils;
+import io.github.milczekt1.chassis.test.annotations.ControllerTest;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;

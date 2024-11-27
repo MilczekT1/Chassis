@@ -38,7 +38,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn sonar:sonar ${{ env.MVN_CONFIG }} \
-          #            -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-          #            -Dsonar.host.url=$SONAR_HOST_URL \
-          #            -Dsonar.organization=$SONAR_ORG \
             -Dsonar.token=$SONAR_TOKEN

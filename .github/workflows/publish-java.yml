@@ -25,12 +25,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      #          settings-path: ${{ github.workspace }}/.github # location for the settings.xml file
-
       - name: Build with Maven
-        run: mvn -B package --file pom.xml ${{ env.MVN_CONFIG }}
+        run: mvn -B package --file pom.xml -DskipTests=true ${{ env.MVN_CONFIG }}
 
       - name: Publish to GitHub Packages Apache Maven
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-        run: mvn deploy -s .github/settings.xml ${{ env.MVN_CONFIG }}
+        run: mvn deploy -s .github/settings.xml ${{ env.MVN_CONFIG }} -Dtoken=${{ secrets.PUBLISH_TOKEN }}

@@ -14,7 +14,7 @@
         <server>
             <id>github</id>
             <username>konradboniecki</username>
-            <password>${env.PUBLISH_TOKEN}</password>
+            <password>${token}</password>
         </server>
     </servers>
 </settings>

@@ -1,4 +1,4 @@
-io.github.konradboniecki.chassis.configuration.HttpLoggingAutoConfiguration
-io.github.konradboniecki.chassis.configuration.WebServerAutoConfiguration
-io.github.konradboniecki.chassis.configuration.DefaultExceptionHandlerAutoConfiguration
-io.github.konradboniecki.chassis.configuration.ChassisSecurityAutoConfiguration
+io.github.milczekt1.chassis.configuration.HttpLoggingAutoConfiguration
+io.github.milczekt1.chassis.configuration.WebServerAutoConfiguration
+io.github.milczekt1.chassis.configuration.DefaultExceptionHandlerAutoConfiguration
+io.github.milczekt1.chassis.configuration.ChassisSecurityAutoConfiguration

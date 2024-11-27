@@ -12,7 +12,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,6 +31,6 @@ jobs:
         run: mvn -B package --file pom.xml ${{ env.MVN_CONFIG }}
 
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy -s .github/settings.xml ${{ env.MVN_CONFIG }}
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+        run: mvn deploy -s .github/settings.xml ${{ env.MVN_CONFIG }}

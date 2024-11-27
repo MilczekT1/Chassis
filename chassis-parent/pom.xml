@@ -26,7 +26,7 @@
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.build.directory}/coverage-reports/**/jacoco.xml
+            ${project.build.directory}/coverage-reports/merged-test-coverage-report/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 

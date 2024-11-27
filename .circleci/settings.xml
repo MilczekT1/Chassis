@@ -10,4 +10,11 @@
             <mirrorOf>*, external:http:*</mirrorOf>
         </mirror>
     </mirrors>
+    <servers>
+        <server>
+            <id>github</id>
+            <username>MilczekT1</username>
+            <password>${env.PUBLISH_TOKEN}</password>
+        </server>
+    </servers>
 </settings>

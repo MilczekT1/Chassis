@@ -6,11 +6,11 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis</artifactId>
-        <version>0.4.5-SNAPSHOT</version>
+        <version>0.4.5</version>
     </parent>
 
     <artifactId>chassis-tools-test</artifactId>
-    <version>0.4.5-SNAPSHOT</version>
+    <version>0.4.5</version>
     <packaging>jar</packaging>
 
     <properties>

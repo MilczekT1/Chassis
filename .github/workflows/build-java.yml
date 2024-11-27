@@ -33,10 +33,10 @@ jobs:
       - name: SonarCloud Scan
         env:
           SONAR_PROJECT_KEY: MilczekT1_Chassis
-          SONAR_ORG: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORG: milczekt1
           SONAR_HOST_URL: 'https://sonarcloud.io'
         run: |
-          mvn sonar:sonar \
+          mvn sonar:sonar ${{ env.MVN_CONFIG }} \
             -Dsonar.projectKey=$SONAR_PROJECT_KEY \
             -Dsonar.host.url=$SONAR_HOST_URL \
             -Dsonar.organization=$SONAR_ORG

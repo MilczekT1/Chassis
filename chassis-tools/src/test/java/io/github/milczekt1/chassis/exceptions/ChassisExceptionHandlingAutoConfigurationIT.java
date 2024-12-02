@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 @ChassisErrorHandlerIntegrationTest
@@ -65,6 +64,22 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("status", equalTo(NOT_FOUND.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
                 .body("instance", equalTo(TestController.NOT_FOUND_PATH))
+                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+    }
+
+    @Test
+    void shouldReturnValidProblemDetailsForInternalServerErrorException() {
+        RestAssuredMockMvc.given()
+                .when()
+                .get(TestController.INTERNAL_SERVER_ERROR_PATH)
+                .then()
+                .status(INTERNAL_SERVER_ERROR)
+                .contentType(APPLICATION_PROBLEM_JSON_VALUE)
+                .body("type", equalTo("about:blank"))
+                .body("title", equalTo("Internal Server Error"))
+                .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
+                .body("instance", equalTo(TestController.INTERNAL_SERVER_ERROR_PATH))
                 .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
     }
 

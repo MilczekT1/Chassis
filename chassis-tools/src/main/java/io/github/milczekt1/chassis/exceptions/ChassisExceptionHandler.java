@@ -2,9 +2,7 @@ package io.github.milczekt1.chassis.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,13 +48,6 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail conflict(ResourceConflictException e) {
         log.error(e.getMessage());
         return createProblemDetail(HttpStatus.CONFLICT, e);
-    }
-
-    private ResponseEntity<ErrorDescription> createResponseEntity(ErrorDescription errorDescription){
-        return ResponseEntity
-                .status(errorDescription.getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(errorDescription);
     }
 
     private ProblemDetail createProblemDetail(final HttpStatus httpStatus, RuntimeException e) {

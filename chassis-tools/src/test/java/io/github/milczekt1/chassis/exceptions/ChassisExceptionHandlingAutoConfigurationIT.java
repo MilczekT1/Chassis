@@ -83,4 +83,20 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
     }
 
+    @Test
+    void shouldReturnValidProblemDetailsForResourceConflictException() {
+        RestAssuredMockMvc.given()
+                .when()
+                .get(TestController.RESOURCE_CONFLICT_ERROR_PATH)
+                .then()
+                .status(CONFLICT)
+                .contentType(APPLICATION_PROBLEM_JSON_VALUE)
+                .body("type", equalTo("about:blank"))
+                .body("title", equalTo("Conflict"))
+                .body("status", equalTo(CONFLICT.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
+                .body("instance", equalTo(TestController.RESOURCE_CONFLICT_ERROR_PATH))
+                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+    }
+
 }

@@ -47,9 +47,9 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceConflictException.class)
-    public ResponseEntity<ErrorDescription> conflict(ResourceConflictException e){
+    public ProblemDetail conflict(ResourceConflictException e) {
         log.error(e.getMessage());
-        return createResponseEntity(new ErrorDescription(HttpStatus.CONFLICT, e.getMessage()));
+        return createProblemDetail(HttpStatus.CONFLICT, e);
     }
 
     private ResponseEntity<ErrorDescription> createResponseEntity(ErrorDescription errorDescription){

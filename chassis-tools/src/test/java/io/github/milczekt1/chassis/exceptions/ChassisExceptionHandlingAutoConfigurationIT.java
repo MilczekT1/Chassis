@@ -99,4 +99,20 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
     }
 
+    @Test
+    void shouldReturnValidProblemDetailsForResourceCreationException() {
+        RestAssuredMockMvc.given()
+                .when()
+                .get(TestController.RESOURCE_CREATION_ERROR_PATH)
+                .then()
+                .status(BAD_REQUEST)
+                .contentType(APPLICATION_PROBLEM_JSON_VALUE)
+                .body("type", equalTo("about:blank"))
+                .body("title", equalTo("Bad Request"))
+                .body("status", equalTo(BAD_REQUEST.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
+                .body("instance", equalTo(TestController.RESOURCE_CREATION_ERROR_PATH))
+                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+    }
+
 }

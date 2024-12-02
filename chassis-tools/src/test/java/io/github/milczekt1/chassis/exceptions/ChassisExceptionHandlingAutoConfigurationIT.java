@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 @ChassisErrorHandlerIntegrationTest
@@ -39,15 +40,31 @@ class ChassisExceptionHandlingAutoConfigurationIT {
     void shouldReturnValidProblemDetailsForBadRequestException() {
         RestAssuredMockMvc.given()
                 .when()
-                .get("/exceptions/bad-request")
+                .get(TestController.BAD_REQUEST_PATH)
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
                 .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
-                .body("status", equalTo(400))
-                .body("detail", equalTo(TestController.BAD_REQUEST_TITLE))
+                .body("status", equalTo(BAD_REQUEST.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
                 .body("instance", equalTo(TestController.BAD_REQUEST_PATH))
+                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+    }
+
+    @Test
+    void shouldReturnValidProblemDetailsForResourceNotFoundException() {
+        RestAssuredMockMvc.given()
+                .when()
+                .get(TestController.NOT_FOUND_PATH)
+                .then()
+                .status(NOT_FOUND)
+                .contentType(APPLICATION_PROBLEM_JSON_VALUE)
+                .body("type", equalTo("about:blank"))
+                .body("title", equalTo("Not Found"))
+                .body("status", equalTo(NOT_FOUND.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
+                .body("instance", equalTo(TestController.NOT_FOUND_PATH))
                 .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
     }
 

@@ -25,9 +25,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     })
     public ProblemDetail badRequest(RuntimeException e) {
         log.error(e.getMessage());
-        final var pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        pd.setProperty("timestamp", Instant.now());
-        return pd;
+        return createProblemDetail(HttpStatus.BAD_REQUEST, e);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -42,9 +40,9 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDescription> notFound(ResourceNotFoundException e) {
+    public ProblemDetail notFound(ResourceNotFoundException e) {
         log.error(e.getMessage());
-        return createResponseEntity(new ErrorDescription(HttpStatus.NOT_FOUND, e.getMessage()));
+        return createProblemDetail(HttpStatus.NOT_FOUND, e);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -59,5 +57,11 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(errorDescription.getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errorDescription);
+    }
+
+    private ProblemDetail createProblemDetail(final HttpStatus httpStatus, RuntimeException e) {
+        final var pd = ProblemDetail.forStatusAndDetail(httpStatus, e.getMessage());
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
     }
 }

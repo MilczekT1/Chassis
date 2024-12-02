@@ -3,11 +3,14 @@ package io.github.milczekt1.chassis.exceptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.Instant;
 
 @Slf4j
 @ControllerAdvice
@@ -20,9 +23,11 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
             NumberFormatException.class,
             IllegalArgumentException.class
     })
-    public ResponseEntity<ErrorDescription> badRequest(RuntimeException e){
+    public ProblemDetail badRequest(RuntimeException e) {
         log.error(e.getMessage());
-        return createResponseEntity(new ErrorDescription(HttpStatus.BAD_REQUEST, e.getMessage()));
+        final var pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

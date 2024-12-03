@@ -1,10 +1,9 @@
-package io.github.milczekt1.chassis.exceptions;
+package io.github.milczekt1.chassis.errorhandling.exceptions;
 
 public class InternalServerErrorException extends RuntimeException {
 
     public InternalServerErrorException(String message) {
         super(message);
-        this.printStackTrace();
     }
 
     public InternalServerErrorException(String s, Throwable throwable) {

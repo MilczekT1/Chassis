@@ -1,6 +1,7 @@
-package io.github.milczekt1.chassis.exceptions;
+package io.github.milczekt1.chassis.errorhandling.exceptions;
 
-public class ResourceCreationException extends RuntimeException {
+public class ResourceCreationException extends BadRequestException {
+
     public ResourceCreationException(String message) {
         super(message);
     }

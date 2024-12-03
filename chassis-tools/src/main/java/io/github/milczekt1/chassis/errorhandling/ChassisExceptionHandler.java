@@ -1,15 +1,23 @@
 package io.github.milczekt1.chassis.errorhandling;
 
 import io.github.milczekt1.chassis.errorhandling.exceptions.*;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
+import java.util.List;
+
+import static io.github.milczekt1.chassis.errorhandling.ViolationCreator.fromBindingResult;
+import static io.github.milczekt1.chassis.errorhandling.ViolationCreator.fromConstraintViolations;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.valueOf;
 
 @Slf4j
 @ControllerAdvice
@@ -22,7 +30,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
             NumberFormatException.class,
             IllegalArgumentException.class
     })
-    public ProblemDetail badRequest(RuntimeException e) {
+    public ProblemDetail handleBadRequest(RuntimeException e) {
         log.error(e.getMessage());
         return createProblemDetail(HttpStatus.BAD_REQUEST, e);
     }
@@ -31,21 +39,21 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({
             InternalServerErrorException.class
     })
-    public ProblemDetail internalServerError(RuntimeException e) {
+    public ProblemDetail handleInternalServerError(RuntimeException e) {
         log.error(e.getMessage());
         return createProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, e);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ProblemDetail notFound(ResourceNotFoundException e) {
+    public ProblemDetail handleNotFound(ResourceNotFoundException e) {
         log.error(e.getMessage());
         return createProblemDetail(HttpStatus.NOT_FOUND, e);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceConflictException.class)
-    public ProblemDetail conflict(ResourceConflictException e) {
+    public ProblemDetail handleConflict(ResourceConflictException e) {
         log.error(e.getMessage());
         return createProblemDetail(HttpStatus.CONFLICT, e);
     }

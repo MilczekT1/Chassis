@@ -1,4 +1,4 @@
 spring:
   mvc:
     problemdetails:
-      enabled: true
+      enabled: false

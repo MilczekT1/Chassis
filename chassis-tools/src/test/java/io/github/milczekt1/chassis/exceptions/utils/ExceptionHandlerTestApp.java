@@ -1,8 +1,12 @@
 package io.github.milczekt1.chassis.exceptions.utils;
 
-import io.github.milczekt1.chassis.configuration.WebServerAutoConfiguration;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(exclude = WebServerAutoConfiguration.class)
+@SpringBootApplication(excludeName = "io.github.milczekt1.chassis.configuration.WebServerAutoConfiguration")
 public class ExceptionHandlerTestApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ExceptionHandlerTestApp.class, args);
+    }
 }

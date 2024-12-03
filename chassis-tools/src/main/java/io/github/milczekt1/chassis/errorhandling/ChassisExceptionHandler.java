@@ -50,7 +50,38 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
         return createProblemDetail(HttpStatus.CONFLICT, e);
     }
 
-    private ProblemDetail createProblemDetail(final HttpStatus httpStatus, RuntimeException e) {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException e, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        final ProblemDetail problemDetail = createProblemDetail(e, BAD_REQUEST, e.getMessage(), null, null, request);
+        final List<Violation> violations = fromBindingResult(e.getBindingResult());
+        final ProblemDetail violationProblem = asViolationProblem(problemDetail, violations);
+        return handleExceptionInternal(e, violationProblem, headers, valueOf(violationProblem.getStatus()), request);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ProblemDetail handleConstraintViolationException(final ConstraintViolationException e) {
+        final ProblemDetail problemDetail = createProblemDetail(BAD_REQUEST, e);
+        final List<Violation> violations = fromConstraintViolations(e.getConstraintViolations());
+        final ProblemDetail violationProblem = asViolationProblem(problemDetail, violations);
+        return violationProblem;
+    }
+
+    private ProblemDetail createProblemDetailsWithViolations(final HttpStatus httpStatus, final RuntimeException e, List<Violation> violations) {
+        final var pd = createProblemDetail(httpStatus, e);
+        pd.setProperty("violations", violations);
+        return pd;
+    }
+
+    private ProblemDetail asViolationProblem(final ProblemDetail pd, final List<Violation> violations) {
+        pd.setDetail("Constraint Violation");
+        pd.setProperty("violations", violations);
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
+    }
+
+    private ProblemDetail createProblemDetail(final HttpStatus httpStatus, final RuntimeException e) {
         final var pd = ProblemDetail.forStatusAndDetail(httpStatus, e.getMessage());
         pd.setProperty("timestamp", Instant.now());
         return pd;

@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.errorhandling;
+package io.github.milczekt1.chassis.errorhandling.exceptions;
 
 public class BadRequestException extends RuntimeException {
 

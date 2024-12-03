@@ -1,5 +1,6 @@
 package io.github.milczekt1.chassis.errorhandling;
 
+import io.github.milczekt1.chassis.errorhandling.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

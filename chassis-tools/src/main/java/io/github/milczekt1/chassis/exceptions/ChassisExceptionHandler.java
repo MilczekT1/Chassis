@@ -28,8 +28,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({
-            InternalServerErrorException.class,
-            HashGenerationException.class
+            InternalServerErrorException.class
     })
     public ProblemDetail internalServerError(RuntimeException e) {
         log.error(e.getMessage());

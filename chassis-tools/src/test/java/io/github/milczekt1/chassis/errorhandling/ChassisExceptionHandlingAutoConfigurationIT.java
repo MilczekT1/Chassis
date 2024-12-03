@@ -1,7 +1,7 @@
-package io.github.milczekt1.chassis.exceptions;
+package io.github.milczekt1.chassis.errorhandling;
 
-import io.github.milczekt1.chassis.exceptions.utils.ChassisErrorHandlerIntegrationTest;
-import io.github.milczekt1.chassis.exceptions.utils.TestController;
+import io.github.milczekt1.chassis.errorhandling.utils.ChassisErrorHandlerIntegrationTest;
+import io.github.milczekt1.chassis.errorhandling.utils.TestController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

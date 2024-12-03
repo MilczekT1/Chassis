@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.exceptions.utils;
+package io.github.milczekt1.chassis.errorhandling.utils;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

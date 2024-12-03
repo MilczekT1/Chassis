@@ -1,6 +1,6 @@
-package io.github.milczekt1.chassis.exceptions.utils;
+package io.github.milczekt1.chassis.errorhandling.utils;
 
-import io.github.milczekt1.chassis.exceptions.*;
+import io.github.milczekt1.chassis.errorhandling.*;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

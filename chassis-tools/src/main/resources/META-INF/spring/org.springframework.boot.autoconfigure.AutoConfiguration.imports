@@ -1,4 +1,4 @@
 io.github.milczekt1.chassis.configuration.HttpLoggingAutoConfiguration
 io.github.milczekt1.chassis.configuration.WebServerAutoConfiguration
-io.github.milczekt1.chassis.exceptions.configuration.ChassisExceptionHandlingAutoConfiguration
+io.github.milczekt1.chassis.errorhandling.configuration.ChassisExceptionHandlingAutoConfiguration
 io.github.milczekt1.chassis.configuration.ChassisSecurityAutoConfiguration

@@ -1,6 +1,6 @@
-package io.github.milczekt1.chassis.exceptions.utils;
+package io.github.milczekt1.chassis.errorhandling.utils;
 
-import io.github.milczekt1.chassis.exceptions.configuration.ChassisExceptionHandlingAutoConfiguration;
+import io.github.milczekt1.chassis.errorhandling.configuration.ChassisExceptionHandlingAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

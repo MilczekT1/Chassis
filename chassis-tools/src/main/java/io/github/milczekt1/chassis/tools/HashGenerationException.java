@@ -1,6 +1,6 @@
 package io.github.milczekt1.chassis.tools;
 
-import io.github.milczekt1.chassis.exceptions.InternalServerErrorException;
+import io.github.milczekt1.chassis.errorhandling.InternalServerErrorException;
 
 public class HashGenerationException extends InternalServerErrorException {
 

@@ -1,6 +1,5 @@
 package io.github.milczekt1.chassis.tools;
 
-import io.github.milczekt1.chassis.errorhandling.HashGenerationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

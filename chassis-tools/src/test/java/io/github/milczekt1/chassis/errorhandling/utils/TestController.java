@@ -66,7 +66,7 @@ public class TestController {
     }
 
     @PostMapping(PARAM_NOT_VALID_PATH)
-    public ResponseEntity<Object> onInvalidRequestParam(@RequestParam(name = "age") /*@Valid*/ @Min(18) Long age) {
+    public ResponseEntity<Object> onInvalidRequestParam(@RequestParam(name = "age") @Min(18) Long age) {
         return null;
     }
 

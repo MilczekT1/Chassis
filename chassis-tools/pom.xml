@@ -16,7 +16,7 @@
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
 
-        <jacoco.classes.maxMissed>5</jacoco.classes.maxMissed>
+        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.5</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.5</jacoco.branches.minimum>
     </properties>

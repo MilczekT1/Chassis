@@ -2,6 +2,7 @@ package io.github.milczekt1.chassis.errorhandling;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.BindingResult;
 
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ViolationCreator {
 
     public static List<Violation> fromConstraintViolations(final Set<ConstraintViolation<?>> constraintViolations) {

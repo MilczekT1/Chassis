@@ -81,14 +81,6 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
         return violationProblem;
     }
 
-    private ProblemDetail createProblemDetailsWithViolations(final HttpStatus httpStatus,
-                                                             final RuntimeException e,
-                                                             final List<Violation> violations) {
-        final var pd = createProblemDetail(httpStatus, e);
-        pd.setProperty("violations", violations);
-        return pd;
-    }
-
     private ProblemDetail asViolationProblem(final ProblemDetail pd, final List<Violation> violations) {
         pd.setDetail("Constraint Violation");
         pd.setProperty("violations", violations);

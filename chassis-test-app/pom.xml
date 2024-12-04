@@ -18,6 +18,9 @@
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.0</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>
+        <sonar.coverage.exclusions>
+            **/AutoConfiguredBeanVerifier.java
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencyManagement>

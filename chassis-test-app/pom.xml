@@ -39,6 +39,10 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.github.milczekt1</groupId>
             <artifactId>chassis-tools-test</artifactId>
             <scope>test</scope>

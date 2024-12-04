@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-public class ModularPackages {
+public class PackageModularityTests {
     public static final JavaClasses classes;
     public static final String BASE_PACKAGE = "io.github.milczekt1.chassis";
 

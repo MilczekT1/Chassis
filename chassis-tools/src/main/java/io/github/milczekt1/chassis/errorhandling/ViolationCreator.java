@@ -1,7 +1,8 @@
 package io.github.milczekt1.chassis.errorhandling;
 
 import jakarta.validation.ConstraintViolation;
-import org.springframework.util.StringUtils;
+import jakarta.validation.constraints.NotNull;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 
+@NoArgsConstructor
 public class ViolationCreator {
 
     public static List<Violation> fromConstraintViolations(final Set<ConstraintViolation<?>> constraintViolations) {
@@ -59,7 +61,7 @@ public class ViolationCreator {
         return arg.startsWith("arg");
     }
 
-    private static String extractViolationName(final String propertyPathString) {
-        return StringUtils.split(propertyPathString, ".")[1];
+    private static String extractViolationName(@NotNull final String propertyPathString) {
+        return propertyPathString.split("\\.")[1];
     }
 }

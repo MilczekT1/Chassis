@@ -158,7 +158,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
     }
 
     @Test
-    void shouldReturnValidProblemDetailsForParamNotValid() throws JsonProcessingException {
+    void shouldReturnValidProblemDetailsForParamNotValid() {
         RestAssuredMockMvc.given()
                 .contentType(APPLICATION_JSON_VALUE)
                 .queryParams("age", 16L)

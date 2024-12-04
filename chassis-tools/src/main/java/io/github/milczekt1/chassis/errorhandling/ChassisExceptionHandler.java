@@ -77,8 +77,7 @@ public class ChassisExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleConstraintViolationException(final ConstraintViolationException e) {
         final ProblemDetail problemDetail = createProblemDetail(BAD_REQUEST, e);
         final List<Violation> violations = fromConstraintViolations(e.getConstraintViolations());
-        final ProblemDetail violationProblem = asViolationProblem(problemDetail, violations);
-        return violationProblem;
+        return asViolationProblem(problemDetail, violations);
     }
 
     private ProblemDetail asViolationProblem(final ProblemDetail pd, final List<Violation> violations) {

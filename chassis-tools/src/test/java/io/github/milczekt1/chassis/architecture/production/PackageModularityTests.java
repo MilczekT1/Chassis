@@ -20,7 +20,7 @@ public class PackageModularityTests {
     void exceptionPackageShouldNotDependOnOtherPackages() {
         // Given:
         ArchRule rule = noClasses().that()
-                .resideInAPackage(BASE_PACKAGE + ".exceptions" + "..")
+                .resideInAPackage(BASE_PACKAGE + ".errorhandling" + "..")
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage(

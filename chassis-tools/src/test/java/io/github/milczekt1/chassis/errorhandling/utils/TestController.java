@@ -23,11 +23,12 @@ public class TestController {
     public static final String BAD_REQUEST_PATH = "/bad-request";
     public static final String RESOURCE_CREATION_ERROR_PATH = "/bad-request/creation-error";
     public static final String NOT_FOUND_PATH = "/not-found";
-    public static final String INTERNAL_SERVER_ERROR_PATH = "/internal-server-error";
+    public static final String INTERNAL_SERVER_ERROR_PATH = "/internal-server-error/internal";
     public static final String RESOURCE_CONFLICT_PATH = "/conflict";
     public static final String VALIDATION_PATH = "/validation";
     public static final String METHOD_ARG_NOT_VALID_PATH = "/validation/method-argument-not-valid";
     public static final String PARAM_NOT_VALID_PATH = "/validation/param-not-valid";
+    public static final String INTERNAL_SERVER_ERROR_DEFAULT_PATH = "/internal-server-error/default";
 
     @GetMapping(BAD_REQUEST_PATH)
     public void throwBadRequestException() {
@@ -47,6 +48,11 @@ public class TestController {
     @GetMapping(INTERNAL_SERVER_ERROR_PATH)
     public void throwInternalServerErrorException() {
         throw new InternalServerErrorException(ERROR_TITLE);
+    }
+
+    @GetMapping(INTERNAL_SERVER_ERROR_DEFAULT_PATH)
+    public void throwException() throws Exception {
+        throw new Exception(ERROR_TITLE);
     }
 
     @GetMapping(RESOURCE_CONFLICT_PATH)

@@ -89,6 +89,22 @@ class ChassisExceptionHandlingAutoConfigurationIT {
     }
 
     @Test
+    void shouldReturnValidProblemDetailsForException() {
+        RestAssuredMockMvc.given()
+                .when()
+                .get(INTERNAL_SERVER_ERROR_DEFAULT_PATH)
+                .then()
+                .status(INTERNAL_SERVER_ERROR)
+                .contentType(APPLICATION_PROBLEM_JSON_VALUE)
+                .body("type", equalTo("about:blank"))
+                .body("title", equalTo("Internal Server Error"))
+                .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
+                .body("detail", equalTo(TestController.ERROR_TITLE))
+                .body("instance", equalTo(BASE_PATH + INTERNAL_SERVER_ERROR_DEFAULT_PATH))
+                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+    }
+
+    @Test
     void shouldReturnValidProblemDetailsForResourceConflictException() {
         RestAssuredMockMvc.given()
                 .when()
@@ -158,7 +174,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("instance", equalTo(BASE_PATH + PARAM_NOT_VALID_PATH))
                 .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()))
                 .body("violations", hasSize(1))
-                .body("violations[0].field", equalTo("age"))
+                .body("violations[0].field", equalTo("queryParam"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 18"));
     }
 

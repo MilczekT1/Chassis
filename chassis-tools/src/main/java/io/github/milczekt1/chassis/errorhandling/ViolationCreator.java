@@ -46,8 +46,20 @@ public class ViolationCreator {
     private static String violationNameFromPropertyPath(ConstraintViolation<?> cv) {
         final var propertyPathString = cv.getPropertyPath().toString();
         if (propertyPathString.contains(".")) {
-            return StringUtils.split(propertyPathString, ".")[1];
+            final var violationName = extractViolationName(propertyPathString);
+            if (isQueryParam(violationName)) {
+                return "queryParam";
+            }
+            return violationName;
         }
         return propertyPathString;
+    }
+
+    private static boolean isQueryParam(final String arg) {
+        return arg.startsWith("arg");
+    }
+
+    private static String extractViolationName(final String propertyPathString) {
+        return StringUtils.split(propertyPathString, ".")[1];
     }
 }

@@ -1,3 +1,21 @@
+* [Release process](#release-process)
+* [Cross cutting concerns](#cross-cutting-concerns)
+    * [Exception handling with problem details response](#exception-handling)
+* [Changelog:](#changelog)
+    * [09.11.2024](#09112024)
+        * [Major refactoring of modules](#major-refactoring-of-modules)
+        * [Changed test execution and reporting](#changed-test-execution-and-reporting)
+        * [CI:](#ci)
+    * [28.01.2024:](#28012024)
+    * [18.01.2024:](#18012024)
+    * [08.06.2023:](#08062023)
+    * [10.04.2023:](#10042023)
+    * [08.04.2023:](#08042023)
+    * [6.07.2022:](#6072022)
+    * [15.12.2021:](#15122021)
+    * [25.07.2021:](#25072021)
+    * [31.07.2020:](#31072020)
+
 ### Release process
 
 1. Create branch release/x.y.z
@@ -13,7 +31,62 @@ All steps are covered in prepare-release.sh and tag-release.sh
 - merge release/0.4.2 to master
 - sh tag-release.sh 0.4.2
 
+### Cross cutting concerns
+
+#### Exception handling
+
+> [!IMPORTANT]
+> Required property: \
+> spring.mvc.problemdetails.enabled: false
+
+Generic exceptions are provided. If they are thrown, application should return response compatible with
+ProblemDetail [RFC 7807 standard](https://datatracker.ietf.org/doc/html/rfc7807).
+
+Throw or extend those RuntimeExceptions:
+
+| Exception                    | Response status |
+|------------------------------|-----------------|
+| BadRequestException          | 400             |
+| ResourceCreationException    | 400             |
+| ResourceNotFoundException    | 404             |
+| ResourceConflictException    | 409             |
+| InternalServerErrorException | 500             |
+
+##### Problem details
+
+```json
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Test message",
+  "instance": "/exceptions/bad-request",
+  "timestamp": "2024-12-03T10:31:09.840944Z"
+}
+```
+
+```json
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Constraint Violation",
+  "instance": "/exceptions/validation/method-argument-not-valid",
+  "violations": [
+    {
+      "field": "age",
+      "message": "must be greater than or equal to 18"
+    }
+  ],
+  "timestamp": "2024-12-03T12:55:48.119636Z"
+}
+```
+
 ### Changelog:
+
+##### 03.12.2024
+
+* Reimplemented first cross cutting concern [Exception handling with problem detail response](#exception-handling)
 
 ##### 09.11.2024
 

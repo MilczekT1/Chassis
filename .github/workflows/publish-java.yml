@@ -29,6 +29,5 @@ jobs:
         run: mvn -B package --file pom.xml -DskipTests=true ${{ env.MVN_CONFIG }}
       - name: Publish to GitHub Packages Apache Maven
         env:
-          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: mvn deploy -s $GITHUB_WORKSPACE/.github/settings.xml ${{ env.MVN_CONFIG }}

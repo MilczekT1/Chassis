@@ -1,6 +1,5 @@
 package io.github.milczekt1.chassis.tools;
 
-import io.github.milczekt1.chassis.exceptions.HashGenerationException;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

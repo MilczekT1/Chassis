@@ -18,6 +18,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <chassis.springboot.version>3.2.1</chassis.springboot.version>
+
         <!--Properties to override        -->
         <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
@@ -46,6 +48,18 @@
             <url>https://maven.pkg.github.com/milczekt1/*</url>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.milczekt1</groupId>
+                <artifactId>chassis-bom</artifactId>
+                <version>${project.parent.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>
@@ -185,6 +199,7 @@
                             <phase>integration-test</phase>
                             <goals>
                                 <goal>integration-test</goal>
+                                <goal>verify</goal>
                             </goals>
                             <configuration>
                                 <enableProcessChecker>native</enableProcessChecker>
@@ -230,22 +245,23 @@
                     <executions>
                         <execution>
                             <id>repackage</id>
+                            <phase>post-integration-test</phase>
                             <goals>
                                 <goal>repackage</goal>
                             </goals>
                         </execution>
-                        <execution>
-                            <id>build-info</id>
-                            <goals>
-                                <goal>build-info</goal>
-                            </goals>
-                            <configuration>
-                                <additionalProperties>
-                                    <springbootVersion>${chassis.springboot.version}</springbootVersion>
-                                    <chassisVersion>${project.parent.version}</chassisVersion>
-                                </additionalProperties>
-                            </configuration>
-                        </execution>
+                        <!--                        <execution>-->
+                        <!--                            <id>build-info</id>-->
+                        <!--                            <goals>-->
+                        <!--                                <goal>build-info</goal>-->
+                        <!--                            </goals>-->
+                        <!--                            <configuration>-->
+                        <!--                                <additionalProperties>-->
+                        <!--                                    <springbootVersion>${chassis.springboot.version}</springbootVersion>-->
+                        <!--                                    <chassisVersion>${project.parent.version}</chassisVersion>-->
+                        <!--                                </additionalProperties>-->
+                        <!--                            </configuration>-->
+                        <!--                        </execution>-->
                     </executions>
                 </plugin>
                 <plugin>

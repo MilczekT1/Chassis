@@ -34,5 +34,5 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn verify sonar:sonar ${{ env.MVN_CONFIG }} \
+          mvn clean verify sonar:sonar ${{ env.MVN_CONFIG }} \
             -Dsonar.token=$SONAR_TOKEN

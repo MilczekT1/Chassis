@@ -9,30 +9,104 @@ on:
       - master
 env:
   MVN_CONFIG: -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+  CACHE_KEY: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
 jobs:
+  create-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Restore Maven Cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ env.CACHE_KEY }}
+      - name: Set up JDK for dependency download
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - name: Download all Maven dependencies
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mvn -Dmaven.wagon.http.retryHandler.count=3 -B -s .ci/mvn-settings.xml dependency:go-offline
+      - name: Check if there are any changes in cache
+        id: stale-cache-check
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cache_sha1sum=$(find ~/.m2/repository -type f \( -exec sha1sum {} \; \) | grep -v lifung-spring-test-lib | grep -v resolver-status.properties | cut -d' ' -f1 | sort | sha1sum | cut -d' ' -f1)
+          if [ -f ~/.m2/sha1sum ]; then
+            if [[ $(cut -d' ' -f1 < ~/.m2/sha1sum) != "$cache_sha1sum" ]]; then
+              echo $cache_sha1sum > ~/.m2/sha1sum
+              echo cache stale
+              gh extension install actions/gh-actions-cache
+              gh actions-cache delete "${{ env.CACHE_KEY }}" -B "${{ github.ref }}" --confirm || true
+              echo "cache-outdated=true" >> $GITHUB_OUTPUT
+            else
+              echo cache ok
+            fi
+          else
+            echo $cache_sha1sum > ~/.m2/sha1sum
+            echo "cache-outdated=true" >> $GITHUB_OUTPUT
+            echo new cache
+          fi
+      - name: Upload Maven Cache
+        if: ${{ steps.stale-cache-check.outputs.cache-outdated }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ env.CACHE_KEY }}
+
   build:
+    needs: [ create-cache ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
+      - name: Restore Maven cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ env.CACHE_KEY }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
       - name: Build with Maven
         run: mvn clean install ${{ env.MVN_CONFIG }}
-      - name: SonarCloud Scan
+  sonar_scan:
+    needs: [ create-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Restore Maven cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ env.CACHE_KEY }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - name: SonarCloud scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn clean verify sonar:sonar ${{ env.MVN_CONFIG }} \
             -Dsonar.token=$SONAR_TOKEN
+

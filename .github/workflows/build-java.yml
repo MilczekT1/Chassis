@@ -8,7 +8,7 @@ on:
     branches:
       - master
 env:
-  MVN_CONFIG: -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+  MVN_CONFIG: -B -s $GITHUB_WORKSPACE/.github/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
   CACHE_KEY: mvn-cache
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          mvn -Dmaven.wagon.http.retryHandler.count=3 -B -s .ci/mvn-settings.xml dependency:go-offline
+          mvn -Dmaven.wagon.http.retryHandler.count=3 -B dependency:go-offline ${{ env.MVN_CONFIG }}
       - name: Check if there are any changes in cache
         id: stale-cache-check
         shell: bash
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Restore Maven cache
         uses: actions/cache/restore@v4
         with:
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Restore Maven cache
         uses: actions/cache/restore@v4
         with:

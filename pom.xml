@@ -27,7 +27,6 @@
         <module>chassis-tools</module>
         <module>chassis-bom</module>
         <module>chassis-parent</module>
-        <module>chassis-openapi-parent</module>
         <module>chassis-dependencies</module>
         <module>chassis-test-app</module>
     </modules>

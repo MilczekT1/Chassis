@@ -17,7 +17,7 @@ class AutoconfiguredBeansVerifierIT {
     @Test
     void shouldStartWithAllRequiredBeansFromTools() {
         final var throwable = catchThrowable(() -> autoConfiguredBeanVerifier.verifyBeans());
-        assertThat(throwable).isNotNull();
+        assertThat(throwable).isNull();
     }
 
 }

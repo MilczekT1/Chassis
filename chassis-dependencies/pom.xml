@@ -11,13 +11,12 @@
 
     <artifactId>chassis-dependencies</artifactId>
     <packaging>jar</packaging>
+    <description>Dependency aggregator for easier maintenance in microservices</description>
 
     <properties>
-        <java.version>21</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--This parameter skips dependency resolution for this module. As they are unavailable during release-->
+        <mdep.skip>true</mdep.skip>
     </properties>
 
     <dependencyManagement>
@@ -39,4 +38,14 @@
             <artifactId>chassis-tools</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

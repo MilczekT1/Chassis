@@ -13,9 +13,10 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <chassis.springboot.version>3.2.1</chassis.springboot.version>
@@ -67,7 +68,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.11</version>
+                    <version>0.8.12</version>
                     <executions>
                         <execution>
                             <id>pre-unit-test</id>
@@ -180,7 +181,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.2.5</version>
                     <configuration>
                         <excludes>
                             <exclude>**/*IT.java</exclude>
@@ -192,7 +193,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.2.5</version>
                     <executions>
                         <execution>
                             <id>default</id>

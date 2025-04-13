@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <chassis.springboot.version>3.2.1</chassis.springboot.version>
-        <chassis.springcloudtrain.version>2023.0.0</chassis.springcloudtrain.version>
+        <chassis.springboot.version>3.4.4</chassis.springboot.version>
+        <chassis.springcloudtrain.version>2024.0.1</chassis.springcloudtrain.version>
         <junit5.version>5.10.1</junit5.version>
 
         <sonar.organization>milczekt1</sonar.organization>

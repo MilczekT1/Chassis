@@ -2,10 +2,14 @@
 * [Cross cutting concerns](#cross-cutting-concerns)
     * [Exception handling with problem details response](#exception-handling)
 * [Changelog:](#changelog)
+    * [13.04.2025](#13042025)
+        * [Dropped openapi parent support](#dropped-openapi-parent-support)
+        * [Dependencies update](#dependencies-update)
+        * [CI:](#ci)
     * [09.11.2024](#09112024)
         * [Major refactoring of modules](#major-refactoring-of-modules)
         * [Changed test execution and reporting](#changed-test-execution-and-reporting)
-        * [CI:](#ci)
+      * [CI:](#ci-1)
     * [28.01.2024:](#28012024)
     * [18.01.2024:](#18012024)
     * [08.06.2023:](#08062023)
@@ -83,6 +87,22 @@ Throw or extend those RuntimeExceptions:
 ```
 
 ### Changelog:
+
+##### 13.04.2025
+
+###### Dropped openapi parent support
+
+* It's not necessary for now, maybe it will come back in the future.
+
+###### Dependencies update
+
+* SpringBoot 3.4.4
+* Java 21
+
+###### CI
+
+* updated to java 21 and mvn wrapper to 3.9.9
+* Dockerized test app
 
 ##### 03.12.2024
 

@@ -1,7 +1,6 @@
-package io.github.milczekt1.chassis.test.listeners;
+package io.github.milczekt1.chassis.test.controller;
 
 import io.github.milczekt1.chassis.test.TestContextUtils;
-import io.github.milczekt1.chassis.test.annotations.ControllerTest;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -17,17 +16,20 @@ import org.springframework.test.web.servlet.MockMvc;
  * 3. Invoke RestAssuredMockMvc.reset() after test class.
  */
 @Slf4j
-public class ControllerTestExecutionListener extends AbstractTestExecutionListener {
+public class ControllerTestListener extends AbstractTestExecutionListener {
 
     @Override
     public void beforeTestClass(TestContext testContext) {
         var controllerTest = TestContextUtils.getTestClassAnnotation(testContext, ControllerTest.class);
         if (controllerTest.isEmpty()) {
-            log.warn("No @ControllerTest annotations present");
+            log.trace("No @ControllerTest annotations present");
             return;
         }
+        log.info("@ControllerTest found. Setting up rest assured.");
+        final var encoderConfig = EncoderConfig.encoderConfig()
+                .defaultCharsetForContentType("UTF-8", ContentType.JSON);
         RestAssuredMockMvc.config = RestAssuredMockMvc.config()
-                .encoderConfig(EncoderConfig.encoderConfig().defaultCharsetForContentType("UTF-8", ContentType.JSON));
+                .encoderConfig(encoderConfig);
         RestAssuredMockMvc.basePath = controllerTest.get().basePath();
         RestAssuredMockMvc.mockMvc(TestContextUtils.getBean(testContext, MockMvc.class));
     }

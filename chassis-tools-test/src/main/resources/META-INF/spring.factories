@@ -1,2 +1,3 @@
 org.springframework.test.context.TestExecutionListener=\
-  net.twill.starter.test.RestAssuredTestListener
+io.github.milczekt1.chassis.test.clock.FixedClockListener,\
+io.github.milczekt1.chassis.test.controller.ControllerTestListener

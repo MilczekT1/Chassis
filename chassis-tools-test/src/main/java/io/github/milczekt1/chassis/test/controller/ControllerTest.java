@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.test.annotations;
+package io.github.milczekt1.chassis.test.controller;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +13,6 @@ import java.lang.annotation.*;
 @Documented
 @WebMvcTest
 @ActiveProfiles
-@AutoConfigureMockMvc
 public @interface ControllerTest {
 
     String basePath() default "/";

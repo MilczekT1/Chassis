@@ -17,7 +17,7 @@
         <sonar.projectKey>MilczekT1_Chassis</sonar.projectKey>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.coverage.exclusions>
-            **/listeners/*,
+            **/controller/*,
             **/TestContextUtils.java
         </sonar.coverage.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>

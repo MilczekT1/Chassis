@@ -25,6 +25,7 @@ public class ControllerTestListener extends AbstractTestExecutionListener {
             log.trace("No @ControllerTest annotations present");
             return;
         }
+
         log.info("@ControllerTest found. Setting up rest assured.");
         final var encoderConfig = EncoderConfig.encoderConfig()
                 .defaultCharsetForContentType("UTF-8", ContentType.JSON);

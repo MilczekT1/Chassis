@@ -13,7 +13,6 @@ import java.lang.annotation.*;
 @Documented
 @WebMvcTest
 @ActiveProfiles
-@AutoConfigureMockMvc
 public @interface ControllerTest {
 
     String basePath() default "/";

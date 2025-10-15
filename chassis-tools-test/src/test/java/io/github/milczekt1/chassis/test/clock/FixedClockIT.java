@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @FixedClock
 @TestToolsIntegrationTest
-public class FixedClockIT {
+class FixedClockIT {
 
     @Autowired
     Clock clock;

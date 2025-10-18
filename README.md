@@ -3,6 +3,7 @@
     * [Exception handling with problem details response](#exception-handling)
   * [Testing](#testing)
       * [@FixedClock](#fixedClock)
+    * [LogbackVerifierExtension](#logbackVerifierExtension)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -120,7 +121,28 @@ class FixedClockIT {
 }
 ```
 
+###### LogbackVerifierExtension
+
+Extend your test class with @ExtendWith(LogbackVerifierExtension.class), to enable support for customized log checks.
+Refer to LogVerifier class.
+
+```java
+
+@ExtendWith(LogbackVerifierExtension.class)
+class Test {
+    @Test
+    void test(LogVerifier logVerifier) {
+        whatever();
+        logVerifier.containsInfo("desired log");
+    }
+}
+```
+
 ### Changelog:
+
+##### 18.10.2025
+
+Added @FixedClock and LogbackVerifierExtension to test fixtures.
 
 ##### 13.04.2025
 

@@ -134,7 +134,7 @@ class LogbackVerifierExtensionTest {
         assertThatCode(logVerifier::hasNoEntries)
                 .doesNotThrowAnyException();
         // then
-        assertThat(logVerifier.getAllLoggedEvents().size()).isEqualTo(0);
+        assertThat(logVerifier.getAllLoggedEvents()).isEmpty();
     }
 
     @Test
@@ -147,7 +147,7 @@ class LogbackVerifierExtensionTest {
         assertThatCode(() -> logVerifier.hasSingleEntry(Level.INFO))
                 .doesNotThrowAnyException();
         // then
-        assertThat(logVerifier.getAllLoggedEvents().size()).isEqualTo(1);
+        assertThat(logVerifier.getAllLoggedEvents()).hasSize(1);
     }
 
     @Test

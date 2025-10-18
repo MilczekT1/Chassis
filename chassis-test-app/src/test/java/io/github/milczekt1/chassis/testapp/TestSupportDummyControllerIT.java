@@ -2,9 +2,12 @@ package io.github.milczekt1.chassis.testapp;
 
 import io.github.milczekt1.chassis.test.clock.FixedClock;
 import io.github.milczekt1.chassis.test.controller.ControllerTest;
+import io.github.milczekt1.chassis.test.logging.LogVerifier;
+import io.github.milczekt1.chassis.test.logging.LogbackVerifierExtension;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,6 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @FixedClock
 @ControllerTest(value = DummyController.class, basePath = DummyController.BASE_PATH)
+@ExtendWith(LogbackVerifierExtension.class)
 class TestSupportDummyControllerIT {
 
     @Autowired
@@ -43,13 +47,14 @@ class TestSupportDummyControllerIT {
     }
 
     @Test
-    void controllerTestAnnotation_example() {
+    void controllerTestAnnotation_example(LogVerifier logVerifier) {
         RestAssuredMockMvc.given()
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
                 .body(equalTo("dummyResponseBody"));
+        logVerifier.containsInfo("dummy endpoint hit.");
     }
 
 }

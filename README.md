@@ -1,6 +1,8 @@
 * [Release process](#release-process)
 * [Cross cutting concerns](#cross-cutting-concerns)
     * [Exception handling with problem details response](#exception-handling)
+  * [Testing](#testing)
+      * [@FixedClock](#fixedClock)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -83,6 +85,38 @@ Throw or extend those RuntimeExceptions:
     }
   ],
   "timestamp": "2024-12-03T12:55:48.119636Z"
+}
+```
+
+#### Testing
+
+###### FixedClock
+
+You can use @FixedClock annotation to mock clock in tests. Example usage:
+
+```java
+
+@FixedClock
+@TestToolsIntegrationTest
+class FixedClockIT {
+
+    @Autowired
+    Clock clock;
+
+    @Test
+    void givenClassLevelAnnotation_whenUseClock_thenReturnMockedDateTime() {
+        // Given
+        final var now = Instant.now(clock);
+        Assertions.assertThat(now).isEqualTo(Instant.parse(FixedClock.DEFAULT_LOCAL_INSTANT));
+    }
+
+    @FixedClock("2027-01-10T10:00:00Z")
+    @Test
+    void givenMethodLevelAnnotation_whenUseClock_thenOverrideMockedDateTime() {
+        // Given
+        final var now = Instant.now(clock);
+        Assertions.assertThat(now).isEqualTo(Instant.parse("2027-01-10T10:00:00Z"));
+    }
 }
 ```
 

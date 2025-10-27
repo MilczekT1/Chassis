@@ -74,9 +74,9 @@ jobs:
     needs: [ create-cache ]
     runs-on: ubuntu-latest
     env:
-      DOCKER_HOST: unix:///var/run/docker.sock
-      TESTCONTAINERS_RYUK_DISABLED: true
-      TESTCONTAINERS_CHECKS_DISABLE: true  # optional, skips environment checks
+    #      DOCKER_HOST: unix:///var/run/docker.sock
+    #      TESTCONTAINERS_RYUK_DISABLED: true
+    #      TESTCONTAINERS_CHECKS_DISABLE: true  # optional, skips environment checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -97,6 +97,10 @@ jobs:
       - name: Fix Docker permissions
         run: sudo chmod 666 /var/run/docker.sock
       - name: Build with Maven
+        env:
+          DOCKER_HOST: unix:///var/run/docker.sock
+          TESTCONTAINERS_RYUK_DISABLED: false
+          TESTCONTAINERS_CHECKS_DISABLE: true
         #        env:
         #          TESTCONTAINERS_RYUK_DISABLED: true
         run: mvn clean install ${{ env.MVN_CONFIG }}

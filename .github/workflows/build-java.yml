@@ -94,6 +94,8 @@ jobs:
       - name: Verify Docker
         run: docker ps
       #
+      - name: Fix Docker permissions
+        run: sudo chmod 666 /var/run/docker.sock
       - name: Build with Maven
         #        env:
         #          TESTCONTAINERS_RYUK_DISABLED: true

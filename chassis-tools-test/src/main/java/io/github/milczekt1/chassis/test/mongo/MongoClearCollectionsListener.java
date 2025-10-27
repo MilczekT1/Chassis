@@ -15,8 +15,6 @@ import static io.github.milczekt1.chassis.test.TestContextUtils.getTestClassAnno
 @Slf4j
 public class MongoClearCollectionsListener extends AbstractTestExecutionListener {
 
-//    private static final Logger log = LoggerFactory.getLogger(MongoClearCollectionsListener.class);
-
     @Override
     public void afterTestMethod(TestContext testContext) {
         var clearCollections = getTestClassAnnotation(testContext, ClearCollections.class);

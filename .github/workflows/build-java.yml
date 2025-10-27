@@ -89,8 +89,6 @@ jobs:
       - name: Build with Maven
         env:
           DOCKER_HOST: unix:///var/run/docker.sock
-          #          TESTCONTAINERS_RYUK_DISABLED: false
-          #          TESTCONTAINERS_CHECKS_DISABLE: true
           TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
         run: mvn clean install ${{ env.MVN_CONFIG }}
   sonar_scan:

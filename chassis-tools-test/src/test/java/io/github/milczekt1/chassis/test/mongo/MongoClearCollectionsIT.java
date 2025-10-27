@@ -58,7 +58,7 @@ public class MongoClearCollectionsIT {
         }
 
         @AfterAll
-        void shouldDropCollectionAndIndex() throws Exception {
+        void shouldDropCollectionAndIndex() {
             assertThat(mongoTemplate.count(new Query(), COLLECTION_NAME)).isZero();
             assertThat(mongoTemplate.indexOps(COLLECTION_NAME).getIndexInfo()).isEmpty();
         }

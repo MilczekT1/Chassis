@@ -73,10 +73,6 @@ jobs:
   build:
     needs: [ create-cache ]
     runs-on: ubuntu-latest
-    #    env:
-    #      DOCKER_HOST: unix:///var/run/docker.sock
-    #      TESTCONTAINERS_RYUK_DISABLED: true
-    #      TESTCONTAINERS_CHECKS_DISABLE: true  # optional, skips environment checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -90,12 +86,8 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-      - name: Fix Docker permissions
-        run: sudo chmod 666 /var/run/docker.sock
-      #
-      - name: Verify Docker
-        run: docker ps && docker run hello-world
-      #
+      #      - name: Fix Docker permissions
+      #        run: sudo chmod 666 /var/run/docker.sock
       - name: Build with Maven
         env:
           DOCKER_HOST: unix:///var/run/docker.sock

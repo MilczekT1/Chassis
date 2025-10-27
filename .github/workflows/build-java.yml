@@ -75,15 +75,15 @@ jobs:
     runs-on: ubuntu-latest
     services:
       docker:
-        image: docker:28-dind
+        image: docker:27-dind
         options: --privileged  # enables Docker-in-Docker
         ports:
           - 2375:2375
         env:
           DOCKER_TLS_CERTDIR: ""  # disable TLS so Testcontainers can connect
-          TESTCONTAINERS_RYUK_DISABLED: true
     env:
       DOCKER_HOST: tcp://localhost:2375
+      TESTCONTAINERS_RYUK_DISABLED: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

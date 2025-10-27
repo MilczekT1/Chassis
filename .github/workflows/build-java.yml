@@ -97,6 +97,10 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
+      #
+      - name: Verify Docker
+        run: docker ps
+      #
       - name: Build with Maven
         run: mvn clean install ${{ env.MVN_CONFIG }}
   sonar_scan:

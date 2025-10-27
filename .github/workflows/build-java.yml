@@ -90,12 +90,12 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-      #
-      - name: Verify Docker
-        run: docker ps
-      #
       - name: Fix Docker permissions
         run: sudo chmod 666 /var/run/docker.sock
+      #
+      - name: Verify Docker
+        run: docker ps && docker run hello-world
+      #
       - name: Build with Maven
         env:
           DOCKER_HOST: unix:///var/run/docker.sock

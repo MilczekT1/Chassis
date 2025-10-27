@@ -73,7 +73,7 @@ jobs:
   build:
     needs: [ create-cache ]
     runs-on: ubuntu-latest
-    env:
+    #    env:
     #      DOCKER_HOST: unix:///var/run/docker.sock
     #      TESTCONTAINERS_RYUK_DISABLED: true
     #      TESTCONTAINERS_CHECKS_DISABLE: true  # optional, skips environment checks

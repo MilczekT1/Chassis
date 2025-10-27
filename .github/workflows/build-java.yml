@@ -73,6 +73,14 @@ jobs:
   build:
     needs: [ create-cache ]
     runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:28-dind
+        options: --privileged  # enables Docker-in-Docker
+        ports:
+          - 2375:2375
+        env:
+          DOCKER_TLS_CERTDIR: ""  # disable TLS so Testcontainers can connect
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

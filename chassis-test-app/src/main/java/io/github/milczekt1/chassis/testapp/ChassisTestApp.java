@@ -2,8 +2,9 @@ package io.github.milczekt1.chassis.testapp;
 
 import io.github.milczekt1.chassis.ChassisApplication;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
-@ChassisApplication
+@ChassisApplication(exclude = MongoAutoConfiguration.class)
 public class ChassisTestApp {
 
     public static void main(String[] args) {

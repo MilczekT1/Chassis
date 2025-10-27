@@ -81,6 +81,8 @@ jobs:
           - 2375:2375
         env:
           DOCKER_TLS_CERTDIR: ""  # disable TLS so Testcontainers can connect
+    env:
+      DOCKER_HOST: tcp://localhost:2375
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

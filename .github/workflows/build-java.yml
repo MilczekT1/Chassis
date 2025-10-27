@@ -73,17 +73,6 @@ jobs:
   build:
     needs: [ create-cache ]
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:27-dind
-        options: --privileged  # enables Docker-in-Docker
-        ports:
-          - 2375:2375
-        env:
-          DOCKER_TLS_CERTDIR: ""  # disable TLS so Testcontainers can connect
-    env:
-      DOCKER_HOST: tcp://localhost:2375
-      TESTCONTAINERS_RYUK_DISABLED: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -102,6 +91,8 @@ jobs:
         run: docker ps
       #
       - name: Build with Maven
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: true
         run: mvn clean install ${{ env.MVN_CONFIG }}
   sonar_scan:
     needs: [ create-cache ]

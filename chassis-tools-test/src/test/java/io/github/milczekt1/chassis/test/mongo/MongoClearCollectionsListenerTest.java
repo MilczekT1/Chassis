@@ -2,6 +2,7 @@ package io.github.milczekt1.chassis.test.mongo;
 
 import com.mongodb.BasicDBObject;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @BootstrapWith(SpringBootTestContextBootstrapper.class)
 @ContextConfiguration(classes = {

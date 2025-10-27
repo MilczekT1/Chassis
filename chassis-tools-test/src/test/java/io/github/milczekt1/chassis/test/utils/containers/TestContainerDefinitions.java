@@ -8,5 +8,5 @@ public final class TestContainerDefinitions {
 
     public static final MongoDBContainer MONGODB = new MongoDBContainer("mongo:8.0.15")
             .withEnv("MONGO_INITDB_DATABASE", MONGODB_DB_NAME)
-            .withReuse(true);
+            .withReuse(System.getenv("CI") == null);
 }

@@ -99,7 +99,7 @@ jobs:
       - name: Build with Maven
         env:
           DOCKER_HOST: unix:///var/run/docker.sock
-          TESTCONTAINERS_RYUK_DISABLED: false
+          TESTCONTAINERS_RYUK_DISABLED: true
           TESTCONTAINERS_CHECKS_DISABLE: true
         #        env:
         #          TESTCONTAINERS_RYUK_DISABLED: true

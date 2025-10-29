@@ -1,9 +1,11 @@
-package io.github.milczekt1.chassis.test.utils;
+package io.github.milczekt1.chassis.testapp.utils;
 
-import io.github.milczekt1.chassis.test.utils.containers.MongoContainerInitializer;
+
+import io.github.milczekt1.chassis.test.logging.LogbackVerifierExtension;
+import io.github.milczekt1.chassis.testapp.ChassisTestApp;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -14,9 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 @Retention(RUNTIME)
 @ActiveProfiles({"itest"})
-@ContextConfiguration(initializers = {
-        MongoContainerInitializer.class
-})
-@SpringBootTest(classes = TestApp.class)
-public @interface TestToolsIntegrationTest {
+@ExtendWith(LogbackVerifierExtension.class)
+@SpringBootTest(classes = ChassisTestApp.class)
+public @interface TestAppIntegrationTest {
 }

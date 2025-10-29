@@ -6,3 +6,9 @@ spring:
   application.name: test-app
   cloud.config.enabled: false # TODO: to remove after drop support in chassis
   main.allow-bean-definition-overriding: true
+  data:
+    mongodb:
+      database: local_db
+      username: local_username
+      password: local_password
+      uri: mongodb://${spring.data.mongodb.username}:${spring.data.mongodb.password}@localhost:27017/${spring.data.mongodb.database}

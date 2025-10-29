@@ -4,6 +4,7 @@
   * [Testing](#testing)
       * [@FixedClock](#fixedClock)
     * [LogbackVerifierExtension](#logbackVerifierExtension)
+    * [ClearCollections](#clearCollections)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -138,7 +139,41 @@ class Test {
 }
 ```
 
+###### ClearCollections
+
+```java
+
+@ClearCollections("accounts")
+class TestIT {
+    @Test
+    void test() {
+        // ...
+    }
+}
+```
+
+Should produce following log message after each test
+"Clearing up [accounts] collections. Removed X entries"
+
+```java
+
+@ClearCollections(value = "accounts", drop = true)
+class TestIT {
+    @Test
+    void test() {
+        // ...
+    }
+}
+```
+
+Should produce following log message after each test
+"Dropped collection accounts"
+
 ### Changelog:
+
+##### 28.10.2025
+
+Added @ClearCollections test annotation and docker-compose support for test app only.
 
 ##### 18.10.2025
 

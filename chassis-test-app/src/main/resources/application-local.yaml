@@ -3,3 +3,5 @@ spring:
     compose:
       enabled: true
       file: ${user.dir}/chassis-test-app/docker-compose.yaml
+logging:
+  config: classpath:logback-local.xml

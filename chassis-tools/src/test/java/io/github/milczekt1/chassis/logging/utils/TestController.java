@@ -25,13 +25,6 @@ public class TestController {
 
     @GetMapping("/withCollection")
     public ResponseEntity<List<String>> collectionGet() {
-        return ResponseEntity.ok(
-//                new ResponseBodyWithList(
-                List.of("item1", "item2")
-//        )
-        );
-    }
-
-    public record ResponseBodyWithList(List<String> items) {
+        return ResponseEntity.ok(List.of("item1", "item2"));
     }
 }

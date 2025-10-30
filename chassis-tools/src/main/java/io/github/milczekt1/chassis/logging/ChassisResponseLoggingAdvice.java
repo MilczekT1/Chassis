@@ -16,7 +16,6 @@ import java.util.Collection;
 @Slf4j
 @ControllerAdvice
 public class ChassisResponseLoggingAdvice implements ResponseBodyAdvice<Object> {
-//    private static final Logger log = LoggerFactory.getLogger(ResponseLoggingAdvice.class);
 
     @Override
     public boolean supports(MethodParameter returnType,

@@ -2,6 +2,8 @@ package io.github.milczekt1.chassis.testapp;
 
 import io.github.milczekt1.chassis.errorhandling.ChassisExceptionHandler;
 import io.github.milczekt1.chassis.errorhandling.configuration.ChassisExceptionHandlingAutoConfiguration;
+import io.github.milczekt1.chassis.logging.ChassisRequestLoggingInterceptor;
+import io.github.milczekt1.chassis.logging.ChassisResponseLoggingAdvice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -21,6 +23,7 @@ public class AutoConfiguredBeanVerifier {
     public void verifyBeans() {
         try {
             verifyBeansErrorHandling();
+            verifyBeansLogging();
             log.info("All beans provided by Chassis have been initialized.");
         } catch (NoSuchBeanDefinitionException e) {
             throw new IllegalStateException("At least on of chassis based beans is no set", e);
@@ -30,5 +33,10 @@ public class AutoConfiguredBeanVerifier {
     private void verifyBeansErrorHandling() {
         applicationContext.getBean(ChassisExceptionHandler.class);
         applicationContext.getBean(ChassisExceptionHandlingAutoConfiguration.class);
+    }
+
+    private void verifyBeansLogging() {
+        applicationContext.getBean(ChassisRequestLoggingInterceptor.class);
+        applicationContext.getBean(ChassisResponseLoggingAdvice.class);
     }
 }

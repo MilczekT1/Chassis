@@ -3,3 +3,7 @@ spring:
     compose:
       enabled: true
       file: ${user.dir}/chassis-test-app/docker-compose.yaml
+      wait-timeout: 45s
+      remove-orphans: true
+logging:
+  config: classpath:logback-local.xml

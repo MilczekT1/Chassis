@@ -171,6 +171,11 @@ Should produce following log message after each test
 
 ### Changelog:
 
+##### 30.10.2025
+
+* Added support for logging around requests
+* Dropped support for previous logging configuration under `budget.chassis.http-logging.*`.
+
 ##### 28.10.2025
 
 Added @ClearCollections test annotation and docker-compose support for test app only.

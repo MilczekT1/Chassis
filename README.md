@@ -5,6 +5,7 @@
       * [@FixedClock](#fixedClock)
     * [LogbackVerifierExtension](#logbackVerifierExtension)
     * [ClearCollections](#clearCollections)
+  * [Logging](#logging)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -168,6 +169,24 @@ class TestIT {
 
 Should produce following log message after each test
 "Dropped collection accounts"
+
+#### Logging
+
+Application automatically logs information around requests.
+
+for instance:
+
+```
+Incoming: method: GET, uri: /api/logs, queryString: ?queryParam=testParam, remoteIp: 127.0.0.1, userAgent: null
+[...]
+Request completed. Status: 200, duration: 2ms.
+```
+
+It also automatically logs collection size if that's the response body.
+
+```
+Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
+```
 
 ### Changelog:
 

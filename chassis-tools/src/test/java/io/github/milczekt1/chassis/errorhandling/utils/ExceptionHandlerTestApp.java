@@ -3,7 +3,7 @@ package io.github.milczekt1.chassis.errorhandling.utils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(excludeName = "io.github.milczekt1.chassis.configuration.WebServerAutoConfiguration")
+@SpringBootApplication
 public class ExceptionHandlerTestApp {
 
     public static void main(String[] args) {

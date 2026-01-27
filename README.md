@@ -190,6 +190,10 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 27.01.2026
+
+* Springboot 3.4.4 -> 3.5.10
+
 ##### 30.10.2025
 
 * Added support for logging around requests

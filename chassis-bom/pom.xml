@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <springboot.version>3.4.13</springboot.version>
-        <spring-cloud-dependencies.version>2024.0.3</spring-cloud-dependencies.version>
+        <springboot.version>3.5.10</springboot.version>
+        <spring-cloud-dependencies.version>2025.0.1</spring-cloud-dependencies.version>
 
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

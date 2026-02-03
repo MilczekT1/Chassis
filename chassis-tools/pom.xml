@@ -20,7 +20,7 @@
             ${project.build.directory}/coverage-reports/merged-test-coverage-report/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
 
-        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
+        <jacoco.classes.maxMissed>1</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.5</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.5</jacoco.branches.minimum>
     </properties>

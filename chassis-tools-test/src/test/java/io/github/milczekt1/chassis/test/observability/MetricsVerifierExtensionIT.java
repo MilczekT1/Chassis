@@ -23,7 +23,6 @@ class MetricsVerifierExtensionIT {
 
     @Test
     void shouldInjectMetricsVerifier(MetricsVerifier metricsVerifier) {
-        // Verify parameter injection works
         assertThat(metricsVerifier).isNotNull();
     }
 

@@ -1,0 +1,29 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="ChassisTestApp (local template)" type="SpringBootApplicationConfigurationType"
+                   factoryName="Spring Boot">
+        <option name="ACTIVE_PROFILES" value="local"/>
+        <envs>
+            <env name="OTEL_EXPORTER_OTLP_ENDPOINT" value="https://otlp-gateway-prod-eu-north-0.grafana.net/otlp"/>
+            <env name="OTEL_EXPORTER_OTLP_HEADERS" value="Authorization=Basic &lt;base64(username:password)&gt;"/>
+            <env name="OTEL_RESOURCE_ATTRIBUTES"
+                 value="service.namespace=chassis-test-app,deployment.environment=local"/>
+        </envs>
+        <module name="chassis-test-app"/>
+        <option name="SPRING_BOOT_MAIN_CLASS" value="io.github.milczekt1.chassis.testapp.ChassisTestApp"/>
+        <option name="VM_PARAMETERS"
+                value="-javaagent:$PROJECT_DIR$/chassis-test-app/agent/grafana-opentelemetry-java.jar -Dotel.service.name=chassis-test-app"/>
+        <extension name="net.ashald.envfile">
+            <option name="IS_ENABLED" value="false"/>
+            <option name="IS_SUBST" value="false"/>
+            <option name="IS_PATH_MACRO_SUPPORTED" value="false"/>
+            <option name="IS_IGNORE_MISSING_FILES" value="false"/>
+            <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false"/>
+            <ENTRIES>
+                <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false"/>
+            </ENTRIES>
+        </extension>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
+</component>

@@ -88,6 +88,8 @@ public class ChassisObservabilityProperties {
                  * OTLP endpoint URL for metrics export.
                  * Should include the full path to the metrics endpoint.
                  * <p>
+                 * Default: http://localhost:4318/v1/metrics (for local development)
+                 * <p>
                  * Examples:
                  * - Localhost: http://localhost:4318/v1/metrics
                  * - Grafana Cloud: https://otlp-gateway-{region}.grafana.net/otlp/v1/metrics
@@ -103,8 +105,14 @@ public class ChassisObservabilityProperties {
 
                 /**
                  * Export interval - how frequently metrics are pushed to the OTLP endpoint.
+                 * <p>
+                 * Default: 60s (recommended for production to avoid rate limits)
+                 * <p>
+                 * Shorter intervals (10s-30s) are useful for development/testing but increase
+                 * load on the OTLP receiver and may hit rate limits with cloud providers.
+                 * </p>
                  */
-                private Duration step = Duration.ofSeconds(10);
+                private Duration step = Duration.ofSeconds(60);
             }
         }
     }

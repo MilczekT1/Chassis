@@ -34,8 +34,8 @@ class ObservabilityIT {
             // then
             metricsVerifier.assertMetric("counter.hit")
                     // resource attributes
-                    .withTag("service.name", "test-app")
-                    .withTag("service.namespace", "test-app")
+                    .withTag("service.name", "chassis-test-app")
+                    .withTag("service.namespace", "chassis-test-app")
                     .withTag("deployment.environment", "local")
                     // common tags
                     .withTag("chassis", "true")
@@ -51,7 +51,7 @@ class ObservabilityIT {
             restTemplate.getForEntity("/metrics/counter", String.class);
 
             metricsVerifier.assertMetric("counter.hit")
-                    .withTag("service.name", "test-app")
+                    .withTag("service.name", "chassis-test-app")
                     .hasValueGreaterThan(metricBefore + 1.0)
                     .hasValueGreaterThanOrEqualTo(metricBefore + 2.0)
                     .hasValue(metricBefore + 2.0);

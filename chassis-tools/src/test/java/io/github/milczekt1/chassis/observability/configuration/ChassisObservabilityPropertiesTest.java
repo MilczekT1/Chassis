@@ -31,7 +31,7 @@ class ChassisObservabilityPropertiesTest {
         assertThat(metrics.getExport().getOtlp().getProtocol())
                 .isEqualTo("http/protobuf");
         assertThat(metrics.getExport().getOtlp().getStep())
-                .isEqualTo(Duration.ofSeconds(10));
+                .isEqualTo(Duration.ofSeconds(60));
 
         // Traces defaults
         assertThat(properties.getTraces().isEnabled()).isTrue();

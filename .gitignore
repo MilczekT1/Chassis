@@ -30,3 +30,8 @@ nbdist/
 .DS_Store
 **/target/*
 **/pom.xml.*
+
+### Environment Variables ###
+.env
+*.env
+!.env.example

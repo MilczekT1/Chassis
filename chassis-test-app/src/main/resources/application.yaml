@@ -12,3 +12,35 @@ spring:
       username: local_username
       password: local_password
       uri: mongodb://${spring.data.mongodb.username}:${spring.data.mongodb.password}@localhost:27017/${spring.data.mongodb.database}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+chassis:
+  observability:
+    enabled: true
+    metrics:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT_URL:http://localhost:4318/v1/metrics}
+          step: 10s
+    traces:
+      enabled: true
+      exposeHeaders: true # Add Trace-Id and Span-Id to response headers
+      sampling:
+        rate: 1.0 # Sample 100% of traces (adjust for production)
+        strategy: PARENT_BASED # Respect parent trace sampling decisions
+      ignoredPaths: # Don't trace these paths
+        - /actuator/**
+        - /tracing/health
+    authentication:
+      basic:
+        username: ${OTLP_USERNAME:}
+        password: ${OTLP_PASSWORD:}
+    resource-attributes:
+      service.name: ${spring.application.name}
+      service.namespace: ${SERVICE_NAMESPACE:test-app}
+      deployment.environment: ${DEPLOYMENT_ENVIRONMENT:local}
+    common-tags:
+      chassis: true

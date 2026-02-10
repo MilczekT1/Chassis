@@ -40,7 +40,7 @@ chassis:
         password: ${OTLP_PASSWORD:}
     resource-attributes:
       service.name: ${spring.application.name}
-      service.namespace: ${SERVICE_NAMESPACE:test-app}
+      service.namespace: ${SERVICE_NAMESPACE:chassis-test-app}
       deployment.environment: ${DEPLOYMENT_ENVIRONMENT:local}
     common-tags:
       chassis: true

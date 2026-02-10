@@ -168,7 +168,49 @@ class TestIT {
 ```
 
 Should produce following log message after each test
-"Dropped collection accounts"
+`Dropped collection accounts`
+
+###### MetricsVerifierExtension
+
+```java
+
+@ExtendWith(MetricsVerifierExtension.class)
+class MetricsIT {
+    @Test
+    void shouldVerifyMetricValue(MetricsVerifier metricsVerifier) {
+        meterRegistry.counter("dummy.metric").increment();
+        meterRegistry.counter("dummy.metric").increment();
+
+        metricsVerifier.assertMetric("dummy.metric")
+                .hasValueGreaterThan(1.0)
+                .hasValueGreaterThanOrEqualTo(2.0)
+                .hasValue(2.0);
+    }
+}
+```
+
+**TraceVerifier** - Validate distributed tracing
+
+```java
+
+@ExtendWith(TraceVerifierExtension.class)
+class TracingIT {
+    @Test
+    void testTracing(TraceVerifier verifier) {
+        String traceId = verifier.getCurrentTraceId();
+        verifier.assertTraceIdValid(traceId);
+
+        // Verify response has trace headers
+        ResponseEntity<?> response = restTemplate.getForEntity("/api", String.class);
+        verifier.assertResponseHasTraceHeaders(response);
+
+        // Verify trace propagation
+        String parentTraceId = "aaaabbbbccccdddd1111222233334444";
+        String childTraceId = response.getHeaders().getFirst("Trace-Id");
+        verifier.assertTracePropagated(parentTraceId, childTraceId);
+    }
+}
+```
 
 #### Logging
 

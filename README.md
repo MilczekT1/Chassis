@@ -6,6 +6,7 @@
     * [LogbackVerifierExtension](#logbackVerifierExtension)
     * [ClearCollections](#clearCollections)
   * [Logging](#logging)
+  * [Observability](#observability)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -230,7 +231,28 @@ It also automatically logs collection size if that's the response body.
 Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 ```
 
+#### Observability
+
+- Automatic common tags on all metrics
+- Trace response headers (Trace-Id, Span-Id) + W3C propagation
+- Resource attributes (service.name, namespace, environment)
+
+**Configuration:** `chassis.observability.*`
+
+**Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
+
 ### Changelog:
+
+##### 28.02.2026
+
+* Added observability test utilities in `chassis-tools-test`:
+    * Added `MetricsVerifierExtension`
+    * Added `TraceVerifierExtension`
+
+* Automatic export of metric/logs/traces with agent
+    * **Metrics**: Automatic common tags and resource attributes
+    * **Tracing**: Response header exposure (Trace-Id, Span-Id), W3C propagation, sampling controls
+    * **Auto Instrumentation**: Spring MVC, RestTemplate, WebClient (via OpenTelemetry Java Agent)
 
 ##### 23.02.2026
 

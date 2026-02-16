@@ -19,7 +19,7 @@
         <jacoco.lineCoverage.minimum>0.0</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>
         <sonar.coverage.exclusions>
-            **/AutoConfiguredBeanVerifier.java
+            **/AutoConfiguredBeanVerifier.java,
             **/TracingDemoController.java
         </sonar.coverage.exclusions>
     </properties>

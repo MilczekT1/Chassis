@@ -40,6 +40,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor
 public class MetricsVerifier {
 
+    private static final String METRIC_SHOULD_EXIST = "Metric '%s' should exist as counter";
+
     private final MeterRegistry meterRegistry;
 
     public MetricAssertion assertMetric(String metricName) {
@@ -92,7 +94,7 @@ public class MetricsVerifier {
         public MetricAssertion hasValue(double expected) {
             Counter counter = registry.find(metricName).tags(expectedTags).counter();
             assertThat(counter)
-                    .as("Metric '%s' should exist as counter", metricName)
+                    .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
                     .as("Counter '%s' should have value %s", metricName, expected)
@@ -103,7 +105,7 @@ public class MetricsVerifier {
         public MetricAssertion hasValueGreaterThan(double expected) {
             Counter counter = registry.find(metricName).tags(expectedTags).counter();
             assertThat(counter)
-                    .as("Metric '%s' should exist as counter", metricName)
+                    .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
                     .as("Counter '%s' should have value greater than %s", metricName, expected)
@@ -114,7 +116,7 @@ public class MetricsVerifier {
         public MetricAssertion hasValueGreaterThanOrEqualTo(double expected) {
             Counter counter = registry.find(metricName).tags(expectedTags).counter();
             assertThat(counter)
-                    .as("Metric '%s' should exist as counter", metricName)
+                    .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
                     .as("Counter '%s' should have value >= %s", metricName, expected)
@@ -125,7 +127,7 @@ public class MetricsVerifier {
         public MetricAssertion hasValueLessThan(double expected) {
             Counter counter = registry.find(metricName).tags(expectedTags).counter();
             assertThat(counter)
-                    .as("Metric '%s' should exist as counter", metricName)
+                    .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
                     .as("Counter '%s' should have value greater than %s", metricName, expected)
@@ -136,7 +138,7 @@ public class MetricsVerifier {
         public MetricAssertion hasValueLessThanOrEqualTo(double expected) {
             Counter counter = registry.find(metricName).tags(expectedTags).counter();
             assertThat(counter)
-                    .as("Metric '%s' should exist as counter", metricName)
+                    .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
                     .as("Counter '%s' should have value >= %s", metricName, expected)

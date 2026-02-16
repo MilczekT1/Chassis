@@ -45,6 +45,8 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "chassis.observability")
 public class ChassisObservabilityProperties {
 
+    private static final String DEFAULT_PROTOCOL = "http/protobuf";
+
     private boolean enabled = true;
     private Metrics metrics = new Metrics();
     private Traces traces = new Traces();
@@ -101,7 +103,7 @@ public class ChassisObservabilityProperties {
                  * OTLP protocol to use.
                  * Supported values: http/protobuf, grpc
                  */
-                private String protocol = "http/protobuf";
+                private String protocol = DEFAULT_PROTOCOL;
 
                 /**
                  * Export interval - how frequently metrics are pushed to the OTLP endpoint.
@@ -151,7 +153,7 @@ public class ChassisObservabilityProperties {
                  * OTLP protocol to use.
                  * Supported values: http/protobuf, grpc
                  */
-                private String protocol = "http/protobuf";
+                private String protocol = DEFAULT_PROTOCOL;
             }
         }
 
@@ -218,7 +220,7 @@ public class ChassisObservabilityProperties {
                  * OTLP protocol to use.
                  * Supported values: http/protobuf, grpc
                  */
-                private String protocol = "http/protobuf";
+                private String protocol = DEFAULT_PROTOCOL;
             }
         }
     }

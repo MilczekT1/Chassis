@@ -23,7 +23,7 @@
             **/*Properties.java
         </sonar.coverage.exclusions>
         <sonar.cpd.exclusions>
-            **/*Properties
+            **/*Properties.java
         </sonar.cpd.exclusions>
 
         <jacoco.classes.maxMissed>1</jacoco.classes.maxMissed>

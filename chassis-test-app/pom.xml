@@ -20,6 +20,7 @@
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>
         <sonar.coverage.exclusions>
             **/AutoConfiguredBeanVerifier.java
+            **/*Demo*.java
         </sonar.coverage.exclusions>
     </properties>
 

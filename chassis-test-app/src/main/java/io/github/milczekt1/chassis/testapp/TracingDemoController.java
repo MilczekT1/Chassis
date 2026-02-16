@@ -68,19 +68,9 @@ public class TracingDemoController {
      * - Trace-Id: 128-bit trace identifier
      * - Span-Id: 64-bit span identifier
      * </p>
-     * <p>
-     * These headers enable client-side correlation and debugging.
-     * </p>
-     *
-     * @param traceId Current trace ID from OpenTelemetry context
-     * @param spanId  Current span ID from OpenTelemetry context
-     * @return Response with trace context information
      */
-    @GetMapping("/simple")
-    public Map<String, String> simpleTrace(
-            @RequestHeader(value = "Trace-Id", required = false) String traceId,
-            @RequestHeader(value = "Span-Id", required = false) String spanId) {
-
+    @GetMapping("/headers")
+    public Map<String, String> headersExposure() {
         log.info("Processing simple trace request");
 
         // Get current span from OpenTelemetry context
@@ -117,10 +107,8 @@ public class TracingDemoController {
             @RequestHeader(value = "traceparent", required = false) String traceparent) {
 
         log.info("Processing trace propagation request with traceparent: {}", traceparent);
-
         Span currentSpan = Span.current();
         String traceId = currentSpan.getSpanContext().getTraceId();
-
         return Map.of(
                 "message", "Trace propagation endpoint",
                 "traceId", traceId,
@@ -228,8 +216,6 @@ class TracingDemoService {
      * The OpenTelemetry agent ensures the trace context from the
      * calling thread is propagated to this async executor.
      * </p>
-     *
-     * @return CompletableFuture with result
      */
     @Async
     public CompletableFuture<String> asyncWork() {
@@ -252,8 +238,6 @@ class TracingDemoService {
      * Demonstrates manual span creation using OpenTelemetry API
      * for fine-grained observability of business operations.
      * </p>
-     *
-     * @return Business operation result
      */
     public String businessLogicWithCustomSpan() {
         // Get tracer from OpenTelemetry

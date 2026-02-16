@@ -131,7 +131,7 @@ public class ChassisObservabilityAutoConfiguration {
         return allTags.entrySet().stream()
                 .filter(e -> StringUtils.hasText(e.getValue())) // Filter out null/empty values
                 .map(e -> Tag.of(e.getKey(), e.getValue()))
-                .collect(Collectors.toList());
+                .toList();
 
     }
 

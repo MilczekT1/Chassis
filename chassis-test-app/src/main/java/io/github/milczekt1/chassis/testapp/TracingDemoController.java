@@ -57,6 +57,9 @@ import static io.github.milczekt1.chassis.testapp.TracingDemoController.BASE_PAT
 public class TracingDemoController {
 
     public static final String BASE_PATH = "/tracing";
+    private static final String MESSAGE = "message";
+    private static final String TRACE_ID = "traceId";
+    private static final String NOTE = "note";
 
     private final TracingDemoService service;
     private final RestTemplate restTemplate;
@@ -79,10 +82,10 @@ public class TracingDemoController {
         String contextSpanId = currentSpan.getSpanContext().getSpanId();
 
         return Map.of(
-                "message", "Simple trace endpoint",
-                "traceId", contextTraceId,
+                MESSAGE, "Simple trace endpoint",
+                TRACE_ID, contextTraceId,
                 "spanId", contextSpanId,
-                "note", "Check response headers for Trace-Id and Span-Id"
+                NOTE, "Check response headers for Trace-Id and Span-Id"
         );
     }
 
@@ -110,10 +113,10 @@ public class TracingDemoController {
         Span currentSpan = Span.current();
         String traceId = currentSpan.getSpanContext().getTraceId();
         return Map.of(
-                "message", "Trace propagation endpoint",
-                "traceId", traceId,
+                MESSAGE, "Trace propagation endpoint",
+                TRACE_ID, traceId,
                 "traceparentReceived", traceparent != null ? traceparent : "none",
-                "note", traceparent != null
+                NOTE, traceparent != null
                         ? "This span is a child of the incoming trace"
                         : "This is a new root trace"
         );
@@ -147,16 +150,16 @@ public class TracingDemoController {
             String response = restTemplate.getForObject("http://localhost:8080/dummy", String.class);
 
             return Map.of(
-                    "message", "Client call completed",
-                    "traceId", traceId,
+                    MESSAGE, "Client call completed",
+                    TRACE_ID, traceId,
                     "remoteResponse", response,
-                    "note", "Check Grafana for client span linked to this server span"
+                    NOTE, "Check Grafana for client span linked to this server span"
             );
         } catch (Exception e) {
             log.error("Client call failed", e);
             return Map.of(
-                    "message", "Client call failed",
-                    "traceId", traceId,
+                    MESSAGE, "Client call failed",
+                    TRACE_ID, traceId,
                     "error", e.getMessage()
             );
         }
@@ -170,11 +173,11 @@ public class TracingDemoController {
         String traceId = currentSpan.getSpanContext().getTraceId();
 
         // Async method call - trace context automatically propagated
-        CompletableFuture<String> result = service.asyncWork();
+        service.asyncWork();
         return Map.of(
-                "message", "Async operation initiated",
-                "traceId", traceId,
-                "note", "Async work will appear as child span in same trace"
+                MESSAGE, "Async operation initiated",
+                TRACE_ID, traceId,
+                NOTE, "Async work will appear as child span in same trace"
         );
     }
 
@@ -189,10 +192,10 @@ public class TracingDemoController {
         String result = service.businessLogicWithCustomSpan();
 
         return Map.of(
-                "message", "Custom span demonstration",
-                "traceId", traceId,
+                MESSAGE, "Custom span demonstration",
+                TRACE_ID, traceId,
                 "businessResult", result,
-                "note", "Check Grafana for custom 'business-logic' span"
+                NOTE, "Check Grafana for custom 'business-logic' span"
         );
     }
 

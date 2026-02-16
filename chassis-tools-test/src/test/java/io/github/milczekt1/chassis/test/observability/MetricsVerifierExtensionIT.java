@@ -36,7 +36,7 @@ class MetricsVerifierExtensionIT {
         var listedMetrics = metricsVerifier.listMetrics();
         // then
         assertThat(listedMetrics)
-                .containsAll(listedMetrics);
+                .containsAll(metrics);
     }
 
     @Test

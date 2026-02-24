@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
+        <version>4.0.3</version>
         <relativePath/>
     </parent>
 
@@ -20,8 +20,8 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <springboot.version>3.5.10</springboot.version>
-        <spring-cloud-dependencies.version>2025.0.1</spring-cloud-dependencies.version>
+        <springboot.version>4.0.3</springboot.version>
+        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
 
         <!--Properties to override        -->
         <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
@@ -277,7 +277,7 @@
                 <plugin>
                     <groupId>io.github.git-commit-id</groupId>
                     <artifactId>git-commit-id-maven-plugin</artifactId>
-                    <version>7.0.0</version>
+                    <version>9.0.2</version>
                     <executions>
                         <execution>
                             <id>get-the-git-infos</id>

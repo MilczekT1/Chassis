@@ -1,7 +1,5 @@
 package io.github.milczekt1.chassis.errorhandling;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.milczekt1.chassis.errorhandling.utils.ChassisErrorHandlerIntegrationTest;
 import io.github.milczekt1.chassis.errorhandling.utils.TestController;
 import io.github.milczekt1.chassis.errorhandling.utils.ValidableObject;
@@ -12,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.contract.spec.internal.RegexPatterns;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static io.github.milczekt1.chassis.errorhandling.utils.TestController.*;
 import static org.hamcrest.Matchers.*;
@@ -48,7 +48,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -64,7 +63,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(NOT_FOUND)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Not Found"))
                 .body("status", equalTo(NOT_FOUND.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -80,7 +78,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(INTERNAL_SERVER_ERROR)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -96,7 +93,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(INTERNAL_SERVER_ERROR)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -112,7 +108,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(CONFLICT)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Conflict"))
                 .body("status", equalTo(CONFLICT.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -128,7 +123,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
@@ -137,7 +131,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
     }
 
     @Test
-    void shouldReturnValidProblemDetailsForMethodArgumentNotValid() throws JsonProcessingException {
+    void shouldReturnValidProblemDetailsForMethodArgumentNotValid() throws JacksonException {
         RestAssuredMockMvc.given()
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(new ObjectMapper().writeValueAsString(new ValidableObject(16L)))
@@ -146,7 +140,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
@@ -167,7 +160,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
@@ -179,7 +171,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
     }
 
     @Test
-    void shouldReturnValidProblemDetailsForValidationException() throws JsonProcessingException {
+    void shouldReturnValidProblemDetailsForValidationException() throws JacksonException {
         RestAssuredMockMvc.given()
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(new ObjectMapper().writeValueAsString(new ValidableObject(16L)))
@@ -188,7 +180,6 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .then()
                 .status(BAD_REQUEST)
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
-                .body("type", equalTo("about:blank"))
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))

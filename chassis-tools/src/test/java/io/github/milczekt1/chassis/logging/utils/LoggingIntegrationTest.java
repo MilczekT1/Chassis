@@ -4,8 +4,8 @@ import io.github.milczekt1.chassis.logging.configuration.ChassisLoggingAutoConfi
 import io.github.milczekt1.chassis.test.logging.LogbackVerifierExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ActiveProfiles;
 

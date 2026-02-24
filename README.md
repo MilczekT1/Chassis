@@ -190,6 +190,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 23.02.2026
+
+* Springboot 3.5.10 -> 4.0.3
+* Spring Cloud 2025.0.1 -> 2025.1.1
+* Undertow -> Tomcat
+
 ##### 27.01.2026
 
 * Springboot 3.4.4 -> 3.5.10

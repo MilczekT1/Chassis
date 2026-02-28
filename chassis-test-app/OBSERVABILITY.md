@@ -81,8 +81,6 @@ chassis:
     enabled: true  # Enable/disable Chassis observability features
     traces:
       exposeHeaders: true  # Add Trace-Id/Span-Id to response headers
-      ignoredPaths:  # Don't trace these paths
-        - /actuator/**
     common-tags:
       chassis: true  # Add custom tags to metrics
 ```

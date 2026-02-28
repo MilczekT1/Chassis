@@ -45,7 +45,6 @@ import static io.github.milczekt1.chassis.testapp.TracingDemoController.BASE_PAT
  * Chassis Observability adds:
  * - Response header exposure (Trace-Id, Span-Id)
  * - Configuration-driven sampling
- * - Ignored paths for health checks and actuator endpoints
  * </p>
  *
  * @see ChassisTraceResponseHeaderFilter

@@ -4,9 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,7 +123,6 @@ public class ChassisObservabilityProperties {
         private boolean enabled = true;
         private boolean exposeHeaders = true;
         private Sampling sampling = new Sampling();
-        private List<String> ignoredPaths = new ArrayList<>();
         private Export export = new Export();
 
         @Data

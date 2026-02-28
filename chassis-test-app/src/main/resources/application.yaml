@@ -36,9 +36,6 @@ chassis:
       sampling:
         rate: 1.0  # Sample 100% of traces (adjust to 0.1 for 10% in production)
         strategy: PARENT_BASED  # Respect parent trace sampling decisions
-      ignoredPaths: # Don't trace these paths
-        - /actuator/**
-        - /tracing/health
       export:
         otlp:
           endpoint: ${OTLP_ENDPOINT_URL:https://otlp-gateway-prod-eu-north-0.grafana.net/otlp}/v1/traces

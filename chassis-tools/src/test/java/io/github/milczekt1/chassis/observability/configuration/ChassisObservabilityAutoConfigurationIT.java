@@ -217,17 +217,4 @@ class ChassisObservabilityAutoConfigurationIT {
                 });
     }
 
-    @Test
-    void whenIgnoredPathsConfigured_thenPropertiesApplied() {
-        contextRunner
-                .withPropertyValues(
-                        "chassis.observability.traces.ignoredPaths[0]=/actuator/**",
-                        "chassis.observability.traces.ignoredPaths[1]=/health"
-                )
-                .run(context -> {
-                    ChassisObservabilityProperties properties = context.getBean(ChassisObservabilityProperties.class);
-
-                    assertThat(properties.getTraces().getIgnoredPaths()).containsExactly("/actuator/**", "/health");
-                });
-    }
 }

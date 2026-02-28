@@ -84,10 +84,9 @@ public class ChassisObservabilityAutoConfiguration {
         log.info("Resource Attributes: {}", properties.getResourceAttributes());
         log.info("Common Tags: {}", properties.getCommonTags());
         if (properties.getTraces().isEnabled()) {
-            log.info("Tracing: enabled=true, exposeHeaders={}, samplingRate={}, ignoredPaths={}",
+            log.info("Tracing: enabled=true, exposeHeaders={}, samplingRate={}",
                     properties.getTraces().isExposeHeaders(),
-                    properties.getTraces().getSampling().getRate(),
-                    properties.getTraces().getIgnoredPaths());
+                    properties.getTraces().getSampling().getRate());
         }
     }
 

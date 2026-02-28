@@ -19,7 +19,8 @@
         <jacoco.lineCoverage.minimum>0.0</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.0</jacoco.branches.minimum>
         <sonar.coverage.exclusions>
-            **/AutoConfiguredBeanVerifier.java
+            **/AutoConfiguredBeanVerifier.java,
+            **/TracingDemoController.java
         </sonar.coverage.exclusions>
     </properties>
 
@@ -82,19 +83,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>
-        <!--MONITORING-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
         <!--        Test-->
         <dependency>
             <groupId>io.github.milczekt1</groupId>
@@ -127,5 +115,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

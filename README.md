@@ -6,6 +6,7 @@
     * [LogbackVerifierExtension](#logbackVerifierExtension)
     * [ClearCollections](#clearCollections)
   * [Logging](#logging)
+  * [Observability](#observability)
 * [Changelog:](#changelog)
     * [13.04.2025](#13042025)
         * [Dropped openapi parent support](#dropped-openapi-parent-support)
@@ -168,7 +169,49 @@ class TestIT {
 ```
 
 Should produce following log message after each test
-"Dropped collection accounts"
+`Dropped collection accounts`
+
+###### MetricsVerifierExtension
+
+```java
+
+@ExtendWith(MetricsVerifierExtension.class)
+class MetricsIT {
+    @Test
+    void shouldVerifyMetricValue(MetricsVerifier metricsVerifier) {
+        meterRegistry.counter("dummy.metric").increment();
+        meterRegistry.counter("dummy.metric").increment();
+
+        metricsVerifier.assertMetric("dummy.metric")
+                .hasValueGreaterThan(1.0)
+                .hasValueGreaterThanOrEqualTo(2.0)
+                .hasValue(2.0);
+    }
+}
+```
+
+**TraceVerifier** - Validate distributed tracing
+
+```java
+
+@ExtendWith(TraceVerifierExtension.class)
+class TracingIT {
+    @Test
+    void testTracing(TraceVerifier verifier) {
+        String traceId = verifier.getCurrentTraceId();
+        verifier.assertTraceIdValid(traceId);
+
+        // Verify response has trace headers
+        ResponseEntity<?> response = restTemplate.getForEntity("/api", String.class);
+        verifier.assertResponseHasTraceHeaders(response);
+
+        // Verify trace propagation
+        String parentTraceId = "aaaabbbbccccdddd1111222233334444";
+        String childTraceId = response.getHeaders().getFirst("Trace-Id");
+        verifier.assertTracePropagated(parentTraceId, childTraceId);
+    }
+}
+```
 
 #### Logging
 
@@ -188,7 +231,28 @@ It also automatically logs collection size if that's the response body.
 Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 ```
 
+#### Observability
+
+- Automatic common tags on all metrics
+- Trace response headers (Trace-Id, Span-Id) + W3C propagation
+- Resource attributes (service.name, namespace, environment)
+
+**Configuration:** `chassis.observability.*`
+
+**Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
+
 ### Changelog:
+
+##### 28.02.2026
+
+* Added observability test utilities in `chassis-tools-test`:
+    * Added `MetricsVerifierExtension`
+    * Added `TraceVerifierExtension`
+
+* Automatic export of metric/logs/traces with agent
+    * **Metrics**: Automatic common tags and resource attributes
+    * **Tracing**: Response header exposure (Trace-Id, Span-Id), W3C propagation, sampling controls
+    * **Auto Instrumentation**: Spring MVC, RestTemplate, WebClient (via OpenTelemetry Java Agent)
 
 ##### 23.02.2026
 

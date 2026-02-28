@@ -1,3 +1,4 @@
 io.github.milczekt1.chassis.errorhandling.configuration.ChassisExceptionHandlingAutoConfiguration
 io.github.milczekt1.chassis.logging.configuration.ChassisLoggingAutoConfiguration
 io.github.milczekt1.chassis.configuration.ChassisSecurityAutoConfiguration
+io.github.milczekt1.chassis.observability.configuration.ChassisObservabilityAutoConfiguration

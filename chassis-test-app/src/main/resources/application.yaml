@@ -3,7 +3,7 @@ server:
   http2:
     enabled: true
 spring:
-  application.name: test-app
+  application.name: chassis-test-app
   cloud.config.enabled: false # TODO: to remove after drop support in chassis
   main.allow-bean-definition-overriding: true
   data:
@@ -12,3 +12,44 @@ spring:
       username: local_username
       password: local_password
       uri: mongodb://${spring.data.mongodb.username}:${spring.data.mongodb.password}@localhost:27017/${spring.data.mongodb.database}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      otlp:
+        enabled: false  # Disable Spring Boot's native OTLP - Java agent handles this
+
+chassis:
+  observability:
+    enabled: true
+    metrics:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT_URL:https://otlp-gateway-prod-eu-north-0.grafana.net/otlp}/v1/metrics
+          step: 60s  # How often to send metrics
+    traces:
+      enabled: true
+      exposeHeaders: true  # Add Trace-Id and Span-Id to response headers
+      sampling:
+        rate: 1.0  # Sample 100% of traces (adjust to 0.1 for 10% in production)
+        strategy: PARENT_BASED  # Respect parent trace sampling decisions
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT_URL:https://otlp-gateway-prod-eu-north-0.grafana.net/otlp}/v1/traces
+    logs:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT_URL:https://otlp-gateway-prod-eu-north-0.grafana.net/otlp}/v1/logs
+    authentication:
+      basic:
+        username: ${OTLP_USERNAME:}
+        password: ${OTLP_PASSWORD:}
+    resource-attributes:
+      service.name: ${spring.application.name}
+      service.namespace: ${SERVICE_NAMESPACE:chassis-test-app}
+      deployment.environment: ${DEPLOYMENT_ENVIRONMENT:local}
+    common-tags:
+      chassis: true

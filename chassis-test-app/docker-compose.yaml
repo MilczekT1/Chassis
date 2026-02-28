@@ -17,5 +17,24 @@ services:
       timeout: 5s
       retries: 5
 
+#   Example: Chassis Test App with Observability Configuration
+#   Uncomment to run the test app with Grafana Cloud OTLP export
+#
+#  chassis-test-app:
+#   build:
+#     context: ../
+#     dockerfile: Dockerfile
+#   container_name: chassis_test_app
+#   restart: unless-stopped
+#   ports:
+#     - "8080:8080"
+#   depends_on:
+#     mongo:
+#       condition: service_healthy
+#   environment:
+#     OTEL_EXPORTER_OTLP_ENDPOINT: "https://otlp-gateway-prod-eu-north-0.grafana.net/otlp"
+#     OTEL_EXPORTER_OTLP_HEADERS: "Authorization=Basic <base64-encoded-credentials>"
+#     OTEL_RESOURCE_ATTRIBUTES: "service.namespace=chassis-test-app,deployment.environment=local"
+
 volumes:
   mongo_data:

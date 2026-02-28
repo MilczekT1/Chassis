@@ -108,10 +108,10 @@ public class TraceVerifier {
     public TraceVerifier assertResponseHasValidTraceHeaders(ResponseEntity<?> response) {
         assertThat(response.getHeaders())
                 .as("Response should contain Trace-Id header")
-                .containsKey("Trace-Id");
+                .matches(headers -> headers.getFirst("Trace-Id") != null);
         assertThat(response.getHeaders())
                 .as("Response should contain Span-Id header")
-                .containsKey("Span-Id");
+                .matches(headers -> headers.getFirst("Span-Id") != null);
 
         String traceId = response.getHeaders().getFirst("Trace-Id");
         String spanId = response.getHeaders().getFirst("Span-Id");

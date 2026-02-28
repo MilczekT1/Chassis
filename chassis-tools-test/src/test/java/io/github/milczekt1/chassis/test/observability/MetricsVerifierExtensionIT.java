@@ -3,6 +3,7 @@ package io.github.milczekt1.chassis.test.observability;
 import io.github.milczekt1.chassis.test.utils.TestToolsIntegrationTest;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,11 @@ class MetricsVerifierExtensionIT {
 
     @Autowired
     MeterRegistry meterRegistry;
+
+    @BeforeEach
+    void beforeEach() {
+        meterRegistry.clear();
+    }
 
     @Test
     void shouldInjectMetricsVerifier(MetricsVerifier metricsVerifier) {

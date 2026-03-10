@@ -1,3 +1,0 @@
-io.github.milczekt1.chassis.test.clock.FixedClockListener
-io.github.milczekt1.chassis.test.controller.ControllerTestListener
-io.github.milczekt1.chassis.test.mongo.MongoClearCollectionsListener

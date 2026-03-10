@@ -19,6 +19,12 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/coverage-reports/merged-test-coverage-report/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>
+            **/*Properties.java
+        </sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>
+            **/*Properties.java
+        </sonar.cpd.exclusions>
 
         <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.5</jacoco.lineCoverage.minimum>
@@ -61,6 +67,27 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
+        <!--OBSERVABILITY-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-otlp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-observation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -70,8 +97,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/*App.*</exclude>
-                        <exclude>**/*WebServerConfiguration.*</exclude>
+                        <exclude>**/*Application.*</exclude>
+                        <exclude>**/*Properties.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

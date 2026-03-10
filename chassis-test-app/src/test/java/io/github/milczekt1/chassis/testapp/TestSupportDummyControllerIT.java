@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @FixedClock
-@ControllerTest(value = DummyController.class, basePath = DummyController.BASE_PATH)
 @ExtendWith(LogbackVerifierExtension.class)
+@ControllerTest(value = DummyController.class, basePath = DummyController.BASE_PATH)
 class TestSupportDummyControllerIT {
 
     @Autowired
     Clock clock;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
     void fixedClock() {

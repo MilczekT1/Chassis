@@ -3,7 +3,6 @@ package io.github.milczekt1.chassis.observability.configuration;
 import io.github.milczekt1.chassis.observability.tracing.ChassisTraceResponseHeaderFilter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-import io.micrometer.registry.otlp.OtlpMeterRegistry;
 import io.opentelemetry.api.trace.Span;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +62,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @AutoConfiguration
-@ConditionalOnClass({MeterRegistry.class, OtlpMeterRegistry.class})
+@ConditionalOnClass(MeterRegistry.class)
 @ConditionalOnProperty(
         prefix = "chassis.observability",
         name = "enabled",
@@ -154,64 +153,4 @@ public class ChassisObservabilityAutoConfiguration {
         return new ChassisTraceResponseHeaderFilter();
     }
 
-    /**
-     * Creates a customizer for Spring Boot's management OTLP configuration.
-     * <p>
-     * This bean bridges chassis.observability properties to Spring Boot's native
-     * management.otlp.metrics.export configuration. This ensures compatibility with
-     * Spring Boot's built-in OTLP support while allowing users to configure via
-     * the chassis.observability namespace.
-     * </p>
-     * <p>
-     * Properties mapped:
-     * <ul>
-     *   <li>chassis.observability.metrics.export.otlp.endpoint → management.otlp.metrics.export.url</li>
-     *   <li>chassis.observability.metrics.export.otlp.step → management.otlp.metrics.export.step</li>
-     *   <li>chassis.observability.authentication → management.otlp.metrics.export.headers.authorization</li>
-     *   <li>chassis.observability.resource-attributes → management.otlp.metrics.export.resource-attributes</li>
-     * </ul>
-     * </p>
-     * <p>
-     * Note: This bean is registered but the actual property bridging happens through
-     * Spring Boot's property resolution mechanism. The properties are documented here
-     * for clarity, but users can also configure management.otlp directly if preferred.
-     * </p>
-     *
-     * @return Customizer bean (marker for documentation purposes)
-     */
-    @Bean
-    @ConditionalOnMissingBean(name = "chassisObservabilityPropertiesBridge")
-    @ConditionalOnProperty(
-            prefix = "chassis.observability.metrics.export.otlp",
-            name = "enabled",
-            havingValue = "true",
-            matchIfMissing = true
-    )
-    public ChassisObservabilityPropertiesBridge chassisObservabilityPropertiesBridge() {
-        log.info("Bridging chassis.observability properties to management.otlp configuration");
-        return new ChassisObservabilityPropertiesBridge(properties);
-    }
-
-    /**
-     * Marker class for property bridging documentation.
-     * <p>
-     * Spring Boot's property resolution automatically handles the bridging between
-     * chassis.observability and management.otlp properties. This bean serves as
-     * documentation and can be extended in the future to provide programmatic
-     * property manipulation if needed.
-     * </p>
-     */
-    @RequiredArgsConstructor
-    public static class ChassisObservabilityPropertiesBridge {
-        private final ChassisObservabilityProperties properties;
-
-        /**
-         * Returns the observability properties being bridged.
-         *
-         * @return ChassisObservabilityProperties instance
-         */
-        public ChassisObservabilityProperties getProperties() {
-            return properties;
-        }
-    }
 }

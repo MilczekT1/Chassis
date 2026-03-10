@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     @Test
  *     void testResponseHeaders(TraceVerifier traceVerifier, TestRestTemplate restTemplate) {
  *         ResponseEntity<String> response = restTemplate.getForEntity("/api/test", String.class);
- *         traceVerifier.assertResponseHasTraceHeaders(response);
+ *         traceVerifier.assertResponseHasValidTraceHeaders(response);
  *     }
  *
  *     @Test
@@ -63,6 +63,9 @@ public class TraceVerifier {
         assertThat(traceId)
                 .as("Trace ID should be 32 hex characters")
                 .matches("^[0-9a-f]{32}$");
+        assertThat(traceId)
+                .as("Trace ID should not be all zeros (invalid per OpenTelemetry spec)")
+                .isNotEqualTo("00000000000000000000000000000000");
         return this;
     }
 
@@ -70,6 +73,9 @@ public class TraceVerifier {
         assertThat(spanId)
                 .as("Span ID should be 16 hex characters")
                 .matches("^[0-9a-f]{16}$");
+        assertThat(spanId)
+                .as("Span ID should not be all zeros (invalid per OpenTelemetry spec)")
+                .isNotEqualTo("0000000000000000");
         return this;
     }
 

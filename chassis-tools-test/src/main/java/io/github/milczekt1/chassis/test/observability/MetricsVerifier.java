@@ -26,11 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  *     @Test
  *     void testMetrics(MetricsVerifier metricsVerifier) {
  *         metricsVerifier.assertMetric("http.server.requests")
- *             .hasTag("method", "GET")
- *             .hasTag("status", "200")
+ *             .withTag("method", "GET")
+ *             .withTag("status", "200")
  *             .exists();
- *
- *         metricsVerifier.assertCommonTag("application", "my-service");
  *     }
  * }
  * }
@@ -129,7 +127,7 @@ public class MetricsVerifier {
                     .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
-                    .as("Counter '%s' should have value greater than %s", metricName, expected)
+                    .as("Counter '%s' should have value less than %s", metricName, expected)
                     .isLessThan(expected);
             return this;
         }
@@ -140,7 +138,7 @@ public class MetricsVerifier {
                     .as(METRIC_SHOULD_EXIST, metricName)
                     .isNotNull();
             assertThat(counter.count())
-                    .as("Counter '%s' should have value >= %s", metricName, expected)
+                    .as("Counter '%s' should have value <= %s", metricName, expected)
                     .isLessThanOrEqualTo(expected);
             return this;
         }

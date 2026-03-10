@@ -4,6 +4,7 @@ import io.github.milczekt1.chassis.test.observability.MetricsVerifier;
 import io.github.milczekt1.chassis.test.observability.TraceVerifier;
 import io.github.milczekt1.chassis.testapp.utils.TestAppIntegrationTest;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,11 @@ class ObservabilityIT {
 
     @Nested
     class Metrics {
+
+        @BeforeEach
+        void clearMetrics() {
+            meterRegistry.clear();
+        }
 
         @Test
         void shouldAttachTagsAutomatically(MetricsVerifier metricsVerifier) {

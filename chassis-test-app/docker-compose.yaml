@@ -12,7 +12,7 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test: [ "CMD", "mongosh", "--username", "root", "--password", "secret", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--username", "local_username", "--password", "local_password", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -34,6 +34,7 @@ services:
 #   environment:
 #     OTEL_EXPORTER_OTLP_ENDPOINT: "https://otlp-gateway-prod-eu-north-0.grafana.net/otlp"
 #     OTEL_EXPORTER_OTLP_HEADERS: "Authorization=Basic <base64-encoded-credentials>"
+#     OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: "cumulative"
 #     OTEL_RESOURCE_ATTRIBUTES: "service.namespace=chassis-test-app,deployment.environment=local"
 
 volumes:

@@ -4,6 +4,7 @@ import io.github.milczekt1.chassis.observability.tracing.ChassisTraceResponseHea
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import lombok.RequiredArgsConstructor;
@@ -198,11 +199,6 @@ public class TracingDemoController {
         );
     }
 
-    @GetMapping("/health")
-    public Map<String, String> pathWhichShouldNotBeTraced() {
-        log.debug("Health check");
-        return Map.of("status", "UP");
-    }
 }
 
 /**
@@ -242,29 +238,24 @@ class TracingDemoService {
      * </p>
      */
     public String businessLogicWithCustomSpan() {
-        // Get tracer from OpenTelemetry
         Tracer tracer = GlobalOpenTelemetry.getTracer("chassis-test-app");
 
-        // Create custom span
-        Scope scope = tracer.spanBuilder("business-logic")
+        Span span = tracer.spanBuilder("business-logic")
                 .setSpanKind(SpanKind.INTERNAL)
                 .setAttribute("operation", "custom-business-logic")
-                .startSpan()
-                .makeCurrent();
+                .startSpan();
 
-        try {
+        try (Scope scope = span.makeCurrent()) {
             log.info("Executing business logic with custom span");
-
-            // Simulate business logic
             Thread.sleep(50);
-
             return "Business logic executed";
         } catch (InterruptedException e) {
+            span.recordException(e);
+            span.setStatus(StatusCode.ERROR);
             Thread.currentThread().interrupt();
             return "Business logic interrupted";
         } finally {
-            Span.current().end();
-            scope.close();
+            span.end();
         }
     }
 }

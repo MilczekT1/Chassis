@@ -19,10 +19,13 @@ import org.junit.jupiter.api.extension.ParameterResolver;
  * @ExtendWith(TraceVerifierExtension.class)
  * class TracingIT {
  *     @Test
- *     void testTracing(TraceVerifier traceVerifier) {
- *         traceVerifier.assertSpanIsValid();
- *         String traceId = traceVerifier.getCurrentTraceId();
- *         traceVerifier.assertTraceIdValid(traceId);
+ *     void testTracing(TraceVerifier traceVerifier, TestRestTemplate restTemplate) {
+ *         ResponseEntity<String> response = restTemplate.getForEntity("/api/test", String.class);
+ *         traceVerifier.assertResponseHasValidTraceHeaders(response);
+ *
+ *         String traceparent = "00-aaaabbbbccccdddd1111222233334444-0011223344556677-01";
+ *         traceVerifier.assertTraceIdValid(traceVerifier.extractTraceIdFromTraceparent(traceparent));
+ *         traceVerifier.assertSpanIdValid(traceVerifier.extractSpanIdFromTraceparent(traceparent));
  *     }
  * }
  * }

@@ -36,17 +36,18 @@ class TraceVerifierExtensionIT {
 
     @ParameterizedTest
     @MethodSource("invalidTraceIdFormat")
-    void shouldFailOnInvalidTraceIdFormat(String invalidTraceIdFormat, TraceVerifier traceVerifier) {
+    void shouldFailOnInvalidTraceIdFormat(String invalidTraceIdFormat, String expectedMessage, TraceVerifier traceVerifier) {
         assertThatExceptionOfType(AssertionError.class)
                 .isThrownBy(() -> traceVerifier.assertTraceIdValid(invalidTraceIdFormat))
-                .withMessageContaining("32 hex characters");
+                .withMessageContaining(expectedMessage);
     }
 
     private static Stream<Arguments> invalidTraceIdFormat() {
         return Stream.of(
-                Arguments.of("aabbccdd"), // too short
-                Arguments.of("aaaabbbbccccdddd11112222333344445555"), // too long
-                Arguments.of("gggghhhhiiiijjjjkkkkllllmmmmnnnn") // nonHex
+                Arguments.of("aabbccdd", "32 hex characters"), // too short
+                Arguments.of("aaaabbbbccccdddd11112222333344445555", "32 hex characters"), // too long
+                Arguments.of("gggghhhhiiiijjjjkkkkllllmmmmnnnn", "32 hex characters"), // nonHex
+                Arguments.of("00000000000000000000000000000000", "all zeros") // all-zero (invalid per OTel spec)
         );
     }
 
@@ -63,17 +64,18 @@ class TraceVerifierExtensionIT {
 
     @ParameterizedTest
     @MethodSource("invalidSpanIdFormat")
-    void shouldFailOnInvalidSpanIdFormat(String invalidSpanIdFormat, TraceVerifier traceVerifier) {
+    void shouldFailOnInvalidSpanIdFormat(String invalidSpanIdFormat, String expectedMessage, TraceVerifier traceVerifier) {
         assertThatExceptionOfType(AssertionError.class)
                 .isThrownBy(() -> traceVerifier.assertSpanIdValid(invalidSpanIdFormat))
-                .withMessageContaining("16 hex characters");
+                .withMessageContaining(expectedMessage);
     }
 
     private static Stream<Arguments> invalidSpanIdFormat() {
         return Stream.of(
-                Arguments.of("aabbccdd"), // too short
-                Arguments.of("00112233445566778899"), // too long
-                Arguments.of("gggghhhhiiiijjjj") // nonHex
+                Arguments.of("aabbccdd", "16 hex characters"), // too short
+                Arguments.of("00112233445566778899", "16 hex characters"), // too long
+                Arguments.of("gggghhhhiiiijjjj", "16 hex characters"), // nonHex
+                Arguments.of("0000000000000000", "all zeros") // all-zero (invalid per OTel spec)
         );
     }
 

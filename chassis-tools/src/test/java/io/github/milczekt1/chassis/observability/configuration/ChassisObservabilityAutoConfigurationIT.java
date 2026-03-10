@@ -4,9 +4,11 @@ import io.github.milczekt1.chassis.observability.tracing.ChassisTraceResponseHea
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import io.micrometer.registry.otlp.OtlpMeterRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.util.ArrayList;
@@ -18,6 +20,16 @@ class ChassisObservabilityAutoConfigurationIT {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(ChassisObservabilityAutoConfiguration.class));
+
+    @Test
+    void whenOtlpMeterRegistryAbsent_thenMeterRegistryCustomizerStillActivates() {
+        contextRunner
+                .withClassLoader(new FilteredClassLoader(OtlpMeterRegistry.class))
+                .withPropertyValues("chassis.observability.enabled=true")
+                .run(context -> {
+                    assertThat(context).hasBean("chassisObservabilityMeterRegistryCustomizer");
+                });
+    }
 
     @Test
     void whenDependenciesPresent_thenAutoConfigurationActivates() {

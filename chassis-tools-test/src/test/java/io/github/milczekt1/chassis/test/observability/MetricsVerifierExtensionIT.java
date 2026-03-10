@@ -99,10 +99,14 @@ class MetricsVerifierExtensionIT {
 
         @Test
         void shouldThrowWhenMetricExistButWasNotExpected(MetricsVerifier metricsVerifier) {
-            assertThatCode(() ->
-                    metricsVerifier.assertMetric("truly.nonexistent.metric")
-                            .doesNotExist()
-            ).doesNotThrowAnyException();
+            meterRegistry.counter("existing.metric").increment();
+
+            assertThatExceptionOfType(AssertionError.class)
+                    .isThrownBy(() ->
+                            metricsVerifier.assertMetric("existing.metric")
+                                    .doesNotExist()
+                    )
+                    .withMessageContaining("should not exist");
         }
 
     }

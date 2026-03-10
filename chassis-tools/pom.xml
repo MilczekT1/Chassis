@@ -26,7 +26,7 @@
             **/*Properties.java
         </sonar.cpd.exclusions>
 
-        <jacoco.classes.maxMissed>1</jacoco.classes.maxMissed>
+        <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
         <jacoco.lineCoverage.minimum>0.5</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.5</jacoco.branches.minimum>
     </properties>
@@ -97,8 +97,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/*App.*</exclude>
-                        <exclude>**/*WebServerConfiguration.*</exclude>
+                        <exclude>**/*Application.*</exclude>
+                        <exclude>**/*Properties.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

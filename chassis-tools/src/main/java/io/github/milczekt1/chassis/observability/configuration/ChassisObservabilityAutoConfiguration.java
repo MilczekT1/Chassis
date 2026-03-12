@@ -110,8 +110,8 @@ public class ChassisObservabilityAutoConfiguration {
         return registry -> {
             var allTags = properties.getCommonTags().entrySet().stream()
                     .collect(Collectors.toMap(
-                            e -> e.getKey(),
-                            e -> e.getValue()
+                            Map.Entry::getKey,
+                            Map.Entry::getValue
                     ));
             allTags.putAll(properties.getResourceAttributes());
 

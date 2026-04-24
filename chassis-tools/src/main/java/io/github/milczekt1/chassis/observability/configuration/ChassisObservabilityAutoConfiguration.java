@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
  * <ul>
  *   <li>Registers a {@link MeterRegistryCustomizer} to apply common tags to all metrics</li>
  *   <li>Configures resource attributes for service identity (service.name, service.namespace, deployment.environment)</li>
- *   <li>Bridges chassis.observability properties to Spring Boot's management.otlp properties</li>
  * </ul>
  * </p>
  * Example configuration:
@@ -111,8 +110,8 @@ public class ChassisObservabilityAutoConfiguration {
         return registry -> {
             var allTags = properties.getCommonTags().entrySet().stream()
                     .collect(Collectors.toMap(
-                            e -> e.getKey(),
-                            e -> e.getValue()
+                            Map.Entry::getKey,
+                            Map.Entry::getValue
                     ));
             allTags.putAll(properties.getResourceAttributes());
 

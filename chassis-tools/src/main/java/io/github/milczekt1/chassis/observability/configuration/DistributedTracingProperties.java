@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.configuration.tracing;
+package io.github.milczekt1.chassis.observability.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

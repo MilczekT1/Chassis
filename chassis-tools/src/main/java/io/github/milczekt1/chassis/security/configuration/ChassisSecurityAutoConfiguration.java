@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.configuration;
+package io.github.milczekt1.chassis.security.configuration;
 
 import io.github.milczekt1.chassis.tools.ChassisSecurityBasicAuthHelper;
 import io.github.milczekt1.chassis.tools.HashGenerator;
@@ -16,6 +16,7 @@ public class ChassisSecurityAutoConfiguration {
         log.info("Initializing HashGenerator...");
         return new HashGenerator();
     }
+
     @Bean
     public ChassisSecurityBasicAuthHelper chassisSecurityBasicAuthHelper(
             @Value("${spring.security.user.name:null}") String username,

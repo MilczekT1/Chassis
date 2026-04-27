@@ -18,33 +18,60 @@ public class PackageModularityTests {
 
     @Test
     void exceptionPackageShouldNotDependOnOtherPackages() {
-        // Given:
-        ArchRule rule = noClasses().that()
+        final ArchRule rule = noClasses().that()
                 .resideInAPackage(BASE_PACKAGE + ".errorhandling..")
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage(
-                        BASE_PACKAGE + ".configuration..",
+                        BASE_PACKAGE + ".security..",
                         BASE_PACKAGE + ".tools..",
-                        BASE_PACKAGE + ".logging.."
+                        BASE_PACKAGE + ".logging..",
+                        BASE_PACKAGE + ".observability.."
                 );
-        // Then:
         rule.check(classes);
     }
 
     @Test
     void loggingPackageShouldNotDependOnOtherPackages() {
-        // Given:
-        ArchRule rule = noClasses().that()
+        final ArchRule rule = noClasses().that()
                 .resideInAPackage(BASE_PACKAGE + ".logging..")
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage(
-                        BASE_PACKAGE + ".configuration..",
+                        BASE_PACKAGE + ".security..",
                         BASE_PACKAGE + ".tools..",
-                        BASE_PACKAGE + ".errorhandling.."
+                        BASE_PACKAGE + ".errorhandling..",
+                        BASE_PACKAGE + ".observability.."
                 );
-        // Then:
+        rule.check(classes);
+    }
+
+    @Test
+    void observabilityPackageShouldNotDependOnOtherPackages() {
+        final ArchRule rule = noClasses().that()
+                .resideInAPackage(BASE_PACKAGE + ".observability..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(
+                        BASE_PACKAGE + ".security..",
+                        BASE_PACKAGE + ".tools..",
+                        BASE_PACKAGE + ".errorhandling..",
+                        BASE_PACKAGE + ".logging.."
+                );
+        rule.check(classes);
+    }
+
+    @Test
+    void securityPackageShouldNotDependOnOtherPackages() {
+        final ArchRule rule = noClasses().that()
+                .resideInAPackage(BASE_PACKAGE + ".security..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(
+                        BASE_PACKAGE + ".errorhandling..",
+                        BASE_PACKAGE + ".logging..",
+                        BASE_PACKAGE + ".observability.."
+                );
         rule.check(classes);
     }
 }

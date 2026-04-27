@@ -1,5 +1,6 @@
-package io.github.milczekt1.chassis.configuration;
+package io.github.milczekt1.chassis.security;
 
+import io.github.milczekt1.chassis.security.configuration.ChassisSecurityAutoConfiguration;
 import io.github.milczekt1.chassis.tools.ChassisSecurityBasicAuthHelper;
 import io.github.milczekt1.chassis.tools.HashGenerator;
 import org.assertj.core.api.Assertions;
@@ -24,7 +25,6 @@ class ChassisSecurityAutoConfigurationIT {
 
     @Autowired(required = false)
     private ChassisSecurityBasicAuthHelper chassisSecurityBasicAuthHelper;
-
 
     @Test
     void hashGeneratorIsPresent() {

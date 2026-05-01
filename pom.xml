@@ -15,6 +15,7 @@
         <module>chassis-bom</module>
         <module>chassis-parent</module>
         <module>chassis-dependencies</module>
+        <module>chassis-starter-errorhandling</module>
         <module>chassis-test-app</module>
     </modules>
 

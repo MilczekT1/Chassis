@@ -26,7 +26,7 @@ public class HashGenerator {
         try{
             return hashString(password);
         } catch (Exception e){
-            throw new HashGenerationException("Hashing password failed. Probably invalid charset or Algorithm is set", e);
+            throw new RuntimeException("Hashing password failed. Probably invalid charset or Algorithm is set", e);
         }
     }
 

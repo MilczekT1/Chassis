@@ -17,21 +17,6 @@ public class PackageModularityTests {
     }
 
     @Test
-    void exceptionPackageShouldNotDependOnOtherPackages() {
-        final ArchRule rule = noClasses().that()
-                .resideInAPackage(BASE_PACKAGE + ".errorhandling..")
-                .should()
-                .dependOnClassesThat()
-                .resideInAnyPackage(
-                        BASE_PACKAGE + ".security..",
-                        BASE_PACKAGE + ".tools..",
-                        BASE_PACKAGE + ".logging..",
-                        BASE_PACKAGE + ".observability.."
-                );
-        rule.check(classes);
-    }
-
-    @Test
     void loggingPackageShouldNotDependOnOtherPackages() {
         final ArchRule rule = noClasses().that()
                 .resideInAPackage(BASE_PACKAGE + ".logging..")
@@ -40,7 +25,6 @@ public class PackageModularityTests {
                 .resideInAnyPackage(
                         BASE_PACKAGE + ".security..",
                         BASE_PACKAGE + ".tools..",
-                        BASE_PACKAGE + ".errorhandling..",
                         BASE_PACKAGE + ".observability.."
                 );
         rule.check(classes);
@@ -55,7 +39,6 @@ public class PackageModularityTests {
                 .resideInAnyPackage(
                         BASE_PACKAGE + ".security..",
                         BASE_PACKAGE + ".tools..",
-                        BASE_PACKAGE + ".errorhandling..",
                         BASE_PACKAGE + ".logging.."
                 );
         rule.check(classes);
@@ -68,7 +51,6 @@ public class PackageModularityTests {
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage(
-                        BASE_PACKAGE + ".errorhandling..",
                         BASE_PACKAGE + ".logging..",
                         BASE_PACKAGE + ".observability.."
                 );

@@ -48,7 +48,7 @@ public class HashGeneratorTest {
         // When:
         Throwable throwable = catchThrowable(() -> generator.hashPassword(input));
         // Then:
-        assertTrue(throwable instanceof HashGenerationException);
+        assertTrue(throwable instanceof RuntimeException);
     }
 
     @ParameterizedTest

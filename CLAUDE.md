@@ -96,6 +96,19 @@ In `chassis-test-app`, integration tests use `@TestAppIntegrationTest` (a compos
 Configured via `chassis.observability.*` in `application.yaml`. OTLP export uses the OpenTelemetry Java Agent with
 standard `OTEL_*` environment variables. See `chassis-test-app/OBSERVABILITY.md` for full configuration reference.
 
+## Changelog Rule
+
+When completing any meaningful change (new feature, dependency update, bug fix, refactor), add a dated entry to the
+`### Changelog:` section in `README.md`. Format:
+
+```
+##### DD.MM.YYYY
+
+* Short description of what changed
+```
+
+Keep entries concise — one bullet per distinct change. Add the entry at the top of the changelog (most recent first).
+
 ## Release Process
 
 ```bash

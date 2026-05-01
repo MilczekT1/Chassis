@@ -243,6 +243,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 30.04.2026
+
+* Extracted errorhandling into new `chassis-starter-errorhandling` module with minimal dependencies (web + validation
+  only).
+
 ##### 28.02.2026
 
 * Added observability test utilities in `chassis-tools-test`:

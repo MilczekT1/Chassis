@@ -243,6 +243,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 01.05.2026
+
+* Added `ErrorHandlingDemoController` and slice IT in `chassis-test-app` showcasing every failure mode handled by
+  `chassis-starter-errorhandling`.
+
 ##### 30.04.2026
 
 * Extracted errorhandling into new `chassis-starter-errorhandling` module with minimal dependencies (web + validation

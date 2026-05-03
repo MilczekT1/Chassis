@@ -93,6 +93,19 @@ class ErrorHandlingDemoControllerIT {
     }
 
     @Test
+    void shouldPassValidationWithValidRequestBody() {
+        final String invalidBody = "{\"quantity\":1}";
+
+        RestAssuredMockMvc.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(invalidBody)
+                .when()
+                .post(VALIDATION_BODY_PATH)
+                .then()
+                .status(NO_CONTENT);
+    }
+
+    @Test
     void shouldReturnProblemDetailForInvalidRequestParam() {
         RestAssuredMockMvc.given()
                 .queryParam("age", 16L)
@@ -103,5 +116,15 @@ class ErrorHandlingDemoControllerIT {
                 .contentType(APPLICATION_PROBLEM_JSON_VALUE)
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("title", equalTo("Bad Request"));
+    }
+
+    @Test
+    void shouldPassValidationWithValidRequestParam() {
+        RestAssuredMockMvc.given()
+                .queryParam("age", 18L)
+                .when()
+                .get(VALIDATION_QUERY_PATH)
+                .then()
+                .status(NO_CONTENT);
     }
 }

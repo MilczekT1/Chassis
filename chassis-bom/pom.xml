@@ -54,6 +54,12 @@
             </dependency>
             <dependency>
                 <groupId>io.github.milczekt1</groupId>
+                <artifactId>chassis-starter-observability</artifactId>
+                <version>${project.parent.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.milczekt1</groupId>
                 <artifactId>chassis-tools-test</artifactId>
                 <version>${project.parent.version}</version>
                 <scope>test</scope>

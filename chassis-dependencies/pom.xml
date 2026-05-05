@@ -41,6 +41,10 @@
             <groupId>io.github.milczekt1</groupId>
             <artifactId>chassis-starter-errorhandling</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.milczekt1</groupId>
+            <artifactId>chassis-starter-observability</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

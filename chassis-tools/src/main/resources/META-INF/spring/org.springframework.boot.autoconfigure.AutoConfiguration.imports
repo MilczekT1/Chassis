@@ -1,3 +1,2 @@
 io.github.milczekt1.chassis.logging.configuration.ChassisLoggingAutoConfiguration
 io.github.milczekt1.chassis.security.configuration.ChassisSecurityAutoConfiguration
-io.github.milczekt1.chassis.observability.configuration.ChassisObservabilityAutoConfiguration

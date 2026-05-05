@@ -243,6 +243,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 04.05.2026
+
+* Extracted observability into new `chassis-starter-observability` module with minimal dependencies (actuator +
+  micrometer + opentelemetry). Removed unused `DistributedTracingProperties`.
+
 ##### 01.05.2026
 
 * Added `ErrorHandlingDemoController` and slice IT in `chassis-test-app` showcasing every failure mode handled by

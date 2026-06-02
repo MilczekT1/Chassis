@@ -243,6 +243,19 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 02.06.2026
+
+* Migrated to Java 25 (Spring Boot 4.0.3, Spring Cloud 2025.1.1). CI runners and the `Dockerfile` base image
+  (`eclipse-temurin:21.0.5_11-jre` -> `eclipse-temurin:25.0.3_9-jre`) updated to JDK 25.
+* Bumped dependencies and plugins for JDK 25 compatibility: spring-cloud-contract-maven-plugin 4.3.1 -> 5.0.2,
+  maven-surefire/maven-surefire-report/maven-failsafe 3.5.4 -> 3.5.6, maven-release-plugin 3.1.1 -> 3.3.1,
+  git-commit-id-maven-plugin 9.0.2 -> 9.2.0, maven-jxr-plugin 3.3.2 -> 3.6.0, Lombok 1.18.42 -> 1.18.46,
+  Guava 33.5.0-jre -> 33.6.0-jre, junit-bom 5.12.2 -> 5.14.4, embedded-mongo 4.11.0 -> 4.22.0,
+  testcontainers-mongodb 2.0.3 -> 2.0.5.
+* Declared Lombok on the maven-compiler-plugin `annotationProcessorPaths` in both the root `chassis` pom and
+  `chassis-parent`. JDK 23+ no longer runs annotation processors discovered only from the classpath, so without this
+  `@Slf4j` / `@RequiredArgsConstructor` produced no `log` field or constructor.
+
 ##### 04.05.2026
 
 * Extracted observability into new `chassis-starter-observability` module with minimal dependencies (actuator +

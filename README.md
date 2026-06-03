@@ -243,6 +243,17 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 03.06.2026
+
+* Upgraded Spring Boot 4.0.3 -> 4.0.6 (root pom, `chassis-bom`, `chassis-parent` property and
+  `spring-boot-starter-parent`); kept Spring Cloud 2025.1.1 (latest patch on the SB-4.0-compatible line).
+* Aligned versions to the Spring Boot 4.0.6 BOM by removing redundant `chassis-bom` pins it already manages at the
+  same version (Lombok, junit:junit, assertj-core, testcontainers-mongodb, h2) and dropping the local `lombok.version`
+  property in `chassis-parent`.
+* JUnit now follows the SB-managed junit-bom 6.0.3 (removed the `chassis-tools-test` junit-bom 5.14.4 override) and
+  archunit-junit5 is unified at 1.4.1 (removed the divergent 1.4.0 pin). Kept intentionally-newer pins (mockito-core
+  5.21.0, maven-surefire/failsafe 3.5.6, git-commit-id 9.2.0) to avoid downgrades.
+
 ##### 02.06.2026
 
 * Migrated to Java 25 (Spring Boot 4.0.3, Spring Cloud 2025.1.1). CI runners and the `Dockerfile` base image

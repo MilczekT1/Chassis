@@ -6,13 +6,13 @@
     <parent>
         <groupId>io.github.milczekt1</groupId>
         <artifactId>chassis-parent</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1-SNAPSHOT</version>
         <relativePath>../chassis-parent</relativePath>
     </parent>
 
     <groupId>io.github.milczekt1</groupId>
     <artifactId>chassis-test-app</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.1-SNAPSHOT</version>
 
     <properties>
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>

@@ -245,6 +245,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ##### 03.06.2026
 
+* Updated GitHub Actions versions in the CI workflows: `actions/checkout` v4 -> v6, `actions/setup-java` v4 -> v5,
+  and `actions/cache` (restore/save) v4 -> v5.
 * Added `spring-boot-configuration-processor` to the `maven-compiler-plugin` `annotationProcessorPaths` in both the
   root `chassis` pom and `chassis-parent`. Once `annotationProcessorPaths` is declared, Maven discovers processors
   only from that list, so the Spring Boot processor was being suppressed and no `spring-configuration-metadata.json`

@@ -245,6 +245,10 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ##### 03.06.2026
 
+* Added `spring-boot-configuration-processor` to the `maven-compiler-plugin` `annotationProcessorPaths` in both the
+  root `chassis` pom and `chassis-parent`. Once `annotationProcessorPaths` is declared, Maven discovers processors
+  only from that list, so the Spring Boot processor was being suppressed and no `spring-configuration-metadata.json`
+  was generated for `@ConfigurationProperties` classes (e.g. `chassis.observability.*`). Metadata is now produced.
 * Upgraded Spring Boot 4.0.3 -> 4.0.6 (root pom, `chassis-bom`, `chassis-parent` property and
   `spring-boot-starter-parent`); kept Spring Cloud 2025.1.1 (latest patch on the SB-4.0-compatible line).
 * Aligned versions to the Spring Boot 4.0.6 BOM by removing redundant `chassis-bom` pins it already manages at the

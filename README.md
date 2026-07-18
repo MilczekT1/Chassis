@@ -28,18 +28,20 @@
 
 ### Release process
 
-1. Create branch release/x.y.z
-2. Update versions to x.y.z
-3. Save SHA of the commit .
-4. Merge to master
-5. Tag commit with saved SHA
-6. Push to origin to trigger release workflow.
+Releases run entirely in CI via the **Release** GitHub Actions workflow (manual trigger).
 
-All steps are covered in prepare-release.sh and tag-release.sh
+1. Go to **Actions → Release → Run workflow**.
+2. Enter:
+    - **releaseVersion** — the version to release, e.g. `0.5.1` (no `-SNAPSHOT`).
+    - **nextVersion** — the next development version, e.g. `0.5.2` (no `-SNAPSHOT`; the
+      workflow appends it).
+3. Run it. The workflow bumps the version, commits and tags `v<releaseVersion>` on the
+   release commit, publishes all modules to GitHub Packages, bumps `master` to
+   `<nextVersion>-SNAPSHOT`, pushes, and creates the GitHub Release.
 
-- sh prepare-release.sh 0.4.2 0.4.3
-- merge release/0.4.2 to master
-- sh tag-release.sh 0.4.2
+Publishing happens inside the Release workflow itself. `publish-java.yml`
+("Publish artifact (manual re-publish)") is a manual-only escape hatch for re-publishing an
+already-released version; it does not bump or tag.
 
 ### Cross cutting concerns
 
@@ -242,6 +244,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 17.07.2026
+
+* Replaced `prepare-release.sh` / `tag-release.sh` with a CI-driven `workflow_dispatch`
+  **Release** workflow; `publish-java.yml` is now a manual-only re-publish. Fixes the tag
+  landing on the wrong commit and the tag-push-does-not-publish gap.
 
 ##### 03.06.2026
 

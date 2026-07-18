@@ -111,10 +111,12 @@ Keep entries concise — one bullet per distinct change. Add the entry at the to
 
 ## Release Process
 
-```bash
-sh prepare-release.sh <old-version> <new-version>
-# merge release/<new-version> to master
-sh tag-release.sh <new-version>
-```
+Releases run in CI via the **Release** GitHub Actions workflow (`workflow_dispatch`) — there
+are no local scripts. Trigger **Actions → Release → Run workflow** and provide `releaseVersion`
+(e.g. `0.5.1`) and `nextVersion` (e.g. `0.5.2`, no `-SNAPSHOT`). The workflow bumps the version,
+tags `v<releaseVersion>` on the release commit, publishes all modules to GitHub Packages, bumps
+`master` to `<nextVersion>-SNAPSHOT`, and creates the GitHub Release.
 
-Published to GitHub Packages (`maven.pkg.github.com/milczekt1/Chassis`). Requires GitHub credentials in Maven settings.
+`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch for
+re-publishing an already-released version. Published to GitHub Packages
+(`maven.pkg.github.com/milczekt1/Chassis`); requires GitHub credentials in Maven settings.

@@ -18,7 +18,7 @@ env:
   MVN_CONFIG: -B -s $GITHUB_WORKSPACE/.github/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
   RELEASE_VERSION: ${{ inputs.releaseVersion }}
   NEXT_VERSION: ${{ inputs.nextVersion }}
-
+  RELEASE_BRANCH: release/v${{ inputs.releaseVersion }}
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -51,35 +51,33 @@ jobs:
             echo "Tag v$RELEASE_VERSION already exists" >&2
             exit 1
           fi
-
+          if git ls-remote --exit-code --heads origin "$RELEASE_BRANCH" >/dev/null 2>&1; then
+            echo "Branch $RELEASE_BRANCH already exists on origin" >&2
+            exit 1
+          fi
       - name: Configure git author
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
+      - name: Create release branch
+        run: git checkout -b "$RELEASE_BRANCH"
       - name: Set release version
         run: ./mvnw versions:set -DnewVersion="$RELEASE_VERSION" -DprocessAllModules=true -DgenerateBackupPoms=false ${{ env.MVN_CONFIG }}
-
       - name: Commit and tag release
         run: |
           git commit -a -m "Release Chassis $RELEASE_VERSION"
           git tag "v$RELEASE_VERSION"
-
       - name: Deploy to GitHub Packages
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: ./mvnw deploy -DskipTests=true ${{ env.MVN_CONFIG }}
-
       - name: Set next development version
         run: ./mvnw versions:set -DnewVersion="$NEXT_VERSION-SNAPSHOT" -DprocessAllModules=true -DgenerateBackupPoms=false ${{ env.MVN_CONFIG }}
-
       - name: Commit next development version
         run: git commit -a -m "Prepare next release Chassis $NEXT_VERSION-SNAPSHOT"
-
-      - name: Push master and tag
-        run: git push --atomic origin master "v$RELEASE_VERSION"
-
+      - name: Push release branch and tag
+        run: git push --atomic origin "$RELEASE_BRANCH" "v$RELEASE_VERSION"
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v$RELEASE_VERSION" --target "$(git rev-list -n1 "v$RELEASE_VERSION")" --title "v$RELEASE_VERSION" --generate-notes
+        run: gh release create "v$RELEASE_VERSION" --target "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --generate-notes

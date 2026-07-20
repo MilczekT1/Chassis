@@ -112,10 +112,14 @@ Keep entries concise — one bullet per distinct change. Add the entry at the to
 ## Release Process
 
 Releases run in CI via the **Release** GitHub Actions workflow (`workflow_dispatch`) — there
-are no local scripts. Trigger **Actions → Release → Run workflow** and provide `releaseVersion`
-(e.g. `0.5.1`) and `nextVersion` (e.g. `0.5.2`, no `-SNAPSHOT`). The workflow bumps the version,
-tags `v<releaseVersion>` on the release commit, publishes all modules to GitHub Packages, bumps
-`master` to `<nextVersion>-SNAPSHOT`, and creates the GitHub Release.
+are no local scripts. Only allowlisted users (hardcoded `RELEASE_ALLOWED_ACTORS` in
+`release.yml`) may trigger it. Trigger **Actions → Release → Run workflow** and provide
+`releaseVersion` (e.g. `0.5.1`) and `nextVersion` (e.g. `0.5.2`, no `-SNAPSHOT`). The workflow
+creates a `release/v<version>` branch, sets and commits + tags the release version (crediting
+the triggerer as co-author), publishes all modules to GitHub Packages, bumps to
+`<nextVersion>-SNAPSHOT`, creates the GitHub Release, opens a PR to `master`, and enables
+auto-merge (which lands once the required build check passes). The release PR is created via a
+GitHub App (secrets `RELEASE_APP_ID` / `RELEASE_APP_PRIVATE_KEY`) so it triggers CI.
 
 `publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch for
 re-publishing an already-released version. Published to GitHub Packages

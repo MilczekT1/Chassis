@@ -26,6 +26,21 @@ jobs:
       contents: write
       packages: write
     steps:
+      - name: Authorize triggerer
+        env:
+          # Space-separated GitHub usernames allowed to run a release. Edit via PR.
+          RELEASE_ALLOWED_ACTORS: "MilczekT1"
+          TRIGGER_ACTOR: ${{ github.actor }}
+        run: |
+          for allowed in $RELEASE_ALLOWED_ACTORS; do
+            if [[ "$allowed" == "$TRIGGER_ACTOR" ]]; then
+              echo "$TRIGGER_ACTOR is authorized to release."
+              exit 0
+            fi
+          done
+          echo "::error::$TRIGGER_ACTOR is not authorized to trigger a release. Allowed: $RELEASE_ALLOWED_ACTORS" >&2
+          exit 1
+
       - name: Checkout master
         uses: actions/checkout@v6
         with:
@@ -38,6 +53,13 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
+
+      - name: Generate GitHub App token
+        id: app_token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
       - name: Validate inputs and preconditions
         run: |
@@ -64,8 +86,12 @@ jobs:
       - name: Set release version
         run: ./mvnw versions:set -DnewVersion="$RELEASE_VERSION" -DprocessAllModules=true -DgenerateBackupPoms=false ${{ env.MVN_CONFIG }}
       - name: Commit and tag release
+        env:
+          TRIGGER_ACTOR: ${{ github.actor }}
+          TRIGGER_ACTOR_ID: ${{ github.actor_id }}
         run: |
-          git commit -a -m "Release Chassis $RELEASE_VERSION"
+          git commit -a -m "Release Chassis $RELEASE_VERSION" \
+            -m "Co-authored-by: ${TRIGGER_ACTOR} <${TRIGGER_ACTOR_ID}+${TRIGGER_ACTOR}@users.noreply.github.com>"
           git tag "v$RELEASE_VERSION"
       - name: Check if version already published
         id: check_deployed
@@ -108,3 +134,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --generate-notes
+
+      - name: Open release pull request
+        env:
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
+          TRIGGER_ACTOR: ${{ github.actor }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "$RELEASE_BRANCH" \
+            --title "Release Chassis $RELEASE_VERSION" \
+            --body "Automated release PR for \`v$RELEASE_VERSION\`. Triggered by @${TRIGGER_ACTOR}." \
+            --assignee "$TRIGGER_ACTOR" || \
+          gh pr create \
+            --base master \
+            --head "$RELEASE_BRANCH" \
+            --title "Release Chassis $RELEASE_VERSION" \
+            --body "Automated release PR for \`v$RELEASE_VERSION\`. Triggered by @${TRIGGER_ACTOR}."
+
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
+        run: gh pr merge "$RELEASE_BRANCH" --auto --merge --delete-branch

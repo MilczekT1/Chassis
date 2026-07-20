@@ -28,20 +28,36 @@
 
 ### Release process
 
-Releases run entirely in CI via the **Release** GitHub Actions workflow (manual trigger).
+Releases run in CI via the **Release** GitHub Actions workflow (manual `workflow_dispatch`
+trigger). Only allowlisted users may trigger it.
 
 1. Go to **Actions → Release → Run workflow**.
 2. Enter:
     - **releaseVersion** — the version to release, e.g. `0.5.1` (no `-SNAPSHOT`).
     - **nextVersion** — the next development version, e.g. `0.5.2` (no `-SNAPSHOT`; the
       workflow appends it).
-3. Run it. The workflow bumps the version, commits and tags `v<releaseVersion>` on the
-   release commit, publishes all modules to GitHub Packages, bumps `master` to
-   `<nextVersion>-SNAPSHOT`, pushes, and creates the GitHub Release.
+3. Run it. The workflow checks you are on the allowlist, creates branch `release/v<version>`,
+   sets the release version and commits + tags `v<version>` on it (crediting you as
+   co-author), publishes all modules to GitHub Packages, bumps to `<nextVersion>-SNAPSHOT`,
+   pushes the branch + tag, creates the GitHub Release, then opens a PR
+   (`release/v<version>` → `master`) and enables **auto-merge**. The PR merges automatically
+   once the required build check passes.
 
-Publishing happens inside the Release workflow itself. `publish-java.yml`
-("Publish artifact (manual re-publish)") is a manual-only escape hatch for re-publishing an
-already-released version; it does not bump or tag.
+The trigger allowlist is hardcoded in `.github/workflows/release.yml` as
+`RELEASE_ALLOWED_ACTORS` (space-separated GitHub usernames); edit it via a normal PR.
+
+**One-time setup (maintainer):**
+
+- Install a **GitHub App** on the repo with **Contents: write** and **Pull requests: write**,
+  and store its credentials as repo secrets `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY`.
+  The release PR is created under this App so it triggers CI (a PR created by the default
+  token would not, and auto-merge would hang).
+- Enable **Settings → General → Allow auto-merge**.
+- Keep the **build check required** on `master` branch protection — this is the gate
+  auto-merge waits on.
+
+`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch for
+re-publishing an already-released version; it does not bump or tag.
 
 ### Cross cutting concerns
 
@@ -244,6 +260,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 20.07.2026
+
+* Release workflow now restricts triggering to an allowlist, and after publishing opens a
+  `release/v<version>` → `master` PR with **auto-merge** (created via a GitHub App so CI runs).
+  The triggerer is credited in the PR body and as commit co-author.
 
 ##### 17.07.2026
 

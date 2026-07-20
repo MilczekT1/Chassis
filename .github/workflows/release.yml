@@ -98,19 +98,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          set -e
           all_exist=true
           for pom in $(find . -name pom.xml -not -path '*/target/*'); do
-            packaging=$(./mvnw -q -f "$pom" org.apache.maven.plugins:maven-help-plugin:3.4.0:evaluate -Dexpression=project.packaging -DforceStdout)
-            if [[ "$packaging" == "pom" ]]; then
-              continue
+            packaging=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='packaging'])" "$pom" 2>/dev/null)
+            packaging=${packaging:-jar}
+            [[ "$packaging" == "pom" ]] && continue
+
+            groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
+            if [[ -z "$groupId" ]]; then
+              groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='parent']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
             fi
-            groupId=$(./mvnw -q -f "$pom" org.apache.maven.plugins:maven-help-plugin:3.4.0:evaluate -Dexpression=project.groupId -DforceStdout)
-            artifactId=$(./mvnw -q -f "$pom" org.apache.maven.plugins:maven-help-plugin:3.4.0:evaluate -Dexpression=project.artifactId -DforceStdout)
-            groupPath=$(echo "$groupId" | tr '.' '/')
+            artifactId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='artifactId'])" "$pom" 2>/dev/null)
+            groupPath=${groupId//./\/}
+
             url="https://maven.pkg.github.com/${{ github.repository }}/${groupPath}/${artifactId}/maven-metadata.xml"
-            status=$(curl -s -o /tmp/metadata.xml -w '%{http_code}' -u "x-access-token:${GITHUB_TOKEN}" "$url")
-            if [[ "$status" == "200" ]] && grep -q "<version>$RELEASE_VERSION</version>" /tmp/metadata.xml; then
+            status=$(curl -s -o /tmp/metadata.xml -w '%{http_code}' -u "x-access-token:${GITHUB_TOKEN}" "$url" 2>/dev/null)
+
+            if [[ "$status" == "200" ]] && grep -q "<version>$RELEASE_VERSION</version>" /tmp/metadata.xml 2>/dev/null; then
               echo "$artifactId:$RELEASE_VERSION already published"
             else
               echo "$artifactId:$RELEASE_VERSION not yet published"

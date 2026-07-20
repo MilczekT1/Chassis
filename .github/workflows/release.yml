@@ -162,4 +162,4 @@ jobs:
       - name: Enable auto-merge
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
-        run: gh pr merge "$RELEASE_BRANCH" --auto --merge --delete-branch
+        run: gh pr merge "$RELEASE_BRANCH" --auto --rebase --delete-branch

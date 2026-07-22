@@ -38,7 +38,7 @@ commits `Release Chassis <version>` (with a `Co-authored-by:` trailer crediting 
 and tags `v<version>` on it → checks whether the version is already published (idempotency) →
 `./mvnw deploy` → bumps to `<next>-SNAPSHOT` and commits → atomically pushes the branch + tag →
 creates the GitHub Release → opens a PR (`release/v<version>` → `master`) and enables auto-merge
-(merge-commit, delete branch after). The PR lands automatically once the required build check
+(rebase merge, delete branch after). The PR lands automatically once the required build check
 passes.
 
 Deploy still happens inline in this same job rather than via a workflow triggered off the

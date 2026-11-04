@@ -6,6 +6,8 @@ Date: 2026-07-17
 
 Accepted
 
+Amended by [4. Publish Releases From Master](0004-publish-releases-from-master.md)
+
 ## Context
 
 Releases were driven by two local bash scripts (`prepare-release.sh`, `tag-release.sh`) with

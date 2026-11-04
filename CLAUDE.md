@@ -115,12 +115,17 @@ Releases run in CI via the **Release** GitHub Actions workflow (`workflow_dispat
 are no local scripts. Only allowlisted users (hardcoded `RELEASE_ALLOWED_ACTORS` in
 `release.yml`) may trigger it. Trigger **Actions → Release → Run workflow** and provide
 `releaseVersion` (e.g. `0.5.1`) and `nextVersion` (e.g. `0.5.2`, no `-SNAPSHOT`). The workflow
-creates a `release/v<version>` branch, sets and commits + tags the release version (crediting
-the triggerer as co-author), publishes all modules to GitHub Packages, bumps to
-`<nextVersion>-SNAPSHOT`, creates the GitHub Release, opens a PR to `master`, and enables
-auto-merge (which lands once the required build check passes). The release PR is created via a
-GitHub App (secrets `RELEASE_APP_ID` / `RELEASE_APP_PRIVATE_KEY`) so it triggers CI.
+creates a `release/v<version>` branch, commits the release version (crediting the triggerer as
+co-author) and the `<nextVersion>-SNAPSHOT` bump, opens a PR to `master`, and enables rebase
+auto-merge. The release PR is created and merged via a GitHub App (secrets `RELEASE_APP_ID` /
+`RELEASE_APP_PRIVATE_KEY`) so it triggers CI and its merge triggers the next step.
 
-`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch for
-re-publishing an already-released version. Published to GitHub Packages
+The merge push runs **Publish release** (`publish-release.yml`): it locates the
+`Release Chassis <version>` commit on `master` by subject, verifies it, deploys all modules to
+GitHub Packages, tags it `v<version>` and creates the GitHub Release. Dispatch it with `version`
+to retry. Do not tag or deploy from the release branch: the rebase merge re-creates its commits,
+so such a tag never lands on `master`. Release PRs must be rebase-merged, never squashed.
+
+`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch that
+deploys the checked-out ref without bumping or tagging. Published to GitHub Packages
 (`maven.pkg.github.com/milczekt1/Chassis`); requires GitHub credentials in Maven settings.

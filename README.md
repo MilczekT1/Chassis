@@ -37,11 +37,15 @@ trigger). Only allowlisted users may trigger it.
     - **nextVersion** — the next development version, e.g. `0.5.2` (no `-SNAPSHOT`; the
       workflow appends it).
 3. Run it. The workflow checks you are on the allowlist, creates branch `release/v<version>`,
-   sets the release version and commits + tags `v<version>` on it (crediting you as
-   co-author), publishes all modules to GitHub Packages, bumps to `<nextVersion>-SNAPSHOT`,
-   pushes the branch + tag, creates the GitHub Release, then opens a PR
-   (`release/v<version>` → `master`) and enables **auto-merge**. The PR merges automatically
-   once the required build check passes.
+   commits the release version (crediting you as co-author), commits the bump to
+   `<nextVersion>-SNAPSHOT`, pushes the branch, then opens a PR (`release/v<version>` →
+   `master`) and enables **auto-merge** (rebase). The PR merges automatically once the required
+   checks pass.
+4. The merge runs **Publish release** (`publish-release.yml`). It finds the
+   `Release Chassis <version>` commit as it landed on `master`, verifies that tree, deploys all
+   modules to GitHub Packages, tags it `v<version>` and creates the GitHub Release. To retry a
+   failed run, dispatch **Publish release** from `master` with the version; every step is
+   skipped when already done.
 
 The trigger allowlist is hardcoded in `.github/workflows/release.yml` as
 `RELEASE_ALLOWED_ACTORS` (space-separated GitHub usernames); edit it via a normal PR.
@@ -56,8 +60,11 @@ The trigger allowlist is hardcoded in `.github/workflows/release.yml` as
 - Keep the **build check required** on `master` branch protection — this is the gate
   auto-merge waits on.
 
-`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch for
-re-publishing an already-released version; it does not bump or tag.
+Release PRs must be merged with **rebase**, never squash: **Publish release** needs the release
+commit and the snapshot bump as two separate commits on `master`.
+
+`publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch that
+deploys the checked-out ref; it does not bump or tag.
 
 ### Cross cutting concerns
 
@@ -260,6 +267,16 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 04.11.2026
+
+* Release tagging and deploy moved to a new **Publish release** workflow that runs once the release
+  PR merges, so `v<version>` tags the commit on `master` instead of an orphaned release-branch
+  commit. The release tree is verified before deploy.
+* GitHub Actions pinned to commit SHAs (`checkout` v7.0.1, `setup-java` v6.1.0,
+  `create-github-app-token` v3.3.0); Dependabot added for actions and Maven.
+* Build pipeline uses `setup-java`'s Maven cache and `./mvnw` instead of a custom cache job, and
+  skips the Sonar scan on fork PRs.
 
 ##### 20.07.2026
 

@@ -1,3 +1,6 @@
+# Prepares a release; .github/workflows/publish-release.yml deploys and tags it once the release PR
+# merges. Nothing is tagged or deployed here: the rebase merge re-creates both commits on master, so a
+# tag made from the release branch would point at a commit that never reaches master.
 name: Release
 
 on:
@@ -24,11 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
     steps:
       - name: Authorize triggerer
         env:
-          # Space-separated GitHub usernames allowed to run a release. Edit via PR.
+          # Space-separated GitHub usernames allowed to run a release. Keep in sync with publish-release.yml.
           RELEASE_ALLOWED_ACTORS: "MilczekT1"
           TRIGGER_ACTOR: ${{ github.actor }}
         run: |
@@ -42,21 +44,22 @@ jobs:
           exit 1
 
       - name: Checkout master
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: master
           fetch-depth: 0
           fetch-tags: true
 
       - name: Set up JDK 25
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           java-version: '25'
           distribution: 'temurin'
+          cache: maven
 
       - name: Generate GitHub App token
         id: app_token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
@@ -69,7 +72,7 @@ jobs:
               exit 1
             fi
           done
-          if git rev-parse "v$RELEASE_VERSION" >/dev/null 2>&1; then
+          if git rev-parse --verify --quiet "refs/tags/v$RELEASE_VERSION" >/dev/null 2>&1; then
             echo "Tag v$RELEASE_VERSION already exists" >&2
             exit 1
           fi
@@ -85,80 +88,42 @@ jobs:
         run: git checkout -b "$RELEASE_BRANCH"
       - name: Set release version
         run: ./mvnw versions:set -DnewVersion="$RELEASE_VERSION" -DprocessAllModules=true -DgenerateBackupPoms=false ${{ env.MVN_CONFIG }}
-      - name: Commit and tag release
+      # publish-release.yml finds this commit on master by this exact subject.
+      - name: Commit release version
         env:
           TRIGGER_ACTOR: ${{ github.actor }}
           TRIGGER_ACTOR_ID: ${{ github.actor_id }}
         run: |
           git commit -a -m "Release Chassis $RELEASE_VERSION" \
             -m "Co-authored-by: ${TRIGGER_ACTOR} <${TRIGGER_ACTOR_ID}+${TRIGGER_ACTOR}@users.noreply.github.com>"
-          git tag "v$RELEASE_VERSION"
-      - name: Check if version already published
-        id: check_deployed
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq libxml2-utils
-
-          all_exist=true
-          for pom in $(find . -name pom.xml -not -path '*/target/*'); do
-            packaging=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='packaging'])" "$pom" 2>/dev/null)
-            packaging=${packaging:-jar}
-            [[ "$packaging" == "pom" ]] && continue
-
-            groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
-            if [[ -z "$groupId" ]]; then
-              groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='parent']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
-            fi
-            artifactId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='artifactId'])" "$pom" 2>/dev/null)
-            groupPath=${groupId//./\/}
-
-            url="https://maven.pkg.github.com/${{ github.repository }}/${groupPath}/${artifactId}/maven-metadata.xml"
-            status=$(curl -s -o /tmp/metadata.xml -w '%{http_code}' -u "x-access-token:${GITHUB_TOKEN}" "$url" 2>/dev/null)
-
-            if [[ "$status" == "200" ]] && grep -q "<version>$RELEASE_VERSION</version>" /tmp/metadata.xml 2>/dev/null; then
-              echo "$artifactId:$RELEASE_VERSION already published"
-            else
-              echo "$artifactId:$RELEASE_VERSION not yet published"
-              all_exist=false
-            fi
-          done
-          echo "skip=$all_exist" >> "$GITHUB_OUTPUT"
-
-      - name: Deploy to GitHub Packages
-        if: steps.check_deployed.outputs.skip != 'true'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: ./mvnw deploy -DskipTests=true ${{ env.MVN_CONFIG }}
       - name: Set next development version
         run: ./mvnw versions:set -DnewVersion="$NEXT_VERSION-SNAPSHOT" -DprocessAllModules=true -DgenerateBackupPoms=false ${{ env.MVN_CONFIG }}
+      # publish-release.yml triggers on a master push whose head commit has this subject prefix.
       - name: Commit next development version
         run: git commit -a -m "Prepare next release Chassis $NEXT_VERSION-SNAPSHOT"
-      - name: Push release branch and tag
-        run: git push --atomic origin "$RELEASE_BRANCH" "v$RELEASE_VERSION"
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --generate-notes
+      - name: Push release branch
+        run: git push origin "$RELEASE_BRANCH"
 
       - name: Open release pull request
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
           TRIGGER_ACTOR: ${{ github.actor }}
         run: |
+          body="Automated release PR for \`v$RELEASE_VERSION\`. Triggered by @${TRIGGER_ACTOR}. Merging it runs **Publish release**, which deploys \`$RELEASE_VERSION\` to GitHub Packages and tags it."
           gh pr create \
             --base master \
             --head "$RELEASE_BRANCH" \
             --title "Release Chassis $RELEASE_VERSION" \
-            --body "Automated release PR for \`v$RELEASE_VERSION\`. Triggered by @${TRIGGER_ACTOR}." \
+            --body "$body" \
             --assignee "$TRIGGER_ACTOR" || \
           gh pr create \
             --base master \
             --head "$RELEASE_BRANCH" \
             --title "Release Chassis $RELEASE_VERSION" \
-            --body "Automated release PR for \`v$RELEASE_VERSION\`. Triggered by @${TRIGGER_ACTOR}."
+            --body "$body"
 
+      # Rebase, not squash: publish-release.yml expects the release commit and the snapshot bump as
+      # two separate commits on master, and the merge must be done by the App so its push triggers it.
       - name: Enable auto-merge
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}

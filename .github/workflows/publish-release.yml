@@ -1,0 +1,182 @@
+# Deploys a release to GitHub Packages and tags it, from the "Release Chassis <version>" commit as it
+# landed on master. Runs when a release/v* PR opened by release.yml is rebase-merged, which pushes that
+# commit with the snapshot bump on top; dispatch it by hand from master with the version to retry a
+# failed run. Every step is skipped or idempotent when already done.
+#
+# The push only starts this workflow because the release PR is auto-merged by the GitHub App: a push
+# made with the default GITHUB_TOKEN starts no workflow runs.
+name: Publish release
+
+on:
+  push:
+    branches: [master]
+    paths: ['**/pom.xml']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish, e.g. 0.5.1 — its "Release Chassis <version>" commit must be on master'
+        required: true
+
+env:
+  MVN_CONFIG: -B -s $GITHUB_WORKSPACE/.github/settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+jobs:
+  publish:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.head_commit.message, 'Prepare next release Chassis ')
+    runs-on: ubuntu-latest
+    # Job-level, not workflow-level: every POM-touching push to master starts a run, and a
+    # workflow-level group would let those skipped runs cancel a pending publish.
+    concurrency:
+      group: publish-release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Authorize triggerer
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          # Space-separated GitHub usernames allowed to publish by hand. Keep in sync with release.yml.
+          RELEASE_ALLOWED_ACTORS: "MilczekT1"
+          TRIGGER_ACTOR: ${{ github.actor }}
+        run: |
+          for allowed in $RELEASE_ALLOWED_ACTORS; do
+            if [[ "$allowed" == "$TRIGGER_ACTOR" ]]; then
+              echo "$TRIGGER_ACTOR is authorized to publish."
+              exit 0
+            fi
+          done
+          echo "::error::$TRIGGER_ACTOR is not authorized to publish a release. Allowed: $RELEASE_ALLOWED_ACTORS" >&2
+          exit 1
+
+      - name: Checkout master
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: master
+          fetch-depth: 0
+          fetch-tags: true
+
+      # On push, the release commit is the parent of the pushed snapshot bump.
+      - name: Resolve version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ -n "$INPUT_VERSION" ]]; then
+            version=$INPUT_VERSION
+          else
+            subject=$(git log -1 --format=%s "$GITHUB_SHA^")
+            version=${subject#Release Chassis }
+            if [[ "$version" == "$subject" ]]; then
+              echo "::error::The parent of $GITHUB_SHA is '$subject', not a 'Release Chassis <version>' commit. Merge release PRs with rebase." >&2
+              exit 1
+            fi
+          fi
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid release version: '$version'" >&2
+            exit 1
+          fi
+          echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Locate release commit on master
+        run: |
+          subject_regex="^Release Chassis ${RELEASE_VERSION//./\\.}\$"
+          mapfile -t shas < <(git log --format=%H --grep="$subject_regex" HEAD)
+          if [[ ${#shas[@]} -ne 1 ]]; then
+            echo "::error::Expected exactly one 'Release Chassis $RELEASE_VERSION' commit on master, found ${#shas[@]}. A squash merge folds it into one commit with the snapshot bump; merge release PRs with rebase." >&2
+            exit 1
+          fi
+          echo "RELEASE_SHA=${shas[0]}" >> "$GITHUB_ENV"
+          git checkout --quiet --detach "${shas[0]}"
+          echo "Release commit: ${shas[0]}"
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Assert project version and tag
+        id: tag
+        run: |
+          actual_version=$(./mvnw -q help:evaluate -Dexpression=project.version -DforceStdout)
+          if [[ "$actual_version" != "$RELEASE_VERSION" ]]; then
+            echo "::error::Release commit $RELEASE_SHA has project version '$actual_version', expected '$RELEASE_VERSION'." >&2
+            exit 1
+          fi
+          if tagged_sha=$(git rev-parse --verify --quiet "refs/tags/v$RELEASE_VERSION^{commit}"); then
+            if [[ "$tagged_sha" != "$RELEASE_SHA" ]]; then
+              echo "::error::Tag v$RELEASE_VERSION already points at $tagged_sha, not the release commit $RELEASE_SHA." >&2
+              exit 1
+            fi
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check if version already published
+        id: check_deployed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libxml2-utils
+
+          all_exist=true
+          mapfile -t poms < <(find . -name pom.xml -not -path '*/target/*')
+          for pom in "${poms[@]}"; do
+            packaging=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='packaging'])" "$pom" 2>/dev/null)
+            packaging=${packaging:-jar}
+            [[ "$packaging" == "pom" ]] && continue
+
+            groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
+            if [[ -z "$groupId" ]]; then
+              groupId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='parent']/*[local-name()='groupId'])" "$pom" 2>/dev/null)
+            fi
+            artifactId=$(xmllint --xpath "string(/*[local-name()='project']/*[local-name()='artifactId'])" "$pom" 2>/dev/null)
+            groupPath=${groupId//./\/}
+
+            url="https://maven.pkg.github.com/${GITHUB_REPOSITORY}/${groupPath}/${artifactId}/maven-metadata.xml"
+            status=$(curl -s -o "$RUNNER_TEMP/metadata.xml" -w '%{http_code}' -u "x-access-token:${GITHUB_TOKEN}" "$url" 2>/dev/null)
+
+            if [[ "$status" == "200" ]] && grep -q "<version>$RELEASE_VERSION</version>" "$RUNNER_TEMP/metadata.xml" 2>/dev/null; then
+              echo "$artifactId:$RELEASE_VERSION already published"
+            else
+              echo "$artifactId:$RELEASE_VERSION not yet published"
+              all_exist=false
+            fi
+          done
+          echo "skip=$all_exist" >> "$GITHUB_OUTPUT"
+
+      # The release PR's checks ran on the snapshot-bump commit above this one, so the tree about to be
+      # deployed has never been built on its own.
+      - name: Verify release tree before publishing
+        if: steps.check_deployed.outputs.skip != 'true'
+        env:
+          DOCKER_HOST: unix:///var/run/docker.sock
+          TESTCONTAINERS_RYUK_DISABLED: true
+        run: ./mvnw clean verify ${{ env.MVN_CONFIG }}
+
+      - name: Deploy to GitHub Packages
+        if: steps.check_deployed.outputs.skip != 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: ./mvnw deploy -DskipTests=true ${{ env.MVN_CONFIG }}
+
+      - name: Tag release commit
+        if: steps.tag.outputs.exists != 'true'
+        run: |
+          git tag "v$RELEASE_VERSION" "$RELEASE_SHA"
+          git push origin "refs/tags/v$RELEASE_VERSION"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v$RELEASE_VERSION" >/dev/null 2>&1; then
+            echo "GitHub Release v$RELEASE_VERSION already exists."
+          else
+            gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --generate-notes --verify-tag
+          fi

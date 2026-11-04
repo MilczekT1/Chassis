@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.milczekt1</groupId>
         <artifactId>chassis</artifactId>
-        <version>0.5.4-SNAPSHOT</version>
+        <version>0.5.4</version>
     </parent>
 
     <artifactId>chassis-dependencies</artifactId>

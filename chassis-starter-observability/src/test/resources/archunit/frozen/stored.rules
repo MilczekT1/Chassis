@@ -1,3 +1,4 @@
+corral.concurrency.no-future-get-without-timeout=corral.concurrency.no-future-get-without-timeout
 corral.concurrency.no-manual-thread-creation=corral.concurrency.no-manual-thread-creation
 corral.concurrency.no-object-monitor-methods=corral.concurrency.no-object-monitor-methods
 corral.java.no-bigdecimal-double-constructor=corral.java.no-bigdecimal-double-constructor

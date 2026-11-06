@@ -1,3 +1,9 @@
+corral.java.no-bigdecimal-double-constructor=corral.java.no-bigdecimal-double-constructor
+corral.java.no-class-new-instance=corral.java.no-class-new-instance
+corral.java.no-equals-without-hashcode=corral.java.no-equals-without-hashcode
+corral.java.no-finalize-override=corral.java.no-finalize-override
+corral.java.no-public-static-array-fields=corral.java.no-public-static-array-fields
+corral.java.public-static-fields-must-be-final=corral.java.public-static-fields-must-be-final
 corral.logging.no-print-stack-trace=corral.logging.no-print-stack-trace
 corral.logging.no-system-err=corral.logging.no-system-err
 corral.logging.no-system-out=corral.logging.no-system-out

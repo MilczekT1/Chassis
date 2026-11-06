@@ -2,6 +2,7 @@ package io.github.milczekt1.chassis.rules.internal;
 
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchTests;
+import io.github.milczekt1.corral.groups.JavaCorrectnessRulesGroup;
 import io.github.milczekt1.corral.groups.LoggingRulesGroup;
 
 /**
@@ -12,6 +13,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests logging = ArchTests.in(LoggingRulesGroup.class);
+
+    @ArchTest
+    static final ArchTests javaCorrectness = ArchTests.in(JavaCorrectnessRulesGroup.class);
 
     private ChassisArchitectureRules() {
     }

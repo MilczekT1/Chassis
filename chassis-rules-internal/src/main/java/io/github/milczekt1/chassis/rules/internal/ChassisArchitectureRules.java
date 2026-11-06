@@ -7,6 +7,7 @@ import io.github.milczekt1.corral.groups.JavaCorrectnessRulesGroup;
 import io.github.milczekt1.corral.groups.LoggingRulesGroup;
 import io.github.milczekt1.corral.groups.SpringRulesGroup;
 import io.github.milczekt1.corral.groups.TestingRulesGroup;
+import io.github.milczekt1.corral.rules.java.serializablemustdeclareserialversionuid.SerializableMustDeclareSerialVersionUidRule;
 import io.github.milczekt1.corral.rules.spring.configurationpropertiesmustuseprojectprefix.ConfigurationPropertiesMustUseProjectPrefixRule;
 import io.github.milczekt1.corral.rules.testing.testclassnamingconvention.TestClassNamingConventionRule;
 
@@ -36,6 +37,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests testClassNaming = ArchTests.in(TestClassNamingConventionRule.class);
+
+    @ArchTest
+    static final ArchTests serialVersionUid = ArchTests.in(SerializableMustDeclareSerialVersionUidRule.class);
 
     private ChassisArchitectureRules() {
     }

@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>chassis-rules-internal</module>
         <module>chassis-tools-test</module>
         <module>chassis-tools</module>
         <module>chassis-bom</module>
@@ -27,6 +28,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <springboot.version>4.0.6</springboot.version>
         <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
+        <corral.version>0.4.0</corral.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.organization>milczekt1</sonar.organization>

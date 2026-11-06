@@ -8,6 +8,7 @@ import io.github.milczekt1.corral.groups.LoggingRulesGroup;
 import io.github.milczekt1.corral.groups.SpringRulesGroup;
 import io.github.milczekt1.corral.groups.TestingRulesGroup;
 import io.github.milczekt1.corral.rules.java.nolegacydateapi.NoLegacyDateApiRule;
+import io.github.milczekt1.corral.rules.java.nooptionalfields.NoOptionalFieldsRule;
 import io.github.milczekt1.corral.rules.java.serializablemustdeclareserialversionuid.SerializableMustDeclareSerialVersionUidRule;
 import io.github.milczekt1.corral.rules.spring.configurationpropertiesmustuseprojectprefix.ConfigurationPropertiesMustUseProjectPrefixRule;
 import io.github.milczekt1.corral.rules.spring.novalueonfield.NoValueOnFieldRule;
@@ -48,6 +49,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests noLegacyDateApi = ArchTests.in(NoLegacyDateApiRule.class);
+
+    @ArchTest
+    static final ArchTests noOptionalFields = ArchTests.in(NoOptionalFieldsRule.class);
 
     private ChassisArchitectureRules() {
     }

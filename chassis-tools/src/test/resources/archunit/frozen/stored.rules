@@ -1,3 +1,5 @@
+corral.concurrency.no-manual-thread-creation=corral.concurrency.no-manual-thread-creation
+corral.concurrency.no-object-monitor-methods=corral.concurrency.no-object-monitor-methods
 corral.java.no-bigdecimal-double-constructor=corral.java.no-bigdecimal-double-constructor
 corral.java.no-class-new-instance=corral.java.no-class-new-instance
 corral.java.no-equals-without-hashcode=corral.java.no-equals-without-hashcode

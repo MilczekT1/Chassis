@@ -7,6 +7,7 @@ import io.github.milczekt1.corral.groups.JavaCorrectnessRulesGroup;
 import io.github.milczekt1.corral.groups.LoggingRulesGroup;
 import io.github.milczekt1.corral.groups.SpringRulesGroup;
 import io.github.milczekt1.corral.groups.TestingRulesGroup;
+import io.github.milczekt1.corral.rules.spring.configurationpropertiesmustuseprojectprefix.ConfigurationPropertiesMustUseProjectPrefixRule;
 
 /**
  * The Corral rules every Chassis module runs. Wire it from exactly one test class per module: a rule id is a
@@ -28,6 +29,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests testing = ArchTests.in(TestingRulesGroup.class);
+
+    @ArchTest
+    static final ArchTests configurationPropertiesPrefix = ArchTests.in(ConfigurationPropertiesMustUseProjectPrefixRule.class);
 
     private ChassisArchitectureRules() {
     }

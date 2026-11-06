@@ -14,6 +14,7 @@ import io.github.milczekt1.corral.rules.java.nolegacysynchronizedcollections.NoL
 import io.github.milczekt1.corral.rules.java.nooptionalfields.NoOptionalFieldsRule;
 import io.github.milczekt1.corral.rules.java.nooptionalmethodparameters.NoOptionalMethodParametersRule;
 import io.github.milczekt1.corral.rules.java.serializablemustdeclareserialversionuid.SerializableMustDeclareSerialVersionUidRule;
+import io.github.milczekt1.corral.rules.naming.lowercasepackages.LowercasePackagesRule;
 import io.github.milczekt1.corral.rules.spring.configurationpropertiesmustuseprojectprefix.ConfigurationPropertiesMustUseProjectPrefixRule;
 import io.github.milczekt1.corral.rules.spring.novalueonfield.NoValueOnFieldRule;
 import io.github.milczekt1.corral.rules.testing.testclassnamingconvention.TestClassNamingConventionRule;
@@ -68,6 +69,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests noLegacySynchronizedCollections = ArchTests.in(NoLegacySynchronizedCollectionsRule.class);
+
+    @ArchTest
+    static final ArchTests lowercasePackages = ArchTests.in(LowercasePackagesRule.class);
 
     private ChassisArchitectureRules() {
     }

@@ -1,0 +1,3 @@
+corral.logging.no-print-stack-trace=corral.logging.no-print-stack-trace
+corral.logging.no-system-err=corral.logging.no-system-err
+corral.logging.no-system-out=corral.logging.no-system-out

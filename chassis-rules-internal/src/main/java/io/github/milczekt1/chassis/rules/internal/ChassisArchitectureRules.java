@@ -17,6 +17,7 @@ import io.github.milczekt1.corral.rules.java.serializablemustdeclareserialversio
 import io.github.milczekt1.corral.rules.naming.lowercasepackages.LowercasePackagesRule;
 import io.github.milczekt1.corral.rules.spring.configurationpropertiesmustuseprojectprefix.ConfigurationPropertiesMustUseProjectPrefixRule;
 import io.github.milczekt1.corral.rules.spring.novalueonfield.NoValueOnFieldRule;
+import io.github.milczekt1.corral.rules.testing.nomutablestaticstate.NoMutableStaticStateRule;
 import io.github.milczekt1.corral.rules.testing.testclassnamingconvention.TestClassNamingConventionRule;
 
 /**
@@ -72,6 +73,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests lowercasePackages = ArchTests.in(LowercasePackagesRule.class);
+
+    @ArchTest
+    static final ArchTests noMutableStaticState = ArchTests.in(NoMutableStaticStateRule.class);
 
     private ChassisArchitectureRules() {
     }

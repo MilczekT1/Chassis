@@ -6,6 +6,7 @@ import io.github.milczekt1.corral.groups.ConcurrencyRulesGroup;
 import io.github.milczekt1.corral.groups.JavaCorrectnessRulesGroup;
 import io.github.milczekt1.corral.groups.LoggingRulesGroup;
 import io.github.milczekt1.corral.groups.SpringRulesGroup;
+import io.github.milczekt1.corral.groups.TestingRulesGroup;
 
 /**
  * The Corral rules every Chassis module runs. Wire it from exactly one test class per module: a rule id is a
@@ -24,6 +25,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests spring = ArchTests.in(SpringRulesGroup.class);
+
+    @ArchTest
+    static final ArchTests testing = ArchTests.in(TestingRulesGroup.class);
 
     private ChassisArchitectureRules() {
     }

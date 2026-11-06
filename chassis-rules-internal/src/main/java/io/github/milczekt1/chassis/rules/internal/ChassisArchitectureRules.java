@@ -10,6 +10,7 @@ import io.github.milczekt1.corral.groups.TestingRulesGroup;
 import io.github.milczekt1.corral.rules.concurrency.nofuturegetwithouttimeout.NoFutureGetWithoutTimeoutRule;
 import io.github.milczekt1.corral.rules.java.nointernalapi.NoInternalApiRule;
 import io.github.milczekt1.corral.rules.java.nolegacydateapi.NoLegacyDateApiRule;
+import io.github.milczekt1.corral.rules.java.nolegacysynchronizedcollections.NoLegacySynchronizedCollectionsRule;
 import io.github.milczekt1.corral.rules.java.nooptionalfields.NoOptionalFieldsRule;
 import io.github.milczekt1.corral.rules.java.nooptionalmethodparameters.NoOptionalMethodParametersRule;
 import io.github.milczekt1.corral.rules.java.serializablemustdeclareserialversionuid.SerializableMustDeclareSerialVersionUidRule;
@@ -64,6 +65,9 @@ public final class ChassisArchitectureRules {
 
     @ArchTest
     static final ArchTests noInternalApi = ArchTests.in(NoInternalApiRule.class);
+
+    @ArchTest
+    static final ArchTests noLegacySynchronizedCollections = ArchTests.in(NoLegacySynchronizedCollectionsRule.class);
 
     private ChassisArchitectureRules() {
     }

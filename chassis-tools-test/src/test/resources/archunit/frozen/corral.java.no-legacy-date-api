@@ -1,0 +1,2 @@
+Method <io.github.milczekt1.chassis.test.clock.FixedClockListener.mockClock(org.springframework.test.context.TestContext, io.github.milczekt1.chassis.test.clock.FixedClock)> calls method <java.util.TimeZone.getDefault()> in (FixedClockListener.java:48)
+Method <io.github.milczekt1.chassis.test.clock.FixedClockListener.mockClock(org.springframework.test.context.TestContext, io.github.milczekt1.chassis.test.clock.FixedClock)> calls method <java.util.TimeZone.toZoneId()> in (FixedClockListener.java:48)

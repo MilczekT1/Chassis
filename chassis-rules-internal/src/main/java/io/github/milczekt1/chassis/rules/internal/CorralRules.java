@@ -22,9 +22,6 @@ import io.github.milczekt1.corral.rules.testing.nolegacymockbeanandspybean.NoLeg
 import io.github.milczekt1.corral.rules.testing.nomutablestaticstate.NoMutableStaticStateRule;
 import io.github.milczekt1.corral.rules.testing.testclassnamingconvention.TestClassNamingConventionRule;
 
-/**
- * The Corral catalog rules every Chassis module runs.
- */
 public final class CorralRules {
 
     @ArchTest

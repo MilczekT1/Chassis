@@ -43,7 +43,7 @@
         <dependency>
             <groupId>io.github.milczekt1</groupId>
             <artifactId>corral-rules</artifactId>
-            <version>${corral.version}</version>
+            <version>0.4.0</version>
         </dependency>
         <!-- chassis-bom manages archunit-junit5 at test scope, which would demote it here -->
         <dependency>

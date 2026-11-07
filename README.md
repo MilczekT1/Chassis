@@ -268,6 +268,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 07.11.2026
+
+* Added `chassis-rules-internal`, which runs Corral catalog rules (logging, Spring, testing, Java correctness,
+  concurrency and 13 single rules) in every module's tests; existing violations are frozen as debt.
+* CI fails when the build changes a Corral freeze store.
+
 ##### 04.11.2026
 
 * Release tagging and deploy moved to a new **Publish release** workflow that runs once the release

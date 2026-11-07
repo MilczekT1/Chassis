@@ -23,10 +23,9 @@ import io.github.milczekt1.corral.rules.testing.nomutablestaticstate.NoMutableSt
 import io.github.milczekt1.corral.rules.testing.testclassnamingconvention.TestClassNamingConventionRule;
 
 /**
- * The Corral rules every Chassis module runs. Wire it from exactly one test class per module: a rule id is a
- * freeze-store key.
+ * The Corral catalog rules every Chassis module runs.
  */
-public final class ChassisArchitectureRules {
+public final class CorralRules {
 
     @ArchTest
     static final ArchTests logging = ArchTests.in(LoggingRulesGroup.class);
@@ -85,6 +84,6 @@ public final class ChassisArchitectureRules {
     @ArchTest
     static final ArchTests noTestLibrariesInProduction = ArchTests.in(NoTestLibrariesInProductionRule.class);
 
-    private ChassisArchitectureRules() {
+    private CorralRules() {
     }
 }

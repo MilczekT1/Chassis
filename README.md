@@ -1,4 +1,5 @@
 * [Release process](#release-process)
+* [Architecture rules (Corral)](#architecture-rules-corral)
 * [Cross cutting concerns](#cross-cutting-concerns)
     * [Exception handling with problem details response](#exception-handling)
   * [Testing](#testing)
@@ -65,6 +66,30 @@ commit and the snapshot bump as two separate commits on `master`.
 
 `publish-java.yml` ("Publish artifact (manual re-publish)") is a manual-only escape hatch that
 deploys the checked-out ref; it does not bump or tag.
+
+### Architecture rules (Corral)
+
+Every module with code except `chassis-rules-internal` itself runs [Corral](https://github.com/MilczekT1/Corral)
+catalog rules in its unit tests: `ChassisInternalArchitectureTests` wires `ChassisInternalArchitectureRules` from
+`chassis-rules-internal`.
+Violations that predate a rule are frozen as debt in the module's `src/test/resources/archunit/frozen`;
+only new ones fail the build. Settings (`archunit.properties`, `corral.properties` with the property
+prefix and any exclusions) live in each module's `src/test/resources`.
+
+**Each module scans only its own classes.** The tests use
+`@AnalyzeClasses(locations = CurrentModuleLocations.class)`, which imports the `target/test-classes` and
+`target/classes` of the module the test was compiled in. Do not switch to `packages = ...` with
+`ImportOption.DoNotIncludeJars`: in this reactor, sibling modules are on the test classpath as
+`target/classes` directories under `./mvnw test` and in IntelliJ, but as jars under `./mvnw verify`, so a
+downstream module would scan its dependencies' classes in some runs and not others, and its freeze store
+would change with the command.
+
+**CI fails when the build changes a freeze store.** After `./mvnw clean install`, the `build` job runs
+`git status --porcelain -- ':(glob)**/src/test/resources/archunit/frozen/**'` and fails if anything is
+listed. The store changes when a new rule records its first entry or when frozen debt is fixed; run
+`./mvnw test` locally and commit the store together with that change. This includes a Corral upgrade
+that adds rules to a wired group. Keep the `:(glob)` form: a plain `'*/src/test/resources/archunit/frozen'`
+pathspec matches no file, and the check would always pass.
 
 ### Cross cutting concerns
 
@@ -267,6 +292,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 07.11.2026
+
+* Added `chassis-rules-internal`, which runs Corral catalog rules (logging, Spring, testing, Java correctness,
+  concurrency and 14 single rules) in every module's tests; existing violations are frozen as debt.
+* CI fails when the build changes a Corral freeze store.
 
 ##### 04.11.2026
 

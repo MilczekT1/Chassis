@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>chassis-rules-internal</module>
         <module>chassis-tools-test</module>
         <module>chassis-tools</module>
         <module>chassis-bom</module>

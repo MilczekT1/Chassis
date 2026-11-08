@@ -36,6 +36,14 @@ jobs:
           DOCKER_HOST: unix:///var/run/docker.sock
           TESTCONTAINERS_RYUK_DISABLED: true
         run: ./mvnw clean install ${{ env.MVN_CONFIG }}
+      - name: Freeze stores unchanged by the build
+        run: |
+          changed=$(git status --porcelain -- ':(glob)**/src/test/resources/archunit/frozen/**')
+          if [ -n "$changed" ]; then
+            echo "::error::The build changed Corral freeze stores. Run ./mvnw test locally and commit the store changes:"
+            echo "$changed"
+            exit 1
+          fi
   # Fork PRs get no secrets, so SONAR_TOKEN is empty there. Dependabot PRs read SONAR_TOKEN from the
   # Dependabot secret store, not the Actions one.
   sonar_scan:

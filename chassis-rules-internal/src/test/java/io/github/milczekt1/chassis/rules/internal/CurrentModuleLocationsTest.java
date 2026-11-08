@@ -11,9 +11,11 @@ class CurrentModuleLocationsTest {
 
     private static final Path TARGET = Path.of("target").toAbsolutePath();
 
+    private final CurrentModuleLocations provider = new CurrentModuleLocations();
+
     @Test
     void returnsTheTestClassesOutputAndItsProductionSibling() {
-        var locations = new CurrentModuleLocations().get(CurrentModuleLocationsTest.class);
+        var locations = provider.get(CurrentModuleLocationsTest.class);
 
         assertThat(locations).map(location -> Path.of(location.asURI())).containsExactlyInAnyOrder(
                 TARGET.resolve("test-classes"),
@@ -22,14 +24,14 @@ class CurrentModuleLocationsTest {
 
     @Test
     void rejectsAClassLoadedFromAJar() {
-        assertThatThrownBy(() -> new CurrentModuleLocations().get(Test.class))
+        assertThatThrownBy(() -> provider.get(Test.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("junit-jupiter-api");
     }
 
     @Test
     void rejectsAProductionClass() {
-        assertThatThrownBy(() -> new CurrentModuleLocations().get(CurrentModuleLocations.class))
+        assertThatThrownBy(() -> provider.get(CurrentModuleLocations.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("target/test-classes");
     }

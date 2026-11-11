@@ -21,7 +21,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <springboot.version>4.0.6</springboot.version>
-        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.1.4</spring-cloud-dependencies.version>
 
         <!--Properties to override        -->
         <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>

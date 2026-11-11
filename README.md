@@ -77,7 +77,7 @@ only new ones fail the build. Settings (`archunit.properties`, `corral.propertie
 prefix and any exclusions) live in each module's `src/test/resources`.
 
 **Each module scans only its own classes.** The tests use
-`@AnalyzeClasses(locations = CurrentModuleLocations.class)`, which imports the `target/test-classes` and
+`@AnalyzeClasses(locations = CurrentModuleLocations.class)` (from Corral's SDK), which imports the `target/test-classes` and
 `target/classes` of the module the test was compiled in. Do not switch to `packages = ...` with
 `ImportOption.DoNotIncludeJars`: in this reactor, sibling modules are on the test classpath as
 `target/classes` directories under `./mvnw test` and in IntelliJ, but as jars under `./mvnw verify`, so a
@@ -292,6 +292,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 11.11.2026
+
+* Bumped Corral to 0.6.0; architecture tests now use Corral's own `CurrentModuleLocations`, replacing the copy
+  in `chassis-rules-internal`.
 
 ##### 07.11.2026
 

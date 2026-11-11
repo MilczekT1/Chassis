@@ -36,7 +36,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - JaCoCo enforces 75% line/branch coverage (configurable per module via `jacoco.lineCoverage.minimum`,
   `jacoco.branches.minimum`, `jacoco.classes.maxMissed`)
 - **Architecture rules (Corral)**: every module with code has `ChassisInternalArchitectureTests`, which runs
-  `ChassisInternalArchitectureRules` from `chassis-rules-internal`, scoped to that module by `CurrentModuleLocations`.
+  `ChassisInternalArchitectureRules` from `chassis-rules-internal`, scoped to that module by Corral's `CurrentModuleLocations`.
   Settings are per module: `src/test/resources/archunit.properties` and `corral.properties` (prefix, exclusions
   with reasons).
 - Existing violations are frozen in each module's `src/test/resources/archunit/frozen`. Commit store changes with
@@ -57,7 +57,7 @@ Spring Boot auto-configurations for microservices.
 | `chassis-parent`         | Parent POM inheriting from `spring-boot-starter-parent`; defines build plugins (JaCoCo, Surefire, Failsafe)                           |
 | `chassis-tools`          | Core library — Spring Boot auto-configured cross-cutting concerns (exception handling, logging, observability, security)              |
 | `chassis-tools-test`     | Test utilities — `@FixedClock`, `LogbackVerifierExtension`, `@ClearCollections`, `MetricsVerifierExtension`, `TraceVerifierExtension` |
-| `chassis-rules-internal` | Corral catalog rules every Chassis module runs in its tests (`ChassisInternalArchitectureRules`, `CurrentModuleLocations`); not in the BOM    |
+| `chassis-rules-internal` | Corral catalog rules every Chassis module runs in its tests (`ChassisInternalArchitectureRules`); not in the BOM                      |
 | `chassis-dependencies`   | Aggregator JAR — single dependency for microservices to include all chassis modules                                                   |
 | `chassis-test-app`       | Spring Boot app used for integration/regression testing of chassis features                                                           |
 

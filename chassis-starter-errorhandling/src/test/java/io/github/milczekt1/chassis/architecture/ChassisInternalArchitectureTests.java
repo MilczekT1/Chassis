@@ -4,7 +4,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchTests;
 import io.github.milczekt1.chassis.rules.internal.ChassisInternalArchitectureRules;
-import io.github.milczekt1.chassis.rules.internal.CurrentModuleLocations;
+import io.github.milczekt1.corral.scope.CurrentModuleLocations;
 
 @AnalyzeClasses(locations = CurrentModuleLocations.class)
 class ChassisInternalArchitectureTests {

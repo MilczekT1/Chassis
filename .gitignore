@@ -12,3 +12,4 @@ out/
 
 ### Local Claude overrides ###
 CLAUDE.local.md
+.flattened-pom.xml

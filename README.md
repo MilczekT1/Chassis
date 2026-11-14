@@ -293,6 +293,12 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 14.11.2026
+
+* `chassis-parent` is published with the `chassis-bom` import resolved to its own version, so consumers no
+  longer have to use the Chassis version as their own.
+* `chassis-bom` manages `chassis-dependencies`, so consumers declare it without a version.
+
 ##### 11.11.2026
 
 * Bumped Corral to 0.6.0; architecture tests now use Corral's own `CurrentModuleLocations`, replacing the copy

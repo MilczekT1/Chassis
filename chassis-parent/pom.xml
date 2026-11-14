@@ -314,6 +314,45 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.3</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <!-- Publishes the BOM import with this POM's version instead of ${project.version}.
+                         Only dependencyManagement may be interpolated: build and properties hold
+                         ${project.build.directory} etc. that must resolve in the consumer. -->
+                    <pomElements>
+                        <dependencyManagement>interpolate</dependencyManagement>
+                        <parent>keep</parent>
+                        <properties>keep</properties>
+                        <repositories>keep</repositories>
+                        <distributionManagement>keep</distributionManagement>
+                        <build>keep</build>
+                        <reporting>keep</reporting>
+                    </pomElements>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <reporting>

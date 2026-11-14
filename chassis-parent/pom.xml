@@ -21,7 +21,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <springboot.version>4.0.6</springboot.version>
-        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
 
         <!--Properties to override        -->
         <jacoco.classes.maxMissed>0</jacoco.classes.maxMissed>
@@ -59,13 +58,6 @@
                 <groupId>io.github.milczekt1</groupId>
                 <artifactId>chassis-bom</artifactId>
                 <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -322,9 +314,7 @@
                 <inherited>false</inherited>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
-                    <!-- Publishes the BOM import with this POM's version instead of ${project.version}.
-                         Only dependencyManagement may be interpolated: build and properties hold
-                         ${project.build.directory} etc. that must resolve in the consumer. -->
+                    <!-- Do not interpolate build or properties: they hold ${project.build.directory}, which must resolve in the consumer. -->
                     <pomElements>
                         <dependencyManagement>interpolate</dependencyManagement>
                         <parent>keep</parent>

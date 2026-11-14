@@ -298,6 +298,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 * `chassis-parent` is published with the `chassis-bom` import resolved to its own version, so consumers no
   longer have to use the Chassis version as their own.
 * `chassis-bom` manages `chassis-dependencies`, so consumers declare it without a version.
+* `chassis-parent` no longer imports `spring-cloud-dependencies` itself or defines `spring-cloud-dependencies.version`;
+  Spring Cloud comes from the `chassis-bom` import.
 
 ##### 11.11.2026
 

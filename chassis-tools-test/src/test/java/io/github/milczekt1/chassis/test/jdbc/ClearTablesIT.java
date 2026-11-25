@@ -46,6 +46,11 @@ class ClearTablesIT {
         assertThat(countRows("orders")).isZero();
     }
 
+    void assertTablesHaveRows() {
+        assertThat(countRows("order_items")).isPositive();
+        assertThat(countRows("orders")).isPositive();
+    }
+
     @ClearTables({"order_items", "orders"})
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
@@ -54,6 +59,7 @@ class ClearTablesIT {
         @Test
         void insertsOrderWithItem() {
             insertOrderWithItem();
+            assertTablesHaveRows();
         }
 
         @AfterAll
@@ -72,6 +78,7 @@ class ClearTablesIT {
         @Order(1)
         void insertsOrderWithItem() {
             insertOrderWithItem();
+            assertTablesHaveRows();
         }
 
         @Test
@@ -100,6 +107,7 @@ class ClearTablesIT {
         @Transactional
         void insertsOrderWithItem() {
             insertOrderWithItem();
+            assertTablesHaveRows();
         }
 
         @AfterAll

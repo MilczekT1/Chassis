@@ -36,11 +36,15 @@ public class ClearTablesListener extends AbstractTestExecutionListener {
     private static void clear(JdbcTemplate jdbcTemplate, ClearTables clearTables) {
         switch (clearTables.mode()) {
             case DELETE -> JdbcTestUtils.deleteFromTables(jdbcTemplate, clearTables.value());
-            case TRUNCATE -> {
-                var tables = String.join(", ", clearTables.value());
-                jdbcTemplate.execute("TRUNCATE TABLE " + tables + " RESTART IDENTITY");
-                log.info("Truncated [{}] tables", tables);
-            }
+            case TRUNCATE -> truncate(jdbcTemplate, clearTables.value());
         }
+    }
+
+    // Table names come from the test class's @ClearTables, never from runtime input.
+    @SuppressWarnings("java:S2077")
+    private static void truncate(JdbcTemplate jdbcTemplate, String[] tableNames) {
+        var tables = String.join(", ", tableNames);
+        jdbcTemplate.execute("TRUNCATE TABLE " + tables + " RESTART IDENTITY");
+        log.info("Truncated [{}] tables", tables);
     }
 }

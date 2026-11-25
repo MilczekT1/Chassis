@@ -27,6 +27,8 @@ class MongoContainerConfiguration {
         return () -> new ConnectionString(container.getReplicaSetUrl());
     }
 
+    // Left open for the JVM's lifetime; Testcontainers removes the container when the JVM exits.
+    @SuppressWarnings("java:S2095")
     private static MongoDBContainer start(String image) {
         var container = new MongoDBContainer(DockerImageName.parse(image))
                 .withReuse(System.getenv("CI") == null);

@@ -41,6 +41,8 @@ class PostgresContainerConfiguration {
         };
     }
 
+    // Left open for the JVM's lifetime; Testcontainers removes the container when the JVM exits.
+    @SuppressWarnings("java:S2095")
     private static PostgreSQLContainer start(String image) {
         var container = new PostgreSQLContainer(DockerImageName.parse(image))
                 .withReuse(System.getenv("CI") == null);

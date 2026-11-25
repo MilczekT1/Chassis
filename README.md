@@ -293,6 +293,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 25.11.2026
+
+* Added Claude Code GitHub workflows: `@claude` mentions on issues and PRs, and an automatic review of every
+  PR. Both actions are pinned to commit SHAs (`claude-code-action` v1.0.290, `checkout` v7.0.1).
+
 ##### 14.11.2026
 
 * `chassis-parent` is published with the `chassis-bom` import resolved to its own version, so consumers no

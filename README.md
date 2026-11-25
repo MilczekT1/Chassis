@@ -7,6 +7,7 @@
     * [LogbackVerifierExtension](#logbackVerifierExtension)
     * [ClearCollections](#clearCollections)
     * [ClearTables](#clearTables)
+    * [WithMongo and WithPostgres](#withMongo-and-withPostgres)
   * [Logging](#logging)
   * [Observability](#observability)
 * [Changelog:](#changelog)
@@ -260,6 +261,36 @@ ended:
 * Data seeded in `@BeforeAll` is gone after the first test; seed in `@BeforeEach` instead.
 * A test class declaring `@TestExecutionListeners` must set `mergeMode = MERGE_WITH_DEFAULTS`, or no cleanup runs.
 
+###### WithMongo and WithPostgres
+
+```java
+
+@WithPostgres
+@ClearTables({"order_items", "orders"})
+@SpringBootTest
+class OrderRepositoryIT {
+    // ...
+}
+```
+
+`@WithPostgres` and `@WithMongo` point the application at a PostgreSQL or MongoDB container. Each container starts on
+first use and is shared by every test context in the JVM, so a test run starts one container per database however
+many contexts it creates. Use only the annotation for the database your service has, and declare its Testcontainers
+module in your test dependencies: `org.testcontainers:testcontainers-postgresql` or
+`org.testcontainers:testcontainers-mongodb`.
+
+The images default to `postgres:17.12-alpine` and `mongo:8.0.15`. Override them with the `chassis.test.postgres.image`
+and `chassis.test.mongo.image` properties, for example in `application-itest.yaml`:
+
+```yaml
+chassis:
+  test:
+    postgres:
+      image: postgres:16.6-alpine
+```
+
+A context asking for a different image gets its own container.
+
 ###### MetricsVerifierExtension
 
 ```java
@@ -334,6 +365,10 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ##### 25.11.2026
 
+* Added `@WithMongo` and `@WithPostgres` test annotations: one MongoDB or PostgreSQL container per test JVM, started on
+  first use and shared by every test context. Images are overridable with `chassis.test.mongo.image` and
+  `chassis.test.postgres.image`.
+* Chassis's own integration tests use them; `chassis-tools-test` now starts 2 containers per run instead of 6.
 * Added `@ClearTables` test annotation: deletes (default) or truncates the listed JDBC tables after each test.
 * `chassis-tools-test` no longer brings `testcontainers-mongodb` to consumers; declare it in your test dependencies
   to keep using `MongoDBContainer`.

@@ -1,8 +1,8 @@
 package io.github.milczekt1.chassis.test.utils;
 
-import io.github.milczekt1.chassis.test.utils.containers.TestContainerDefinitions;
+import io.github.milczekt1.chassis.test.containers.WithMongo;
+import io.github.milczekt1.chassis.test.containers.WithPostgres;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.Retention;
@@ -14,7 +14,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 @Retention(RUNTIME)
 @ActiveProfiles({"itest"})
-@Import(TestContainerDefinitions.class)
+@WithMongo
+@WithPostgres
 @SpringBootTest(classes = TestApp.class)
 public @interface TestToolsIntegrationTest {
 }

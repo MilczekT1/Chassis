@@ -392,6 +392,18 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ##### 26.11.2026
 
+* Upgraded Spring Boot 4.0.6 -> 4.2.0 (root pom, `chassis-bom`, `chassis-parent` property and
+  `spring-boot-starter-parent`).
+* Upgraded Spring Cloud 2025.1.1 -> 2026.0.0. `spring-cloud-context` no longer brings `spring-boot-restclient`;
+  declare it if you use `RestTemplateBuilder` (`chassis-test-app` now does).
+* Spring Cloud Contract left the Spring Cloud release train, so `chassis-bom` now imports
+  `spring-cloud-contract-dependencies` 5.0.3 (its final Spring release) directly; `spring-cloud-contract-maven-plugin`
+  5.0.2 -> 5.0.3.
+* Chassis error responses keep `instance` set to the request path: Spring Framework 7.1 no longer fills it in, so
+  `ChassisExceptionHandlingAutoConfiguration` registers an `ErrorResponse.Interceptor` that does.
+* Raised explicit pins that Spring Boot 4.2.0 manages at a newer version: Lombok annotation processor
+  1.18.46 -> 1.18.48, Surefire and Failsafe 3.5.6 -> 3.6.1 (and `maven-surefire-report-plugin` with them),
+  `maven-dependency-plugin` 3.8.1 -> 3.11.0.
 * Added `chassis-rewrite`: running the OpenRewrite recipe `io.github.milczekt1.chassis.UpgradeChassis` upgrades a
   service's Chassis version and fixes what the upgrade breaks. See [Upgrading Chassis](#upgrading-chassis).
 

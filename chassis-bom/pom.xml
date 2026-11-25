@@ -13,8 +13,9 @@
     <packaging>pom</packaging>
 
     <properties>
-        <springboot.version>4.0.6</springboot.version>
-        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
+        <springboot.version>4.2.0</springboot.version>
+        <spring-cloud-dependencies.version>2026.0.0</spring-cloud-dependencies.version>
+        <spring-cloud-contract.version>5.0.3</spring-cloud-contract.version>
 
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -35,6 +36,14 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Spring Cloud Contract left the release train after 2025.1.2; spring-cloud-dependencies no longer manages it. -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-dependencies</artifactId>
+                <version>${spring-cloud-contract.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

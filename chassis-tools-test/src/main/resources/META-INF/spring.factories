@@ -1,4 +1,5 @@
 org.springframework.test.context.TestExecutionListener=\
 io.github.milczekt1.chassis.test.clock.FixedClockListener,\
 io.github.milczekt1.chassis.test.controller.ControllerTestListener,\
-io.github.milczekt1.chassis.test.mongo.MongoClearCollectionsListener
+io.github.milczekt1.chassis.test.mongo.MongoClearCollectionsListener,\
+io.github.milczekt1.chassis.test.jdbc.ClearTablesListener

@@ -339,6 +339,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
   to keep using `MongoDBContainer`.
 * Removed `ChassisTestMongoCleanupConfiguration`. It was never registered; `@ClearCollections` works as before.
 * Fixed `@ClearCollections` docs: the attribute is `shouldDrop`, not `drop`.
+* Added Claude Code GitHub workflows: `@claude` mentions on issues and PRs, and an automatic review of every
+  PR. Both actions are pinned to commit SHAs (`claude-code-action` v1.0.290, `checkout` v7.0.1).
 
 ##### 14.11.2026
 

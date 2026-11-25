@@ -51,15 +51,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Spring Boot chassis library published to GitHub Packages. It provides reusable cross-cutting concerns as
 Spring Boot auto-configurations for microservices.
 
-| Module                   | Purpose                                                                                                                               |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| `chassis-bom`            | Bill of Materials — dependency version management                                                                                     |
-| `chassis-parent`         | Parent POM inheriting from `spring-boot-starter-parent`; defines build plugins (JaCoCo, Surefire, Failsafe)                           |
-| `chassis-tools`          | Core library — Spring Boot auto-configured cross-cutting concerns (exception handling, logging, observability, security)              |
-| `chassis-tools-test`     | Test utilities — `@FixedClock`, `LogbackVerifierExtension`, `@ClearCollections`, `MetricsVerifierExtension`, `TraceVerifierExtension` |
-| `chassis-rules-internal` | Corral catalog rules every Chassis module runs in its tests (`ChassisInternalArchitectureRules`); not in the BOM                      |
-| `chassis-dependencies`   | Aggregator JAR — single dependency for microservices to include all chassis modules                                                   |
-| `chassis-test-app`       | Spring Boot app used for integration/regression testing of chassis features                                                           |
+| Module                   | Purpose                                                                                                                                               |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `chassis-bom`            | Bill of Materials — dependency version management                                                                                                     |
+| `chassis-parent`         | Parent POM inheriting from `spring-boot-starter-parent`; defines build plugins (JaCoCo, Surefire, Failsafe)                                           |
+| `chassis-tools`          | Core library — Spring Boot auto-configured cross-cutting concerns (exception handling, logging, observability, security)                              |
+| `chassis-tools-test`     | Test utilities — `@FixedClock`, `LogbackVerifierExtension`, `@ClearCollections`, `@ClearTables`, `MetricsVerifierExtension`, `TraceVerifierExtension` |
+| `chassis-rules-internal` | Corral catalog rules every Chassis module runs in its tests (`ChassisInternalArchitectureRules`); not in the BOM                                      |
+| `chassis-dependencies`   | Aggregator JAR — single dependency for microservices to include all chassis modules                                                                   |
+| `chassis-test-app`       | Spring Boot app used for integration/regression testing of chassis features                                                                           |
 
 **Dependency hierarchy**: microservices add `chassis-dependencies` (which pulls in `chassis-tools`) and set
 `chassis-parent` as their parent POM.
@@ -92,8 +92,10 @@ Throw or extend these from `chassis-tools`:
 - `@FixedClock` — annotation (class or method level) to freeze `Clock` bean; default instant:
   `FixedClock.DEFAULT_LOCAL_INSTANT`
 - `@ExtendWith(LogbackVerifierExtension.class)` + `LogVerifier` param — assert log output in tests
-- `@ClearCollections("collectionName")` — clears MongoDB collection after each test; `drop = true` drops instead of
-  clears
+- `@ClearCollections("collectionName")` — clears MongoDB collection after each test; `shouldDrop = true` drops
+  instead of clears
+- `@ClearTables({"child", "parent"})` — deletes all rows from JDBC tables after each test, in listed order (referencing
+  tables first); `mode = ClearMode.TRUNCATE` runs one PostgreSQL `TRUNCATE ... RESTART IDENTITY` instead
 - `@ExtendWith(MetricsVerifierExtension.class)` + `MetricsVerifier` param — assert Micrometer metric values
 - `@ExtendWith(TraceVerifierExtension.class)` + `TraceVerifier` param — validate distributed trace IDs and response
   headers

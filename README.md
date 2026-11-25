@@ -6,6 +6,7 @@
       * [@FixedClock](#fixedClock)
     * [LogbackVerifierExtension](#logbackVerifierExtension)
     * [ClearCollections](#clearCollections)
+    * [ClearTables](#clearTables)
   * [Logging](#logging)
   * [Observability](#observability)
 * [Changelog:](#changelog)
@@ -209,7 +210,7 @@ Should produce following log message after each test
 
 ```java
 
-@ClearCollections(value = "accounts", drop = true)
+@ClearCollections(value = "accounts", shouldDrop = true)
 class TestIT {
     @Test
     void test() {
@@ -219,7 +220,45 @@ class TestIT {
 ```
 
 Should produce following log message after each test
-`Dropped collection accounts`
+`Dropped accounts collection`
+
+###### ClearTables
+
+```java
+
+@ClearTables({"order_items", "orders"})
+class TestIT {
+    @Test
+    void test() {
+        // ...
+    }
+}
+```
+
+Deletes all rows from each table in the listed order, so list referencing tables before the tables they reference.
+Should produce following log messages after each test
+`Deleted X rows from table order_items`, `Deleted X rows from table orders`
+
+```java
+
+@ClearTables(value = {"orders", "order_items"}, mode = ClearMode.TRUNCATE)
+class TestIT {
+    @Test
+    void test() {
+        // ...
+    }
+}
+```
+
+Runs one PostgreSQL `TRUNCATE TABLE orders, order_items RESTART IDENTITY`: table order does not matter and identity
+columns restart. Should produce following log message after each test
+`Truncated [orders, order_items] tables`
+
+`@ClearCollections` and `@ClearTables` clean up after every test method, once the test-managed transaction has
+ended:
+
+* Data seeded in `@BeforeAll` is gone after the first test; seed in `@BeforeEach` instead.
+* A test class declaring `@TestExecutionListeners` must set `mergeMode = MERGE_WITH_DEFAULTS`, or no cleanup runs.
 
 ###### MetricsVerifierExtension
 
@@ -295,6 +334,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ##### 25.11.2026
 
+* Added `@ClearTables` test annotation: deletes (default) or truncates the listed JDBC tables after each test.
+* `chassis-tools-test` no longer brings `testcontainers-mongodb` to consumers; declare it in your test dependencies
+  to keep using `MongoDBContainer`.
+* Removed `ChassisTestMongoCleanupConfiguration`. It was never registered; `@ClearCollections` works as before.
+* Fixed `@ClearCollections` docs: the attribute is `shouldDrop`, not `drop`.
 * Added Claude Code GitHub workflows: `@claude` mentions on issues and PRs, and an automatic review of every
   PR. Both actions are pinned to commit SHAs (`claude-code-action` v1.0.290, `checkout` v7.0.1).
 

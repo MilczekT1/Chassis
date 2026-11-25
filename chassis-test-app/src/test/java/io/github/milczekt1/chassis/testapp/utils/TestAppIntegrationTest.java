@@ -1,7 +1,7 @@
 package io.github.milczekt1.chassis.testapp.utils;
 
 
-import io.github.milczekt1.chassis.test.containers.WithMongo;
+import io.github.milczekt1.chassis.test.mongo.WithMongo;
 import io.github.milczekt1.chassis.test.logging.LogbackVerifierExtension;
 import io.github.milczekt1.chassis.test.observability.MetricsVerifierExtension;
 import io.github.milczekt1.chassis.test.observability.TraceVerifierExtension;

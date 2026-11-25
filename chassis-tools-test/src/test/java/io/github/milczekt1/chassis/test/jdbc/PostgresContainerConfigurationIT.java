@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.test.containers;
+package io.github.milczekt1.chassis.test.jdbc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.jdbc.autoconfigure.JdbcConnectionDetails;

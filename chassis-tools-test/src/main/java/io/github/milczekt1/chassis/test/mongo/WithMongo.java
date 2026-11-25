@@ -1,4 +1,4 @@
-package io.github.milczekt1.chassis.test.containers;
+package io.github.milczekt1.chassis.test.mongo;
 
 import org.springframework.context.annotation.Import;
 

@@ -1,7 +1,7 @@
 package io.github.milczekt1.chassis.test.utils;
 
-import io.github.milczekt1.chassis.test.containers.WithMongo;
-import io.github.milczekt1.chassis.test.containers.WithPostgres;
+import io.github.milczekt1.chassis.test.mongo.WithMongo;
+import io.github.milczekt1.chassis.test.jdbc.WithPostgres;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 

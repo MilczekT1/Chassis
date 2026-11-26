@@ -61,9 +61,9 @@ class AddTestcontainersMongodbWhereUsedTest implements RewriteTest {
     }
 
     @Test
-    void leavesModuleThatStillGetsItFromChassis() {
+    void addsWhileChassisStillBringsIt() {
         rewriteRun(mavenProject("app",
-                pomXml(modulePom("app", LEGACY, "")),
+                pomXml(modulePom("app", LEGACY, ""), modulePom("app", LEGACY, TESTCONTAINERS_MONGODB)),
                 srcTestJava(java(MONGO_TEST))));
     }
 

@@ -55,9 +55,10 @@ class AddSpringBootRestclientWhereUsedTest implements RewriteTest {
     }
 
     @Test
-    void leavesModuleThatStillGetsItFromChassis() {
+    void addsWhileChassisStillBringsIt() {
         rewriteRun(mavenProject("app",
-                pomXml(modulePom("app", LEGACY, "")),
+                pomXml(modulePom("app", LEGACY, ""),
+                        modulePom("app", LEGACY, dependency("org.springframework.boot", "spring-boot-restclient", null), "")),
                 srcMainJava(java(REST_CLIENT))));
     }
 }

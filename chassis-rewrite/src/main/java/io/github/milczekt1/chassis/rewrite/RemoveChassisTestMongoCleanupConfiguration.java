@@ -24,6 +24,7 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
 
     private static final String CLEANUP_CONFIGURATION =
             "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration";
+    private static final String SIMPLE_NAME = "ChassisTestMongoCleanupConfiguration";
     private static final List<String> IMPORT_ANNOTATIONS = List.of(
             "org.springframework.context.annotation.Import",
             "org.springframework.boot.autoconfigure.ImportAutoConfiguration");
@@ -31,8 +32,10 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
     private static final String CLASS_NAME = Pattern.quote(CLEANUP_CONFIGURATION) + "(?![\\w$.])";
     private static final String CONTINUATION = "(?:\\\\\\R[ \\t]*)?";
 
-    private static final Pattern IMPORTS_LINE = Pattern.compile("(?m)^[ \\t]*" + CLASS_NAME + "[ \\t]*\\R");
-    private static final Pattern IMPORTS_LAST_LINE = Pattern.compile("\\R[ \\t]*" + CLASS_NAME + "[ \\t]*\\z");
+    // Spring's ImportCandidates ignores whatever follows a '#'
+    private static final String IMPORTS_LINE_END = "[ \\t]*(?:#[^\\r\\n]*)?";
+    private static final Pattern IMPORTS_LINE = Pattern.compile("(?m)^[ \\t]*" + CLASS_NAME + IMPORTS_LINE_END + "\\R");
+    private static final Pattern IMPORTS_LAST_LINE = Pattern.compile("(?:\\R|\\A)[ \\t]*" + CLASS_NAME + IMPORTS_LINE_END + "\\z");
 
     private static final Pattern FACTORIES_ONLY_VALUE = Pattern.compile(
             "(?m)^[^=:\\r\\n]+[=:][ \\t]*" + CONTINUATION + CLASS_NAME + "[ \\t]*(?:\\R|\\z)");
@@ -85,10 +88,31 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
         return after.equals(before) ? text : text.withText(after);
     }
 
-    private static boolean isCleanupConfigurationLiteral(Expression expression) {
-        return expression instanceof J.FieldAccess fieldAccess &&
-               "class".equals(fieldAccess.getSimpleName()) &&
-               TypeUtils.isOfClassType(fieldAccess.getTarget().getType(), CLEANUP_CONFIGURATION);
+    /**
+     * Matches {@code ChassisTestMongoCleanupConfiguration.class}. Once a service is on a Chassis without the class, its
+     * type no longer resolves, so the literal is then matched by name: fully qualified, or simple and imported.
+     */
+    private static boolean isCleanupConfigurationLiteral(Expression expression, boolean importsCleanupConfiguration) {
+        if (!(expression instanceof J.FieldAccess fieldAccess) || !"class".equals(fieldAccess.getSimpleName())) {
+            return false;
+        }
+        Expression target = fieldAccess.getTarget();
+        if (TypeUtils.asFullyQualified(target.getType()) != null) {
+            return TypeUtils.isOfClassType(target.getType(), CLEANUP_CONFIGURATION);
+        }
+        String name = qualifiedName(target);
+        return CLEANUP_CONFIGURATION.equals(name) || importsCleanupConfiguration && SIMPLE_NAME.equals(name);
+    }
+
+    private static @Nullable String qualifiedName(Expression expression) {
+        if (expression instanceof J.Identifier identifier) {
+            return identifier.getSimpleName();
+        }
+        if (expression instanceof J.FieldAccess fieldAccess) {
+            String target = qualifiedName(fieldAccess.getTarget());
+            return target == null ? null : target + "." + fieldAccess.getSimpleName();
+        }
+        return null;
     }
 
     /**
@@ -108,13 +132,19 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
         @Override
         public J.Annotation visitAnnotation(J.Annotation annotation, ExecutionContext ctx) {
             J.Annotation a = super.visitAnnotation(annotation, ctx);
-            if (a.getArguments() == null ||
+            // getArguments() builds a new list on every call; the identity check below needs this one
+            List<Expression> original = a.getArguments();
+            if (original == null ||
                 IMPORT_ANNOTATIONS.stream().noneMatch(type -> TypeUtils.isOfClassType(a.getType(), type))) {
                 return a;
             }
-            List<Expression> edited = ListUtils.map(a.getArguments(), ImportAnnotationsEditor::withoutCleanupConfiguration);
+            boolean importsCleanupConfiguration = getCursor().firstEnclosingOrThrow(J.CompilationUnit.class).getImports()
+                    .stream()
+                    .anyMatch(anImport -> !anImport.isStatic() && CLEANUP_CONFIGURATION.equals(anImport.getTypeName()));
+            Predicate<Expression> isCleanupLiteral = e -> isCleanupConfigurationLiteral(e, importsCleanupConfiguration);
+            List<Expression> edited = ListUtils.map(original, argument -> withoutCleanupConfiguration(argument, isCleanupLiteral));
             // identity, not equals(): LST elements compare by id, so an edited array equals the original
-            if (edited == a.getArguments()) {
+            if (edited == original) {
                 return a;
             }
             List<Expression> arguments = removeAll(edited, argument -> argument instanceof J.Empty);
@@ -134,19 +164,18 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
         /**
          * Returns the argument without the class literal, or {@link J.Empty} when nothing is left of it.
          */
-        private static Expression withoutCleanupConfiguration(Expression argument) {
+        private static Expression withoutCleanupConfiguration(Expression argument, Predicate<Expression> isCleanupLiteral) {
             if (argument instanceof J.Assignment assignment) {
-                Expression value = withoutCleanupConfiguration(assignment.getAssignment());
+                Expression value = withoutCleanupConfiguration(assignment.getAssignment(), isCleanupLiteral);
                 return value instanceof J.Empty
                         ? new J.Empty(Tree.randomId(), assignment.getPrefix(), assignment.getMarkers())
                         : assignment.withAssignment(value);
             }
-            if (isCleanupConfigurationLiteral(argument)) {
+            if (isCleanupLiteral.test(argument)) {
                 return new J.Empty(Tree.randomId(), argument.getPrefix(), argument.getMarkers());
             }
             if (argument instanceof J.NewArray array && array.getInitializer() != null) {
-                List<Expression> initializer = removeAll(array.getInitializer(),
-                        RemoveChassisTestMongoCleanupConfiguration::isCleanupConfigurationLiteral);
+                List<Expression> initializer = removeAll(array.getInitializer(), isCleanupLiteral);
                 if (initializer.size() == array.getInitializer().size()) {
                     return array;
                 }

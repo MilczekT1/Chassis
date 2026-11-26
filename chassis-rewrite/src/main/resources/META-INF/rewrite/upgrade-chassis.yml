@@ -24,14 +24,12 @@ recipeList:
       version: latest.release
       scope: test
       onlyIfUsing: org.testcontainers.mongodb..*
-      acceptTransitive: true
   - org.openrewrite.maven.AddDependency:
       groupId: org.testcontainers
       artifactId: testcontainers-mongodb
       version: latest.release
       scope: test
       onlyIfUsing: org.testcontainers.containers.MongoDBContainer
-      acceptTransitive: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.github.milczekt1.chassis.AddSpringBootRestclientWhereUsed
@@ -46,4 +44,3 @@ recipeList:
       artifactId: spring-boot-restclient
       version: latest.release
       onlyIfUsing: org.springframework.boot.restclient..*
-      acceptTransitive: true

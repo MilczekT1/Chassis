@@ -86,12 +86,64 @@ class UpgradeChassisTest implements RewriteTest {
     }
 
     @Test
-    void changesNothingWhenTargetIsNotPublished() {
+    void addsDependencyToModuleWhoseInRepoParentHasChassisParent() {
+        rewriteRun(
+                pomXml(aggregatorWithChassisParent(LEGACY), aggregatorWithChassisParent(target())),
+                mavenProject("app",
+                        pomXml(childOfAggregator(""), childOfAggregator(dependency("org.testcontainers", "testcontainers-mongodb", "test"))),
+                        srcTestJava(java(MONGO_TEST))));
+    }
+
+    @Test
+    void keepsVersionWhenTargetIsNotPublished() {
         rewriteRun(
                 spec -> spec.executionContext(ChassisTestRepository.executionContext(repository.resolve("unpublished"), LEGACY)),
                 mavenProject("app",
-                        pomXml(modulePom("app", LEGACY, "")),
+                        pomXml(modulePom("app", LEGACY, ""),
+                                modulePom("app", LEGACY, dependency("org.testcontainers", "testcontainers-mongodb", "test"))),
                         srcTestJava(java(MONGO_TEST))));
+    }
+
+    private static String aggregatorWithChassisParent(String chassisVersion) {
+        return """
+                <project>
+                    <modelVersion>4.0.0</modelVersion>
+                    <parent>
+                        <groupId>io.github.milczekt1</groupId>
+                        <artifactId>chassis-parent</artifactId>
+                        <version>%s</version>
+                        <relativePath/>
+                    </parent>
+                    <groupId>com.example</groupId>
+                    <artifactId>service-parent</artifactId>
+                    <version>1.0.0</version>
+                    <packaging>pom</packaging>
+                    <modules>
+                        <module>app</module>
+                    </modules>
+                </project>
+                """.formatted(chassisVersion);
+    }
+
+    private static String childOfAggregator(String extraDependencies) {
+        return """
+                <project>
+                    <modelVersion>4.0.0</modelVersion>
+                    <parent>
+                        <groupId>com.example</groupId>
+                        <artifactId>service-parent</artifactId>
+                        <version>1.0.0</version>
+                    </parent>
+                    <artifactId>app</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.github.milczekt1</groupId>
+                            <artifactId>chassis-tools-test</artifactId>
+                            <scope>test</scope>
+                        </dependency>
+                %s    </dependencies>
+                </project>
+                """.formatted(extraDependencies);
     }
 
     private static String inventoryPom(String chassisVersion, String extraDependencies) {

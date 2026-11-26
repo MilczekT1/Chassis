@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
+import org.openrewrite.test.TypeValidation;
 
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.test.SourceSpecs.text;
@@ -143,6 +144,58 @@ class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
     }
 
     @Test
+    void removesClassThatNoLongerResolves() {
+        rewriteRun(
+                spec -> spec.parser(JavaParser.fromJavaVersion()
+                                .classpath("spring-context")
+                                .dependsOn("package com.example; public class OtherConfig {}"))
+                        .typeValidationOptions(TypeValidation.none()),
+                java(
+                        """
+                        package com.example;
+
+                        import io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration;
+                        import org.springframework.context.annotation.Import;
+
+                        @Import({OtherConfig.class, ChassisTestMongoCleanupConfiguration.class})
+                        class MongoTestConfig {
+                        }
+                        """,
+                        """
+                        package com.example;
+
+                        import org.springframework.context.annotation.Import;
+
+                        @Import({OtherConfig.class})
+                        class MongoTestConfig {
+                        }
+                        """));
+    }
+
+    @Test
+    void removesFullyQualifiedClassThatNoLongerResolves() {
+        rewriteRun(
+                spec -> spec.parser(JavaParser.fromJavaVersion().classpath("spring-context"))
+                        .typeValidationOptions(TypeValidation.none()),
+                java(
+                        """
+                        package com.example;
+
+                        import org.springframework.context.annotation.Import;
+
+                        @Import(io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration.class)
+                        class MongoTestConfig {
+                        }
+                        """,
+                        """
+                        package com.example;
+
+                        class MongoTestConfig {
+                        }
+                        """));
+    }
+
+    @Test
     void leavesOtherReferencesForTheCompiler() {
         rewriteRun(java(
                 """
@@ -186,6 +239,25 @@ class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
                 "com.example.OtherAutoConfiguration\n" +
                 "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration",
                 "com.example.OtherAutoConfiguration",
+                spec -> spec.path(IMPORTS_FILE)));
+    }
+
+    @Test
+    void removesOnlyLineWithoutTrailingNewline() {
+        rewriteRun(text(
+                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration",
+                "",
+                spec -> spec.path(IMPORTS_FILE)));
+    }
+
+    @Test
+    void removesLineWithTrailingComment() {
+        rewriteRun(text(
+                "com.example.OtherAutoConfiguration\n" +
+                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration # mongo cleanup\n" +
+                "com.example.ThirdAutoConfiguration\n",
+                "com.example.OtherAutoConfiguration\n" +
+                "com.example.ThirdAutoConfiguration\n",
                 spec -> spec.path(IMPORTS_FILE)));
     }
 

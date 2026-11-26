@@ -45,10 +45,10 @@ Use `dryRun` in place of `run` to get a patch in `target/rewrite/rewrite.patch` 
 It changes:
 
 * the Chassis version: the `chassis-parent` parent, `io.github.milczekt1:chassis*` dependencies and BOM imports, and
-  the property holding their version (e.g. `chassis.version`). It never lowers a version, and changes nothing while
+  the property holding their version (e.g. `chassis.version`). It never lowers a version, and leaves it as it is while
   `<version>` is not published.
-* what the releases up to `<version>` broke, only where the service needs it, e.g. adding `testcontainers-mongodb` to
-  modules whose tests use it and no longer get it from Chassis.
+* what the releases up to `<version>` broke, only where the service needs it, e.g. declaring `testcontainers-mongodb`
+  in modules whose tests use it. These fixes also apply when the version stays, and are harmless at the old version.
 
 It does not adopt new Chassis features (`@WithMongo`, `@WithPostgres`, `@ClearTables`, …), tidy what still works, or
 apply Spring Boot's and Spring Cloud's own migrations.

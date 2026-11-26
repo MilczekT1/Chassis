@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import static io.github.milczekt1.chassis.rewrite.ChassisTestRepository.LEGACY;
 import static io.github.milczekt1.chassis.rewrite.ChassisTestRepository.target;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 class UpgradeChassisVersionTest implements RewriteTest {
@@ -36,6 +37,34 @@ class UpgradeChassisVersionTest implements RewriteTest {
     @Test
     void bumpsChassisVersionPropertyUsedByBomImport() {
         rewriteRun(pomXml(propertyPom(LEGACY), propertyPom(target())));
+    }
+
+    @Test
+    void bumpsChassisVersionPropertyDefinedInInRepoParent() {
+        rewriteRun(
+                pomXml(parentWithChassisVersionProperty(LEGACY), parentWithChassisVersionProperty(target())),
+                mavenProject("rules", pomXml("""
+                        <project>
+                            <modelVersion>4.0.0</modelVersion>
+                            <parent>
+                                <groupId>com.example</groupId>
+                                <artifactId>service-parent</artifactId>
+                                <version>1.0.0</version>
+                            </parent>
+                            <artifactId>rules</artifactId>
+                            <dependencyManagement>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>io.github.milczekt1</groupId>
+                                        <artifactId>chassis-bom</artifactId>
+                                        <version>${chassis.version}</version>
+                                        <type>pom</type>
+                                        <scope>import</scope>
+                                    </dependency>
+                                </dependencies>
+                            </dependencyManagement>
+                        </project>
+                        """)));
     }
 
     @Test
@@ -107,6 +136,24 @@ class UpgradeChassisVersionTest implements RewriteTest {
                             <scope>test</scope>
                         </dependency>
                     </dependencies>
+                </project>
+                """.formatted(chassisVersion);
+    }
+
+    private static String parentWithChassisVersionProperty(String chassisVersion) {
+        return """
+                <project>
+                    <modelVersion>4.0.0</modelVersion>
+                    <groupId>com.example</groupId>
+                    <artifactId>service-parent</artifactId>
+                    <version>1.0.0</version>
+                    <packaging>pom</packaging>
+                    <modules>
+                        <module>rules</module>
+                    </modules>
+                    <properties>
+                        <chassis.version>%s</chassis.version>
+                    </properties>
                 </project>
                 """.formatted(chassisVersion);
     }

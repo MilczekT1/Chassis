@@ -8,3 +8,42 @@ recipeList:
   - io.github.milczekt1.chassis.rewrite.UpgradeChassisVersion:
       newVersion: "@@project.version@@"
   - io.github.milczekt1.chassis.rewrite.RemoveChassisTestMongoCleanupConfiguration
+  - io.github.milczekt1.chassis.AddTestcontainersMongodbWhereUsed
+  - io.github.milczekt1.chassis.AddSpringBootRestclientWhereUsed
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.AddTestcontainersMongodbWhereUsed
+displayName: Add testcontainers-mongodb where tests use it
+description: >-
+  Needed when upgrading from Chassis 0.5.5 or earlier: chassis-tools-test no longer brings testcontainers-mongodb.
+  Adds it at test scope to modules whose tests use Testcontainers' MongoDB classes and no longer get it.
+recipeList:
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.testcontainers
+      artifactId: testcontainers-mongodb
+      version: latest.release
+      scope: test
+      onlyIfUsing: org.testcontainers.mongodb..*
+      acceptTransitive: true
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.testcontainers
+      artifactId: testcontainers-mongodb
+      version: latest.release
+      scope: test
+      onlyIfUsing: org.testcontainers.containers.MongoDBContainer
+      acceptTransitive: true
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.AddSpringBootRestclientWhereUsed
+displayName: Add spring-boot-restclient where code uses it
+description: >-
+  Needed when upgrading from Chassis 0.5.5 or earlier: spring-cloud-context 5.1 (Spring Cloud 2026.0) no longer brings
+  spring-boot-restclient. Adds it to modules whose code uses org.springframework.boot.restclient and no longer get it,
+  at test scope when only tests use it.
+recipeList:
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-restclient
+      version: latest.release
+      onlyIfUsing: org.springframework.boot.restclient..*
+      acceptTransitive: true

@@ -5,4 +5,6 @@ description: >-
   Upgrades a service to Chassis @@project.version@@ and makes only the edits the releases up to it would otherwise
   break. Adopts no new Chassis features and does not cover Spring Boot's or Spring Cloud's own changes.
 recipeList:
+  - io.github.milczekt1.chassis.rewrite.UpgradeChassisVersion:
+      newVersion: "@@project.version@@"
   - io.github.milczekt1.chassis.rewrite.RemoveChassisTestMongoCleanupConfiguration

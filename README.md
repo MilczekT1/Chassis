@@ -1,3 +1,4 @@
+* [Upgrading Chassis](#upgrading-chassis)
 * [Release process](#release-process)
 * [Architecture rules (Corral)](#architecture-rules-corral)
 * [Cross cutting concerns](#cross-cutting-concerns)
@@ -28,6 +29,32 @@
     * [15.12.2021:](#15122021)
     * [25.07.2021:](#25072021)
     * [31.07.2020:](#31072020)
+
+### Upgrading Chassis
+
+Run from the service's root, with `<version>` the Chassis release you are upgrading to:
+
+```
+./mvnw org.openrewrite.maven:rewrite-maven-plugin:6.46.1:run \
+  -Drewrite.recipeArtifactCoordinates=io.github.milczekt1:chassis-rewrite:<version> \
+  -Drewrite.activeRecipes=io.github.milczekt1.chassis.UpgradeChassis
+```
+
+Use `dryRun` in place of `run` to get a patch in `target/rewrite/rewrite.patch` to review, instead of changed files.
+
+It changes:
+
+* the Chassis version: the `chassis-parent` parent, `io.github.milczekt1:chassis*` dependencies and BOM imports, and
+  the property holding their version (e.g. `chassis.version`). It never lowers a version, and changes nothing while
+  `<version>` is not published.
+* what the releases up to `<version>` broke, only where the service needs it, e.g. adding `testcontainers-mongodb` to
+  modules whose tests use it and no longer get it from Chassis.
+
+It does not adopt new Chassis features (`@WithMongo`, `@WithPostgres`, `@ClearTables`, …), tidy what still works, or
+apply Spring Boot's and Spring Cloud's own migrations.
+
+The recipe artifact and the Chassis version metadata both come from GitHub Packages, so that repository must be
+visible from the service's root, e.g. through `~/.m2/settings.xml`.
 
 ### Release process
 
@@ -362,6 +389,11 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 **Full documentation:** [chassis-tools/docs/OBSERVABILITY.md](chassis-tools/docs/OBSERVABILITY.md)
 
 ### Changelog:
+
+##### 26.11.2026
+
+* Added `chassis-rewrite`: running the OpenRewrite recipe `io.github.milczekt1.chassis.UpgradeChassis` upgrades a
+  service's Chassis version and fixes what the upgrade breaks. See [Upgrading Chassis](#upgrading-chassis).
 
 ##### 25.11.2026
 

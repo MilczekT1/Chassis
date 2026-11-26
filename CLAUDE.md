@@ -60,6 +60,7 @@ Spring Boot auto-configurations for microservices.
 | `chassis-rules-internal` | Corral catalog rules every Chassis module runs in its tests (`ChassisInternalArchitectureRules`); not in the BOM                                                                     |
 | `chassis-dependencies`   | Aggregator JAR — single dependency for microservices to include all chassis modules                                                                                                  |
 | `chassis-test-app`       | Spring Boot app used for integration/regression testing of chassis features                                                                                                          |
+| `chassis-rewrite`        | OpenRewrite recipes services run to upgrade Chassis (`io.github.milczekt1.chassis.UpgradeChassis`); fixes only what a release breaks; not in the BOM                                 |
 
 **Dependency hierarchy**: microservices add `chassis-dependencies` (which pulls in `chassis-tools`) and set
 `chassis-parent` as their parent POM.
@@ -125,6 +126,14 @@ When completing any meaningful change (new feature, dependency update, bug fix, 
 ```
 
 Keep entries concise — one bullet per distinct change. Add the entry at the top of the changelog (most recent first).
+
+## Breaking Changes for Consumers
+
+A change that breaks consuming services (a removed class, a dependency Chassis no longer brings, …) adds its fix recipe
+to `chassis-rewrite` in the same PR, with a test. Name the recipe after what it fixes, start its description with
+"Needed when upgrading from Chassis <last released version> or earlier:", and list it in `UpgradeChassis`
+(`chassis-rewrite/src/main/resources/META-INF/rewrite/upgrade-chassis.yml`) after the version bump and after older
+fixes. Fix only what breaks; never move services onto new features.
 
 ## Release Process
 

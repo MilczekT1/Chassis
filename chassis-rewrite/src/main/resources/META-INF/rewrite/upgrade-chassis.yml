@@ -1,0 +1,8 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.UpgradeChassis
+displayName: Upgrade Chassis
+description: >-
+  Upgrades a service to Chassis @@project.version@@ and makes only the edits the releases up to it would otherwise
+  break. Adopts no new Chassis features and does not cover Spring Boot's or Spring Cloud's own changes.
+recipeList:
+  - io.github.milczekt1.chassis.rewrite.RemoveChassisTestMongoCleanupConfiguration

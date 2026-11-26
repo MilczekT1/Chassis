@@ -18,6 +18,7 @@
         <module>chassis-dependencies</module>
         <module>chassis-starter-errorhandling</module>
         <module>chassis-starter-observability</module>
+        <module>chassis-rewrite</module>
         <module>chassis-test-app</module>
     </modules>
 

@@ -149,7 +149,7 @@ Throw or extend those RuntimeExceptions:
   "title": "Bad Request",
   "status": 400,
   "detail": "Test message",
-  "instance": "/exceptions/bad-request",
+  "instance": "urn:trace:0af7651916cd43dd8448eb211c80319c",
   "timestamp": "2024-12-03T10:31:09.840944Z"
 }
 ```
@@ -160,7 +160,7 @@ Throw or extend those RuntimeExceptions:
   "title": "Bad Request",
   "status": 400,
   "detail": "Constraint Violation",
-  "instance": "/exceptions/validation/method-argument-not-valid",
+  "instance": "urn:trace:4bf92f3577b34da6a3ce929d0e0e4736",
   "violations": [
     {
       "field": "age",
@@ -170,6 +170,10 @@ Throw or extend those RuntimeExceptions:
   "timestamp": "2024-12-03T12:55:48.119636Z"
 }
 ```
+
+`instance` identifies the error occurrence: `urn:trace:<trace ID>` of the request's trace, set by
+`chassis-starter-observability` when a trace is active and `chassis.observability.traces.exposeHeaders` is on (the
+default). Otherwise it is absent. A handler that sets `instance` itself keeps its value.
 
 #### Testing
 
@@ -382,6 +386,7 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 - Automatic common tags on all metrics
 - Trace response headers (Trace-Id, Span-Id) + W3C propagation
+- Trace ID in error responses' `instance` (`urn:trace:<trace ID>`)
 - Resource attributes (service.name, namespace, environment)
 
 **Configuration:** `chassis.observability.*`
@@ -399,6 +404,10 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
   BOM, in modules that use them.
 * `chassis-tools-test` brings RestAssured's `spring-mock-mvc` directly; `chassis-bom` manages it at 5.5.7, the version
   Spring Cloud Contract brought.
+* Error responses' `instance` is `urn:trace:<trace ID>` instead of the request path, which Spring Framework 7.1 no
+  longer sets: RFC 9457 has `instance` identify the error occurrence. `chassis-starter-observability` sets it when a
+  trace is active and `chassis.observability.traces.exposeHeaders` is on; otherwise `instance` is absent. Clients that
+  read `instance` as the request path must stop.
 * CI: Claude Code Review passes with a warning instead of failing when the Claude usage limit is reached.
 
 ##### 26.11.2026
@@ -407,8 +416,6 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
   `spring-boot-starter-parent`).
 * Upgraded Spring Cloud 2025.1.1 -> 2026.0.0. `spring-cloud-context` no longer brings `spring-boot-restclient`;
   declare it if you use `RestTemplateBuilder` (`chassis-test-app` now does).
-* Chassis error responses keep `instance` set to the request path: Spring Framework 7.1 no longer fills it in, so
-  `ChassisExceptionHandlingAutoConfiguration` registers an `ErrorResponse.Interceptor` that does.
 * Raised explicit pins that Spring Boot 4.2.0 manages at a newer version: Lombok annotation processor
   1.18.46 -> 1.18.48, Surefire and Failsafe 3.5.6 -> 3.6.1 (and `maven-surefire-report-plugin` with them),
   `maven-dependency-plugin` 3.8.1 -> 3.11.0.

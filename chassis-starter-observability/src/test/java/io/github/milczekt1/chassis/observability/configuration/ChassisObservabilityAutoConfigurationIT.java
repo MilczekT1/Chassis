@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ChassisObservabilityAutoConfigurationIT {
 
+    private static final String TRACE_INSTANCE_CONFIGURER = "chassisTraceInstanceWebMvcConfigurer";
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(ChassisObservabilityAutoConfiguration.class));
 
@@ -194,6 +196,27 @@ class ChassisObservabilityAutoConfigurationIT {
                 .run(context -> {
                     assertThat(context).doesNotHaveBean(ChassisTraceResponseHeaderFilter.class);
                 });
+    }
+
+    @Test
+    void whenTracingEnabled_thenTraceInstanceConfigurerCreated() {
+        contextRunner
+                .withPropertyValues("chassis.observability.enabled=true")
+                .run(context -> assertThat(context).hasBean(TRACE_INSTANCE_CONFIGURER));
+    }
+
+    @Test
+    void whenTracingDisabled_thenTraceInstanceConfigurerNotCreated() {
+        contextRunner
+                .withPropertyValues("chassis.observability.traces.enabled=false")
+                .run(context -> assertThat(context).doesNotHaveBean(TRACE_INSTANCE_CONFIGURER));
+    }
+
+    @Test
+    void whenExposeHeadersDisabled_thenTraceInstanceConfigurerNotCreated() {
+        contextRunner
+                .withPropertyValues("chassis.observability.traces.exposeHeaders=false")
+                .run(context -> assertThat(context).doesNotHaveBean(TRACE_INSTANCE_CONFIGURER));
     }
 
     @Test

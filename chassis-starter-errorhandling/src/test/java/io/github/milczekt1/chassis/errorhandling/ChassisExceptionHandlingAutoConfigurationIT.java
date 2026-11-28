@@ -53,7 +53,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + BAD_REQUEST_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -68,7 +68,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Not Found"))
                 .body("status", equalTo(NOT_FOUND.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + NOT_FOUND_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -83,7 +83,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + INTERNAL_SERVER_ERROR_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -98,7 +98,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + INTERNAL_SERVER_ERROR_DEFAULT_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -113,7 +113,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Conflict"))
                 .body("status", equalTo(CONFLICT.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + RESOURCE_CONFLICT_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -128,7 +128,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + RESOURCE_CREATION_ERROR_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
@@ -145,7 +145,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + METHOD_ARG_NOT_VALID_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("age"))
@@ -165,7 +165,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + PARAM_NOT_VALID_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("queryParam"))
@@ -185,7 +185,7 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + VALIDATION_PATH))
+                .body("instance", nullValue())
                 .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("age"))

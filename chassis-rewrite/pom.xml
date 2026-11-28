@@ -26,6 +26,9 @@
 
         <!-- the version rewrite-maven-plugin 6.46.1 runs with -->
         <rewrite.version>8.89.0</rewrite.version>
+
+        <!-- services run this on the Java they upgrade from: do not raise it with java.version -->
+        <maven.compiler.release>25</maven.compiler.release>
     </properties>
 
     <dependencyManagement>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +30,7 @@ import static io.github.milczekt1.chassis.testapp.TracingDemoController.BASE_PAT
  *   <li><b>Response Header Exposure</b>: Trace-Id and Span-Id headers on every response</li>
  *   <li><b>Inbound Propagation</b>: Continuing incoming traces via W3C traceparent/tracestate</li>
  *   <li><b>Server Autoinstrumentation</b>: Automatic span creation for Spring MVC endpoints</li>
- *   <li><b>Client Autoinstrumentation</b>: Automatic trace propagation in RestTemplate calls</li>
+ *   <li><b>Client Autoinstrumentation</b>: Automatic trace propagation in RestClient calls</li>
  *   <li><b>Async Propagation</b>: Trace context preserved across @Async boundaries</li>
  *   <li><b>Custom Spans</b>: Manual span creation for business logic</li>
  * </ul>
@@ -62,7 +62,7 @@ public class TracingDemoController {
     private static final String NOTE = "note";
 
     private final TracingDemoService service;
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
     /**
      * Simple endpoint demonstrating response header exposure.
@@ -125,7 +125,7 @@ public class TracingDemoController {
     /**
      * Endpoint demonstrating client-side autoinstrumentation.
      * <p>
-     * Makes an HTTP call using RestTemplate. The OpenTelemetry agent
+     * Makes an HTTP call using RestClient. The OpenTelemetry agent
      * automatically:
      * - Creates a client span for the outgoing request
      * - Propagates trace context via W3C traceparent header
@@ -145,9 +145,9 @@ public class TracingDemoController {
         String traceId = currentSpan.getSpanContext().getTraceId();
 
         try {
-            // RestTemplate call is automatically instrumented by OpenTelemetry agent
+            // RestClient call is automatically instrumented by OpenTelemetry agent
             // A client span will be created and trace context propagated
-            String response = restTemplate.getForObject("http://localhost:8080/dummy", String.class);
+            String response = restClient.get().uri("http://localhost:8080/dummy").retrieve().body(String.class);
 
             return Map.of(
                     MESSAGE, "Client call completed",

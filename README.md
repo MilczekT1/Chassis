@@ -408,6 +408,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
   longer sets: RFC 9457 has `instance` identify the error occurrence. `chassis-starter-observability` sets it when a
   trace is active and `chassis.observability.traces.exposeHeaders` is on; otherwise `instance` is absent. Clients that
   read `instance` as the request path must stop.
+* `chassis-test-app` makes its outgoing call with `RestClient` instead of `RestTemplate`, which Spring Framework 7.1
+  deprecates for removal.
 * CI: Claude Code Review passes with a warning instead of failing when the Claude usage limit is reached.
 
 ##### 26.11.2026
@@ -415,7 +417,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 * Upgraded Spring Boot 4.0.6 -> 4.2.0 (root pom, `chassis-bom`, `chassis-parent` property and
   `spring-boot-starter-parent`).
 * Upgraded Spring Cloud 2025.1.1 -> 2026.0.0. `spring-cloud-context` no longer brings `spring-boot-restclient`;
-  declare it if you use `RestTemplateBuilder` (`chassis-test-app` now does).
+  declare it if you use `RestTemplateBuilder`, `TestRestTemplate` or Boot's auto-configured `RestClient.Builder`
+  (`chassis-test-app` now does, at test scope, for `TestRestTemplate`).
 * Raised explicit pins that Spring Boot 4.2.0 manages at a newer version: Lombok annotation processor
   1.18.46 -> 1.18.48, Surefire and Failsafe 3.5.6 -> 3.6.1 (and `maven-surefire-report-plugin` with them),
   `maven-dependency-plugin` 3.8.1 -> 3.11.0.

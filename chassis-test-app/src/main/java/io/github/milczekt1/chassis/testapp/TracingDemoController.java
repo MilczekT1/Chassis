@@ -6,7 +6,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.Context;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -245,7 +245,15 @@ class TracingDemoService {
                 .setAttribute("operation", "custom-business-logic")
                 .startSpan();
 
-        try (Scope scope = span.makeCurrent()) {
+        try {
+            return Context.current().with(span).wrapSupplier(() -> runBusinessLogic(span)).get();
+        } finally {
+            span.end();
+        }
+    }
+
+    private String runBusinessLogic(Span span) {
+        try {
             log.info("Executing business logic with custom span");
             Thread.sleep(50);
             return "Business logic executed";
@@ -254,8 +262,6 @@ class TracingDemoService {
             span.setStatus(StatusCode.ERROR);
             Thread.currentThread().interrupt();
             return "Business logic interrupted";
-        } finally {
-            span.end();
         }
     }
 }

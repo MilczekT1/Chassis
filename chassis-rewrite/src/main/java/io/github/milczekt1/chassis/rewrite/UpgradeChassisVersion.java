@@ -9,6 +9,7 @@ import org.openrewrite.ScanningRecipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.maven.MavenIsoVisitor;
+import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.semver.LatestRelease;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.xml.tree.Xml;
@@ -32,6 +33,7 @@ public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
 
     private static final String CHASSIS_GROUP = "io.github.milczekt1";
     private static final String CHASSIS_ARTIFACTS = "chassis*";
+    private static final String VERSION_TAG = "version";
 
     @Option(displayName = "New version", description = "The Chassis version to move to.", example = "0.5.6")
     private final String newVersion;
@@ -64,12 +66,12 @@ public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getScanner(Set<String> versionProperties) {
-        return new ChassisVisitor() {
+        return new MavenIsoVisitor<ExecutionContext>() {
             @Override
             public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                 Xml.Tag t = super.visitTag(tag, ctx);
-                String version = t.getChildValue("version").orElse(null);
-                if (isChassisArtifact(t) && isProperty(version)) {
+                String version = t.getChildValue(VERSION_TAG).orElse(null);
+                if (isChassisArtifact(this, t) && isProperty(version)) {
                     versionProperties.add(version.substring(2, version.length() - 1));
                 }
                 return t;
@@ -79,7 +81,7 @@ public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor(Set<String> versionProperties) {
-        return new ChassisVisitor() {
+        return new MavenIsoVisitor<ExecutionContext>() {
             @Override
             public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                 Xml.Tag t = super.visitTag(tag, ctx);
@@ -90,10 +92,10 @@ public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
                     }
                     return t;
                 }
-                String version = t.getChildValue("version").orElse(null);
-                if (isChassisArtifact(t) && !isProperty(version) && isUpgrade(version)) {
+                String version = t.getChildValue(VERSION_TAG).orElse(null);
+                if (isChassisArtifact(this, t) && !isProperty(version) && isUpgrade(version)) {
                     maybeUpdateModel();
-                    return changeChildTagValue(t, "version", newVersion, ctx);
+                    return changeChildTagValue(t, VERSION_TAG, newVersion, ctx);
                 }
                 return t;
             }
@@ -106,16 +108,13 @@ public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
                new LatestRelease(null).compare(null, current, newVersion) < 0;
     }
 
-    private abstract static class ChassisVisitor extends MavenIsoVisitor<ExecutionContext> {
-
-        /**
-         * Whether the tag is the parent, a dependency or a managed dependency with Chassis coordinates.
-         */
-        boolean isChassisArtifact(Xml.Tag tag) {
-            return (isParentTag() || isDependencyTag() || isManagedDependencyTag()) &&
-                   CHASSIS_GROUP.equals(tag.getChildValue("groupId").orElse(null)) &&
-                   StringUtils.matchesGlob(tag.getChildValue("artifactId").orElse(null), CHASSIS_ARTIFACTS);
-        }
+    /**
+     * Whether the tag the visitor is on is the parent, a dependency or a managed dependency with Chassis coordinates.
+     */
+    private static boolean isChassisArtifact(MavenVisitor<?> visitor, Xml.Tag tag) {
+        return (visitor.isParentTag() || visitor.isDependencyTag() || visitor.isManagedDependencyTag()) &&
+               CHASSIS_GROUP.equals(tag.getChildValue("groupId").orElse(null)) &&
+               StringUtils.matchesGlob(tag.getChildValue("artifactId").orElse(null), CHASSIS_ARTIFACTS);
     }
 
     @Override

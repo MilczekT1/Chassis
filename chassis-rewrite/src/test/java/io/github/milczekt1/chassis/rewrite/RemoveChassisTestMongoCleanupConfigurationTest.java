@@ -9,6 +9,8 @@ import org.openrewrite.test.TypeValidation;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.test.SourceSpecs.text;
 
+// rewriteRun is the assertion: it fails the test when the recipe's result differs from the expected sources
+@SuppressWarnings("java:S2699")
 class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
 
     private static final String IMPORTS_FILE =
@@ -214,22 +216,30 @@ class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
     @Test
     void removesLineFromImportsFile() {
         rewriteRun(text(
-                "com.example.OtherAutoConfiguration\n" +
-                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration\n" +
-                "com.example.ThirdAutoConfiguration\n",
-                "com.example.OtherAutoConfiguration\n" +
-                "com.example.ThirdAutoConfiguration\n",
+                """
+                com.example.OtherAutoConfiguration
+                io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration
+                com.example.ThirdAutoConfiguration
+                """,
+                """
+                com.example.OtherAutoConfiguration
+                com.example.ThirdAutoConfiguration
+                """,
                 spec -> spec.path(IMPORTS_FILE)));
     }
 
     @Test
     void removesLineFromCrlfImportsFile() {
         rewriteRun(text(
-                "com.example.OtherAutoConfiguration\r\n" +
-                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration\r\n" +
-                "com.example.ThirdAutoConfiguration\r\n",
-                "com.example.OtherAutoConfiguration\r\n" +
-                "com.example.ThirdAutoConfiguration\r\n",
+                """
+                com.example.OtherAutoConfiguration\r
+                io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration\r
+                com.example.ThirdAutoConfiguration\r
+                """,
+                """
+                com.example.OtherAutoConfiguration\r
+                com.example.ThirdAutoConfiguration\r
+                """,
                 spec -> spec.path(IMPORTS_FILE)));
     }
 
@@ -253,11 +263,15 @@ class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
     @Test
     void removesLineWithTrailingComment() {
         rewriteRun(text(
-                "com.example.OtherAutoConfiguration\n" +
-                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration # mongo cleanup\n" +
-                "com.example.ThirdAutoConfiguration\n",
-                "com.example.OtherAutoConfiguration\n" +
-                "com.example.ThirdAutoConfiguration\n",
+                """
+                com.example.OtherAutoConfiguration
+                io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration # mongo cleanup
+                com.example.ThirdAutoConfiguration
+                """,
+                """
+                com.example.OtherAutoConfiguration
+                com.example.ThirdAutoConfiguration
+                """,
                 spec -> spec.path(IMPORTS_FILE)));
     }
 
@@ -286,10 +300,13 @@ class RemoveChassisTestMongoCleanupConfigurationTest implements RewriteTest {
     @Test
     void removesEntryWhoseOnlyValueIsTheClass() {
         rewriteRun(text(
-                "org.springframework.boot.autoconfigure.EnableAutoConfiguration=" +
-                "io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration\n" +
-                "org.springframework.test.context.TestExecutionListener=com.example.Listener\n",
-                "org.springframework.test.context.TestExecutionListener=com.example.Listener\n",
+                """
+                org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.milczekt1.chassis.test.mongo.ChassisTestMongoCleanupConfiguration
+                org.springframework.test.context.TestExecutionListener=com.example.Listener
+                """,
+                """
+                org.springframework.test.context.TestExecutionListener=com.example.Listener
+                """,
                 spec -> spec.path(SPRING_FACTORIES)));
     }
 

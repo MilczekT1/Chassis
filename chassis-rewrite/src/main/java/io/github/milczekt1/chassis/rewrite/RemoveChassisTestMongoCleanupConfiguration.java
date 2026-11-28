@@ -88,45 +88,6 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
         return after.equals(before) ? text : text.withText(after);
     }
 
-    /**
-     * Matches {@code ChassisTestMongoCleanupConfiguration.class}. Once a service is on a Chassis without the class, its
-     * type no longer resolves, so the literal is then matched by name: fully qualified, or simple and imported.
-     */
-    private static boolean isCleanupConfigurationLiteral(Expression expression, boolean importsCleanupConfiguration) {
-        if (!(expression instanceof J.FieldAccess fieldAccess) || !"class".equals(fieldAccess.getSimpleName())) {
-            return false;
-        }
-        Expression target = fieldAccess.getTarget();
-        if (TypeUtils.asFullyQualified(target.getType()) != null) {
-            return TypeUtils.isOfClassType(target.getType(), CLEANUP_CONFIGURATION);
-        }
-        String name = qualifiedName(target);
-        return CLEANUP_CONFIGURATION.equals(name) || importsCleanupConfiguration && SIMPLE_NAME.equals(name);
-    }
-
-    private static @Nullable String qualifiedName(Expression expression) {
-        if (expression instanceof J.Identifier identifier) {
-            return identifier.getSimpleName();
-        }
-        if (expression instanceof J.FieldAccess fieldAccess) {
-            String target = qualifiedName(fieldAccess.getTarget());
-            return target == null ? null : target + "." + fieldAccess.getSimpleName();
-        }
-        return null;
-    }
-
-    /**
-     * Removes the matching elements; the element after a removed first element takes its prefix, so no space is left
-     * after the opening parenthesis or brace.
-     */
-    private static <T extends J> List<T> removeAll(List<T> elements, Predicate<T> remove) {
-        List<T> kept = ListUtils.map(elements, element -> remove.test(element) ? null : element);
-        if (kept.size() == elements.size() || kept.isEmpty() || !remove.test(elements.getFirst())) {
-            return kept;
-        }
-        return ListUtils.mapFirst(kept, first -> first.withPrefix(elements.getFirst().getPrefix()));
-    }
-
     private static final class ImportAnnotationsEditor extends JavaIsoVisitor<ExecutionContext> {
 
         @Override
@@ -184,6 +145,45 @@ public class RemoveChassisTestMongoCleanupConfiguration extends Recipe {
                         : array.withInitializer(initializer);
             }
             return argument;
+        }
+
+        /**
+         * Matches {@code ChassisTestMongoCleanupConfiguration.class}. Once a service is on a Chassis without the class,
+         * its type no longer resolves, so the literal is then matched by name: fully qualified, or simple and imported.
+         */
+        private static boolean isCleanupConfigurationLiteral(Expression expression, boolean importsCleanupConfiguration) {
+            if (!(expression instanceof J.FieldAccess fieldAccess) || !"class".equals(fieldAccess.getSimpleName())) {
+                return false;
+            }
+            Expression target = fieldAccess.getTarget();
+            if (TypeUtils.asFullyQualified(target.getType()) != null) {
+                return TypeUtils.isOfClassType(target.getType(), CLEANUP_CONFIGURATION);
+            }
+            String name = qualifiedName(target);
+            return CLEANUP_CONFIGURATION.equals(name) || importsCleanupConfiguration && SIMPLE_NAME.equals(name);
+        }
+
+        private static @Nullable String qualifiedName(Expression expression) {
+            if (expression instanceof J.Identifier identifier) {
+                return identifier.getSimpleName();
+            }
+            if (expression instanceof J.FieldAccess fieldAccess) {
+                String target = qualifiedName(fieldAccess.getTarget());
+                return target == null ? null : target + "." + fieldAccess.getSimpleName();
+            }
+            return null;
+        }
+
+        /**
+         * Removes the matching elements; the element after a removed first element takes its prefix, so no space is
+         * left after the opening parenthesis or brace.
+         */
+        private static <T extends J> List<T> removeAll(List<T> elements, Predicate<T> remove) {
+            List<T> kept = ListUtils.map(elements, element -> remove.test(element) ? null : element);
+            if (kept.size() == elements.size() || kept.isEmpty() || !remove.test(elements.getFirst())) {
+                return kept;
+            }
+            return ListUtils.mapFirst(kept, first -> first.withPrefix(elements.getFirst().getPrefix()));
         }
     }
 }

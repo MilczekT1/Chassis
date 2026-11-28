@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.maven.Assertions.pomXml;
 
+// rewriteRun is the assertion: it fails the test when the recipe's result differs from the expected sources
+@SuppressWarnings("java:S2699")
 class UpgradeChassisVersionTest implements RewriteTest {
 
     @TempDir

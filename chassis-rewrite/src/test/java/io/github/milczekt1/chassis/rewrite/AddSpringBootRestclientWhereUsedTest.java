@@ -19,6 +19,8 @@ import static org.openrewrite.java.Assertions.srcMainJava;
 import static org.openrewrite.java.Assertions.srcTestJava;
 import static org.openrewrite.maven.Assertions.pomXml;
 
+// rewriteRun is the assertion: it fails the test when the recipe's result differs from the expected sources
+@SuppressWarnings("java:S2699")
 class AddSpringBootRestclientWhereUsedTest implements RewriteTest {
 
     @TempDir

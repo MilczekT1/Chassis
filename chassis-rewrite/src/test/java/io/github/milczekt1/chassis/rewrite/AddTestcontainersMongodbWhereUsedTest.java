@@ -18,6 +18,8 @@ import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.java.Assertions.srcTestJava;
 import static org.openrewrite.maven.Assertions.pomXml;
 
+// rewriteRun is the assertion: it fails the test when the recipe's result differs from the expected sources
+@SuppressWarnings("java:S2699")
 class AddTestcontainersMongodbWhereUsedTest implements RewriteTest {
 
     private static final String TESTCONTAINERS_MONGODB = dependency("org.testcontainers", "testcontainers-mongodb", "test");

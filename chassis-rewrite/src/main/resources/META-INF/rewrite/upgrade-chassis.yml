@@ -6,6 +6,9 @@ description: >-
   break. Adopts no new Chassis features and does not cover Spring Boot's or Spring Cloud's own changes.
   Run it with rewrite-maven-plugin @@rewrite-maven-plugin.version@@.
 recipeList:
+  # Before the version bump: it must import the contract BOM while chassis-bom still manages Spring Cloud Contract,
+  # or the bump leaves "No version provided" markers on the service's versionless contract dependencies.
+  - io.github.milczekt1.chassis.AddSpringCloudContractWhereUsed
   - io.github.milczekt1.chassis.rewrite.UpgradeChassisVersion:
       newVersion: "@@project.version@@"
   - io.github.milczekt1.chassis.rewrite.RemoveChassisTestMongoCleanupConfiguration
@@ -45,3 +48,66 @@ recipeList:
       artifactId: spring-boot-restclient
       version: latest.release
       onlyIfUsing: org.springframework.boot.restclient..*
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.AddSpringCloudContractWhereUsed
+displayName: Add Spring Cloud Contract where the service uses it
+description: >-
+  Needed when upgrading from Chassis 0.5.5 or earlier: chassis-tools-test no longer brings Spring Cloud Contract and
+  chassis-bom no longer manages its versions. Imports spring-cloud-contract-dependencies in modules that declare a
+  Spring Cloud Contract dependency, and adds spring-cloud-starter-contract-verifier or spring-cloud-contract-stub-runner
+  to modules whose code uses them or that run spring-cloud-contract-maven-plugin.
+recipeList:
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-starter-contract-verifier
+      version: 5.0.3
+      onlyIfUsing: org.springframework.cloud.contract.verifier..*
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-starter-contract-verifier
+      version: 5.0.3
+      onlyIfUsing: org.springframework.cloud.contract.spec..*
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-contract-stub-runner
+      version: 5.0.3
+      onlyIfUsing: org.springframework.cloud.contract.stubrunner..*
+  - io.github.milczekt1.chassis.AddSpringCloudContractVerifierWherePluginRuns
+  # Last, so it also covers the dependencies added above; earlier, a second cycle would import the BOM for them.
+  - io.github.milczekt1.chassis.ImportSpringCloudContractDependenciesWhereDeclared
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.ImportSpringCloudContractDependenciesWhereDeclared
+displayName: Import spring-cloud-contract-dependencies where a Spring Cloud Contract dependency is declared
+description: >-
+  Needed when upgrading from Chassis 0.5.5 or earlier: chassis-bom no longer manages Spring Cloud Contract's versions.
+  Imports the spring-cloud-contract-dependencies BOM in modules that declare a Spring Cloud Contract dependency.
+preconditions:
+  - org.openrewrite.maven.search.FindDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-*contract*
+recipeList:
+  - org.openrewrite.maven.AddManagedDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-contract-dependencies
+      version: 5.0.3
+      type: pom
+      scope: import
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.github.milczekt1.chassis.AddSpringCloudContractVerifierWherePluginRuns
+displayName: Add spring-cloud-starter-contract-verifier where spring-cloud-contract-maven-plugin runs
+description: >-
+  Needed when upgrading from Chassis 0.5.5 or earlier: chassis-tools-test no longer brings
+  spring-cloud-starter-contract-verifier, which the tests spring-cloud-contract-maven-plugin generates compile against.
+preconditions:
+  - org.openrewrite.maven.search.FindPlugin:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-contract-maven-plugin
+recipeList:
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-starter-contract-verifier
+      version: 5.0.3
+      scope: test

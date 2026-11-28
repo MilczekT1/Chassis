@@ -14,6 +14,7 @@ import static io.github.milczekt1.chassis.rewrite.TestPoms.MONGO_TEST;
 import static io.github.milczekt1.chassis.rewrite.TestPoms.REST_CLIENT;
 import static io.github.milczekt1.chassis.rewrite.TestPoms.dependency;
 import static io.github.milczekt1.chassis.rewrite.TestPoms.modulePom;
+import static io.github.milczekt1.chassis.rewrite.TestPoms.withContractBom;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.java.Assertions.srcMainJava;
@@ -94,6 +95,13 @@ class UpgradeChassisTest implements RewriteTest {
                 mavenProject("app",
                         pomXml(childOfAggregator(""), childOfAggregator(dependency("org.testcontainers", "testcontainers-mongodb", "test"))),
                         srcTestJava(java(MONGO_TEST))));
+    }
+
+    @Test
+    void importsSpringCloudContractBomWhereModuleDeclaresContractDependency() {
+        String verifier = dependency("org.springframework.cloud", "spring-cloud-starter-contract-verifier", "test");
+        rewriteRun(mavenProject("app",
+                pomXml(modulePom("app", LEGACY, verifier), withContractBom(modulePom("app", target(), verifier)))));
     }
 
     private static String aggregatorWithChassisParent(String chassisVersion) {

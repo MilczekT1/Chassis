@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.contract.spec.internal.RegexPatterns;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
@@ -21,6 +20,9 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 @ChassisErrorHandlerIntegrationTest
 class ChassisExceptionHandlingAutoConfigurationIT {
+
+    private static final String ISO_8601_WITH_OFFSET =
+            "([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.\\d+)?(Z|[+-][01]\\d:[0-5]\\d)";
 
     @Autowired(required = false)
     private ChassisExceptionHandler chassisExceptionHandler;
@@ -51,8 +53,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + BAD_REQUEST_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -66,8 +68,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Not Found"))
                 .body("status", equalTo(NOT_FOUND.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + NOT_FOUND_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -81,8 +83,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + INTERNAL_SERVER_ERROR_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -96,8 +98,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Internal Server Error"))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + INTERNAL_SERVER_ERROR_DEFAULT_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -111,8 +113,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Conflict"))
                 .body("status", equalTo(CONFLICT.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + RESOURCE_CONFLICT_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -126,8 +128,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo(TestController.ERROR_TITLE))
-                .body("instance", equalTo(BASE_PATH + RESOURCE_CREATION_ERROR_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()));
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET));
     }
 
     @Test
@@ -143,8 +145,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + METHOD_ARG_NOT_VALID_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()))
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("age"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 18"));
@@ -163,8 +165,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + PARAM_NOT_VALID_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()))
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("queryParam"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 18"));
@@ -183,8 +185,8 @@ class ChassisExceptionHandlingAutoConfigurationIT {
                 .body("title", equalTo("Bad Request"))
                 .body("status", equalTo(BAD_REQUEST.value()))
                 .body("detail", equalTo("Constraint Violation"))
-                .body("instance", equalTo(BASE_PATH + VALIDATION_PATH))
-                .body("timestamp", matchesPattern(RegexPatterns.iso8601WithOffset().getPattern()))
+                .body("instance", nullValue())
+                .body("timestamp", matchesPattern(ISO_8601_WITH_OFFSET))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("age"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 18"));

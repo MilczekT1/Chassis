@@ -1,5 +1,6 @@
 package io.github.milczekt1.chassis.observability.configuration;
 
+import io.github.milczekt1.chassis.observability.tracing.ChassisTraceInstanceInterceptor;
 import io.github.milczekt1.chassis.observability.tracing.ChassisTraceResponseHeaderFilter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
@@ -15,6 +16,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 import java.util.Map;
@@ -150,6 +153,31 @@ public class ChassisObservabilityAutoConfiguration {
     public ChassisTraceResponseHeaderFilter chassisTraceResponseHeaderFilter() {
         log.info("Initializing chassisTraceResponseHeaderFilter...");
         return new ChassisTraceResponseHeaderFilter();
+    }
+
+    @Bean
+    @ConditionalOnClass(Span.class)
+    @ConditionalOnMissingBean(name = "chassisTraceInstanceWebMvcConfigurer")
+    @ConditionalOnProperty(
+            prefix = "chassis.observability.traces",
+            name = "enabled",
+            havingValue = "true",
+            matchIfMissing = true
+    )
+    @ConditionalOnProperty(
+            prefix = "chassis.observability.traces",
+            name = "exposeHeaders",
+            havingValue = "true",
+            matchIfMissing = true
+    )
+    public WebMvcConfigurer chassisTraceInstanceWebMvcConfigurer() {
+        log.info("Initializing chassisTraceInstanceWebMvcConfigurer...");
+        return new WebMvcConfigurer() {
+            @Override
+            public void addErrorResponseInterceptors(List<ErrorResponse.Interceptor> interceptors) {
+                interceptors.add(new ChassisTraceInstanceInterceptor());
+            }
+        };
     }
 
 }

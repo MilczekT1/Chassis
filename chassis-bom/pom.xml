@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <springboot.version>4.0.6</springboot.version>
-        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
+        <springboot.version>4.2.0</springboot.version>
+        <spring-cloud-dependencies.version>2026.0.0</spring-cloud-dependencies.version>
 
         <sonar.organization>milczekt1</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -88,6 +88,12 @@
                 <groupId>com.tngtech.archunit</groupId>
                 <artifactId>archunit-junit5</artifactId>
                 <version>1.5.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>spring-mock-mvc</artifactId>
+                <version>5.5.7</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

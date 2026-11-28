@@ -80,7 +80,7 @@ chassis:
   observability:
     enabled: true  # Enable/disable Chassis observability features
     traces:
-      exposeHeaders: true  # Add Trace-Id/Span-Id to response headers
+      exposeHeaders: true  # Add Trace-Id/Span-Id response headers and the trace ID to error responses' instance
     common-tags:
       chassis: true  # Add custom tags to metrics
 ```

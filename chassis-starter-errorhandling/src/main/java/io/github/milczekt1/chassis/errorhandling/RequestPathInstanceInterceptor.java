@@ -14,6 +14,7 @@ public class RequestPathInstanceInterceptor implements ErrorResponse.Interceptor
 
     @Override
     public void handleError(ProblemDetail detail, @Nullable ErrorResponse errorResponse) {
+        // Spring calls the overload below; without the request there is no path to set.
     }
 
     @Override

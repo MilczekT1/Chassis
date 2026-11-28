@@ -18,3 +18,8 @@ updates:
       prefix: "build"
     labels:
       - dependencies
+    groups:
+      # chassis-rewrite's rewrite.version must stay the OpenRewrite version rewrite-maven-plugin.version runs with
+      openrewrite:
+        patterns:
+          - "org.openrewrite*"

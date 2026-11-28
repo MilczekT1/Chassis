@@ -38,12 +38,19 @@ final class ChassisTestRepository {
     }
 
     static String target() {
+        Matcher newVersion = NEW_VERSION.matcher(upgradeChassisYaml());
+        if (!newVersion.find()) {
+            throw new IllegalStateException("No newVersion in META-INF/rewrite/upgrade-chassis.yml");
+        }
+        return newVersion.group(1);
+    }
+
+    /**
+     * The built recipe file, with its {@code @@...@@} placeholders filled in.
+     */
+    static String upgradeChassisYaml() {
         try (InputStream yaml = ChassisTestRepository.class.getResourceAsStream("/META-INF/rewrite/upgrade-chassis.yml")) {
-            Matcher newVersion = NEW_VERSION.matcher(new String(Objects.requireNonNull(yaml).readAllBytes(), StandardCharsets.UTF_8));
-            if (!newVersion.find()) {
-                throw new IllegalStateException("No newVersion in META-INF/rewrite/upgrade-chassis.yml");
-            }
-            return newVersion.group(1);
+            return new String(Objects.requireNonNull(yaml).readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

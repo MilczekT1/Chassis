@@ -24,7 +24,9 @@
         <jacoco.lineCoverage.minimum>0.75</jacoco.lineCoverage.minimum>
         <jacoco.branches.minimum>0.75</jacoco.branches.minimum>
 
-        <!-- the version rewrite-maven-plugin 6.46.1 runs with -->
+        <!-- the version services run the recipe with; README.md's command must name it -->
+        <rewrite-maven-plugin.version>6.46.1</rewrite-maven-plugin.version>
+        <!-- must be the OpenRewrite version rewrite-maven-plugin.version runs with -->
         <rewrite.version>8.89.0</rewrite.version>
 
         <!-- services run this on the Java they upgrade from: do not raise it with java.version -->
@@ -116,6 +118,16 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <pluginManagement>
+            <plugins>
+                <!-- never run by this build: declared so Dependabot updates rewrite-maven-plugin.version -->
+                <plugin>
+                    <groupId>org.openrewrite.maven</groupId>
+                    <artifactId>rewrite-maven-plugin</artifactId>
+                    <version>${rewrite-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

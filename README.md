@@ -41,6 +41,7 @@ Run from the service's root, with `<version>` the Chassis release you are upgrad
 ```
 
 Use `dryRun` in place of `run` to get a patch in `target/rewrite/rewrite.patch` to review, instead of changed files.
+For an older `<version>`, take the plugin version from that release's README: each recipe is built for one.
 
 It changes:
 

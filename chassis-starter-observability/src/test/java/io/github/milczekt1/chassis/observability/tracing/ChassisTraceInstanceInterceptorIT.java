@@ -28,7 +28,7 @@ class ChassisTraceInstanceInterceptorIT {
     @ParameterizedTest
     @ValueSource(strings = {"/test/tracing/problem", "/test/tracing/problem-entity"})
     void setsInstanceToTraceUrnWhenSpanIsActive(String path) throws Exception {
-        try (Scope ignored = activeSpan()) {
+        try (Scope _ = activeSpan()) {
             mockMvc.perform(get(path))
                     .andExpect(jsonPath("$.instance").value("urn:trace:" + TRACE_ID));
         }
@@ -42,7 +42,7 @@ class ChassisTraceInstanceInterceptorIT {
 
     @Test
     void keepsInstanceTheHandlerSet() throws Exception {
-        try (Scope ignored = activeSpan()) {
+        try (Scope _ = activeSpan()) {
             mockMvc.perform(get("/test/tracing/problem-with-instance"))
                     .andExpect(jsonPath("$.instance").value(PRESET_INSTANCE));
         }

@@ -417,8 +417,8 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 * Upgraded Spring Boot 4.0.6 -> 4.2.0 (root pom, `chassis-bom`, `chassis-parent` property and
   `spring-boot-starter-parent`).
 * Upgraded Spring Cloud 2025.1.1 -> 2026.0.0. `spring-cloud-context` no longer brings `spring-boot-restclient`;
-  declare it if you use `RestTemplateBuilder`, `TestRestTemplate` or Boot's auto-configured `RestClient.Builder`
-  (`chassis-test-app` now does, at test scope, for `TestRestTemplate`).
+  declare it if your code uses `RestTemplateBuilder` or Boot's auto-configured `RestClient.Builder`.
+  `chassis-tools-test` now brings it, so `TestRestTemplate` keeps working in tests.
 * Raised explicit pins that Spring Boot 4.2.0 manages at a newer version: Lombok annotation processor
   1.18.46 -> 1.18.48, Surefire and Failsafe 3.5.6 -> 3.6.1 (and `maven-surefire-report-plugin` with them),
   `maven-dependency-plugin` 3.8.1 -> 3.11.0.

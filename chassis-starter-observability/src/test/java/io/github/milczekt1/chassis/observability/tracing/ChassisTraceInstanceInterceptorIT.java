@@ -5,12 +5,14 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceState;
-import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.concurrent.Callable;
 
 import static io.github.milczekt1.chassis.observability.tracing.utils.TraceTestController.PRESET_INSTANCE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,10 +30,8 @@ class ChassisTraceInstanceInterceptorIT {
     @ParameterizedTest
     @ValueSource(strings = {"/test/tracing/problem", "/test/tracing/problem-entity"})
     void setsInstanceToTraceUrnWhenSpanIsActive(String path) throws Exception {
-        try (Scope _ = activeSpan()) {
-            mockMvc.perform(get(path))
-                    .andExpect(jsonPath("$.instance").value("urn:trace:" + TRACE_ID));
-        }
+        inActiveSpan(() -> mockMvc.perform(get(path))
+                .andExpect(jsonPath("$.instance").value("urn:trace:" + TRACE_ID)));
     }
 
     @Test
@@ -42,14 +42,12 @@ class ChassisTraceInstanceInterceptorIT {
 
     @Test
     void keepsInstanceTheHandlerSet() throws Exception {
-        try (Scope _ = activeSpan()) {
-            mockMvc.perform(get("/test/tracing/problem-with-instance"))
-                    .andExpect(jsonPath("$.instance").value(PRESET_INSTANCE));
-        }
+        inActiveSpan(() -> mockMvc.perform(get("/test/tracing/problem-with-instance"))
+                .andExpect(jsonPath("$.instance").value(PRESET_INSTANCE)));
     }
 
-    private static Scope activeSpan() {
-        return Span.wrap(SpanContext.create(TRACE_ID, SPAN_ID, TraceFlags.getSampled(), TraceState.getDefault()))
-                .makeCurrent();
+    private static void inActiveSpan(Callable<?> request) throws Exception {
+        Span span = Span.wrap(SpanContext.create(TRACE_ID, SPAN_ID, TraceFlags.getSampled(), TraceState.getDefault()));
+        Context.current().with(span).wrap(request).call();
     }
 }

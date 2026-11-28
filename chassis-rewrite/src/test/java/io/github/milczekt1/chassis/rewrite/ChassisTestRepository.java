@@ -71,9 +71,6 @@ final class ChassisTestRepository {
             writePom(localRepository, CHASSIS_GROUP, "chassis-tools-test", version, "jar",
                     LEGACY.equals(version) ? "<dependencies>" + TESTCONTAINERS_MONGODB + "</dependencies>" : "");
         }
-        for (String artifactId : List.of("chassis-parent", "chassis-bom", "chassis-dependencies", "chassis-tools-test")) {
-            writeMetadata(localRepository, artifactId, chassisVersions);
-        }
         writePom(localRepository, "org.testcontainers", "testcontainers-mongodb", "2.0.5", "jar", "");
         writePom(localRepository, "org.springframework.boot", "spring-boot-restclient", "4.0.6", "jar", "");
         writePom(localRepository, CHASSIS_GROUP, "corral-rules", "0.6.1", "jar", "");
@@ -118,7 +115,7 @@ final class ChassisTestRepository {
                 """.formatted(groupId, artifactId, version, packaging, body));
     }
 
-    private static void writeMetadata(Path repository, String artifactId, String... versions) {
+    static void writeMetadata(Path repository, String artifactId, String... versions) {
         String versionList = Arrays.stream(versions).map("<version>%s</version>"::formatted).collect(Collectors.joining());
         write(artifactDirectory(repository, CHASSIS_GROUP, artifactId).resolve("maven-metadata-local.xml"), """
                 <metadata>

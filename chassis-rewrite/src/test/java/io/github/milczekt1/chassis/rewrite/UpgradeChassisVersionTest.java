@@ -2,6 +2,7 @@ package io.github.milczekt1.chassis.rewrite;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -32,6 +33,14 @@ class UpgradeChassisVersionTest implements RewriteTest {
     @Test
     void bumpsChassisParent() {
         rewriteRun(pomXml(servicePom(LEGACY), servicePom(target())));
+    }
+
+    @Test
+    void bumpsWhenRepositoryMetadataDoesNotListTarget() {
+        Path staleRepository = repository.resolve("stale");
+        ExecutionContext ctx = ChassisTestRepository.executionContext(staleRepository, LEGACY, target());
+        ChassisTestRepository.writeMetadata(staleRepository, "chassis-parent", LEGACY);
+        rewriteRun(spec -> spec.executionContext(ctx), pomXml(servicePom(LEGACY), servicePom(target())));
     }
 
     @Test

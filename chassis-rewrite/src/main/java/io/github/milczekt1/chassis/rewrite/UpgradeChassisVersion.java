@@ -8,25 +8,27 @@ import org.openrewrite.Option;
 import org.openrewrite.ScanningRecipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.StringUtils;
-import org.openrewrite.maven.MavenDownloadingException;
 import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.semver.LatestRelease;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.xml.tree.Xml;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Edits only Chassis versions. Do not replace it with {@code UpgradeParentVersion} or {@code UpgradeDependencyVersion}:
  * after a change both run {@code RemoveRedundantDependencyVersions} over every dependency of the POM, which strips
  * unrelated explicit versions and can silently upgrade them.
  * <p>
- * The accumulator maps each property that holds a Chassis version, in any POM of the project, to an artifact it versions;
- * the property is bumped in whichever POM defines it, such as an in-repo parent.
+ * Do not require the new version in the repository's metadata: it is released together with this recipe, and when the
+ * metadata lacks it the bump silently never happens.
+ * <p>
+ * The accumulator holds each property that holds a Chassis version, in any POM of the project; the property is bumped
+ * in whichever POM defines it, such as an in-repo parent.
  */
-public class UpgradeChassisVersion extends ScanningRecipe<Map<String, String>> {
+public class UpgradeChassisVersion extends ScanningRecipe<Set<String>> {
 
     private static final String CHASSIS_GROUP = "io.github.milczekt1";
     private static final String CHASSIS_ARTIFACTS = "chassis*";
@@ -51,25 +53,24 @@ public class UpgradeChassisVersion extends ScanningRecipe<Map<String, String>> {
     @Override
     public String getDescription() {
         return "Moves the `chassis-parent` parent, and every `io.github.milczekt1:chassis*` dependency, BOM import and " +
-               "the property holding their version, to the new version once it is published. Never lowers a version " +
-               "and changes nothing else in the POM.";
+               "the property holding their version, to the new version. Never lowers a version and changes nothing " +
+               "else in the POM.";
     }
 
     @Override
-    public Map<String, String> getInitialValue(ExecutionContext ctx) {
-        return new HashMap<>();
+    public Set<String> getInitialValue(ExecutionContext ctx) {
+        return new HashSet<>();
     }
 
     @Override
-    public TreeVisitor<?, ExecutionContext> getScanner(Map<String, String> versionProperties) {
+    public TreeVisitor<?, ExecutionContext> getScanner(Set<String> versionProperties) {
         return new ChassisVisitor() {
             @Override
             public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                 Xml.Tag t = super.visitTag(tag, ctx);
-                String artifactId = chassisArtifactId(t);
                 String version = t.getChildValue("version").orElse(null);
-                if (artifactId != null && isProperty(version)) {
-                    versionProperties.putIfAbsent(version.substring(2, version.length() - 1), artifactId);
+                if (isChassisArtifact(t) && isProperty(version)) {
+                    versionProperties.add(version.substring(2, version.length() - 1));
                 }
                 return t;
             }
@@ -77,54 +78,43 @@ public class UpgradeChassisVersion extends ScanningRecipe<Map<String, String>> {
     }
 
     @Override
-    public TreeVisitor<?, ExecutionContext> getVisitor(Map<String, String> versionProperties) {
+    public TreeVisitor<?, ExecutionContext> getVisitor(Set<String> versionProperties) {
         return new ChassisVisitor() {
             @Override
             public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                 Xml.Tag t = super.visitTag(tag, ctx);
-                try {
-                    if (isPropertyTag() && versionProperties.containsKey(t.getName())) {
-                        if (isUpgrade(t.getValue().orElse(null), versionProperties.get(t.getName()), ctx)) {
-                            maybeUpdateModel();
-                            return t.withValue(newVersion);
-                        }
-                        return t;
-                    }
-                    String artifactId = chassisArtifactId(t);
-                    String version = t.getChildValue("version").orElse(null);
-                    if (artifactId != null && !isProperty(version) && isUpgrade(version, artifactId, ctx)) {
+                if (isPropertyTag() && versionProperties.contains(t.getName())) {
+                    if (isUpgrade(t.getValue().orElse(null))) {
                         maybeUpdateModel();
-                        return changeChildTagValue(t, "version", newVersion, ctx);
+                        return t.withValue(newVersion);
                     }
-                } catch (MavenDownloadingException e) {
-                    return e.warn(t);
+                    return t;
+                }
+                String version = t.getChildValue("version").orElse(null);
+                if (isChassisArtifact(t) && !isProperty(version) && isUpgrade(version)) {
+                    maybeUpdateModel();
+                    return changeChildTagValue(t, "version", newVersion, ctx);
                 }
                 return t;
             }
-
-            private boolean isUpgrade(@Nullable String current, String artifactId, ExecutionContext ctx)
-                    throws MavenDownloadingException {
-                return current != null &&
-                       Semver.isVersion(current) &&
-                       new LatestRelease(null).compare(null, current, newVersion) < 0 &&
-                       downloadMetadata(CHASSIS_GROUP, artifactId, ctx).getVersioning().getVersions().contains(newVersion);
-            }
         };
+    }
+
+    private boolean isUpgrade(@Nullable String current) {
+        return current != null &&
+               Semver.isVersion(current) &&
+               new LatestRelease(null).compare(null, current, newVersion) < 0;
     }
 
     private abstract static class ChassisVisitor extends MavenIsoVisitor<ExecutionContext> {
 
         /**
-         * The artifactId when the tag is the parent, a dependency or a managed dependency with Chassis coordinates.
+         * Whether the tag is the parent, a dependency or a managed dependency with Chassis coordinates.
          */
-        @Nullable
-        String chassisArtifactId(Xml.Tag tag) {
-            if (!isParentTag() && !isDependencyTag() && !isManagedDependencyTag()) {
-                return null;
-            }
-            String artifactId = tag.getChildValue("artifactId").orElse(null);
-            return CHASSIS_GROUP.equals(tag.getChildValue("groupId").orElse(null)) &&
-                   StringUtils.matchesGlob(artifactId, CHASSIS_ARTIFACTS) ? artifactId : null;
+        boolean isChassisArtifact(Xml.Tag tag) {
+            return (isParentTag() || isDependencyTag() || isManagedDependencyTag()) &&
+                   CHASSIS_GROUP.equals(tag.getChildValue("groupId").orElse(null)) &&
+                   StringUtils.matchesGlob(tag.getChildValue("artifactId").orElse(null), CHASSIS_ARTIFACTS);
         }
     }
 

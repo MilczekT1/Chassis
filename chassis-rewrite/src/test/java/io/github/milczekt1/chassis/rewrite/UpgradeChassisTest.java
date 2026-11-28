@@ -94,16 +94,6 @@ class UpgradeChassisTest implements RewriteTest {
                         srcTestJava(java(MONGO_TEST))));
     }
 
-    @Test
-    void keepsVersionWhenTargetIsNotPublished() {
-        rewriteRun(
-                spec -> spec.executionContext(ChassisTestRepository.executionContext(repository.resolve("unpublished"), LEGACY)),
-                mavenProject("app",
-                        pomXml(modulePom("app", LEGACY, ""),
-                                modulePom("app", LEGACY, dependency("org.testcontainers", "testcontainers-mongodb", "test"))),
-                        srcTestJava(java(MONGO_TEST))));
-    }
-
     private static String aggregatorWithChassisParent(String chassisVersion) {
         return """
                 <project>

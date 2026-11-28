@@ -390,15 +390,23 @@ Collection returned on endpoint: /api/logs/withCollection, size: 2, status: 200
 
 ### Changelog:
 
+##### 28.11.2026
+
+* Chassis no longer brings or manages Spring Cloud Contract, which left the Spring Cloud release train:
+  `chassis-tools-test` drops `spring-cloud-starter-contract-verifier` and `spring-cloud-contract-stub-runner`,
+  `chassis-bom` no longer manages their versions and `chassis-parent` no longer manages
+  `spring-cloud-contract-maven-plugin`. `UpgradeChassis` declares them, with the `spring-cloud-contract-dependencies`
+  BOM, in modules that use them.
+* `chassis-tools-test` brings RestAssured's `spring-mock-mvc` directly; `chassis-bom` manages it at 5.5.7, the version
+  Spring Cloud Contract brought.
+* CI: Claude Code Review passes with a warning instead of failing when the Claude usage limit is reached.
+
 ##### 26.11.2026
 
 * Upgraded Spring Boot 4.0.6 -> 4.2.0 (root pom, `chassis-bom`, `chassis-parent` property and
   `spring-boot-starter-parent`).
 * Upgraded Spring Cloud 2025.1.1 -> 2026.0.0. `spring-cloud-context` no longer brings `spring-boot-restclient`;
   declare it if you use `RestTemplateBuilder` (`chassis-test-app` now does).
-* Spring Cloud Contract left the Spring Cloud release train, so `chassis-bom` now imports
-  `spring-cloud-contract-dependencies` 5.0.3 (its final Spring release) directly; `spring-cloud-contract-maven-plugin`
-  5.0.2 -> 5.0.3.
 * Chassis error responses keep `instance` set to the request path: Spring Framework 7.1 no longer fills it in, so
   `ChassisExceptionHandlingAutoConfiguration` registers an `ErrorResponse.Interceptor` that does.
 * Raised explicit pins that Spring Boot 4.2.0 manages at a newer version: Lombok annotation processor

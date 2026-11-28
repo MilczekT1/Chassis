@@ -24,6 +24,36 @@ final class TestPoms {
             }
             """;
 
+    static final String CONTRACT_BASE = """
+            package com.example;
+
+            import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
+
+            @AutoConfigureMessageVerifier
+            abstract class ContractBase {
+            }
+            """;
+
+    static final String STUB_RUNNER_TEST = """
+            package com.example;
+
+            import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+
+            @AutoConfigureStubRunner
+            class ClientIT {
+            }
+            """;
+
+    /**
+     * Stand-ins for the Spring Cloud Contract types {@link #CONTRACT_BASE} and {@link #STUB_RUNNER_TEST} use, for
+     * {@code JavaParser.Builder.dependsOn}.
+     */
+    static final String[] CONTRACT_TYPES = {
+            "package org.springframework.cloud.contract.verifier.messaging.boot; public @interface AutoConfigureMessageVerifier {}",
+            "package org.springframework.cloud.contract.stubrunner.spring; public @interface AutoConfigureStubRunner {}",
+            "package org.springframework.cloud.contract.spec.internal; public class RegexPatterns {}"
+    };
+
     private TestPoms() {
     }
 
@@ -76,5 +106,26 @@ final class TestPoms {
                "            <artifactId>" + artifactId + "</artifactId>\n" +
                (scope == null ? "" : "            <scope>" + scope + "</scope>\n") +
                "        </dependency>\n";
+    }
+
+    /**
+     * {@code pom} with the {@code spring-cloud-contract-dependencies} import OpenRewrite adds right before its
+     * {@code <dependencies>}.
+     */
+    static String withContractBom(String pom) {
+        String withImport = """
+                <dependencyManagement>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.springframework.cloud</groupId>
+                            <artifactId>spring-cloud-contract-dependencies</artifactId>
+                            <version>%s</version>
+                            <type>pom</type>
+                            <scope>import</scope>
+                        </dependency>
+                    </dependencies>
+                </dependencyManagement>
+                <dependencies>""".formatted(ChassisTestRepository.SPRING_CLOUD_CONTRACT).indent(4).stripTrailing();
+        return pom.replaceFirst("(?m)^    <dependencies>$", withImport);
     }
 }
